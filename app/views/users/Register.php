@@ -61,6 +61,13 @@
                     placeholder="Confirm Password" value="<?php echo $data['confirm_password']; ?>">
                     <div class="errorMsg" id="confirmPasswordError"><?php echo $data['confirm_password_error']; ?></div>
                 </div>
+                <div >
+
+                  <label class="checkboxLabel errorMsg" style="word-wrap:break-word"  for="buisnessUser">
+                    <input class="checkboxInput" type="checkbox" name="buisnessUser" value="Yes" /> Buisness user
+                  </label>
+                  
+                </div>
               
                 <input id="formButton"  type="submit" value="Register" class="btn btn-success" >
                 </div>

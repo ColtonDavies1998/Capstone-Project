@@ -9,7 +9,15 @@ class User{
 
     //Register User
     public function register($data){
-        $this->db->query('INSERT INTO users (User_First_Name, User_Last_Name, Dashboard_Calendar_Display, Dashboard_Projects_Display, Password, Email, buisness_user) 
+        if($data['buisness_user'] == "Yes"){
+            //if the buisness user was checked then the user has a different account type
+            $buisnessUser = 1;
+        }else{
+            $buisnessUser = 0;
+        }
+
+
+        $this->db->query('INSERT INTO users (User_First_Name, User_Last_Name, Dashboard_Calendar_Display, Dashboard_Projects_Display, Password, Email, Buisness_user) 
         VALUES(:firstName, :lastName, :dashboardCalendar, :dashboardProject, :password, :email, :buisnessUser)');
         //bind values
         $this->db->bind(':firstName', $data['first_name']);
@@ -18,7 +26,7 @@ class User{
         $this->db->bind(':dashboardProject', 0);
         $this->db->bind(':password', $data['password']);
         $this->db->bind(':email', $data['email']);
-        $this->db->bind(':buisnessUser', 0);
+        $this->db->bind(':buisnessUser', $buisnessUser);
 
         //call execute if you want to insert
         if($this->db->execute()){

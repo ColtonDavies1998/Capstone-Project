@@ -20,6 +20,7 @@
                     'email'=> trim($_POST['email']),
                     'password' => trim($_POST['password']),
                     'confirm_password' => trim($_POST['confirm_password']),
+                    'buisness_user' => trim($_POST['buisnessUser']),
                     'first_name_error' => '',
                     'last_name_error' => '',
                     'email_error'=> '',
@@ -175,6 +176,11 @@
             $_SESSION['user_id'] = $user->User_Id;
             $_SESSION['user_email'] = $user->Email;
             $_SESSION['user_name'] = $user->User_First_Name . ' ' . $user->User_Last_Name;
+            if($user->Buisness_user = 1){
+                $_SESSION['user_account_type'] = true;
+            }else{
+                $_SESSION['user_account_type'] = false;
+            }
             redirect('pages/index');
         }
 
@@ -182,6 +188,7 @@
             unset($_SESSION['user_id']);
             unset($_SESSION['user_email']);
             unset($_SESSION['user_name']);
+            unset($_SESSION['user_account_type']);
             session_destroy();
             redirect('users/login');
         }
