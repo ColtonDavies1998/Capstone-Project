@@ -10,7 +10,7 @@
 -->
 
 <?php if(isset($_SESSION['user_id'])): ?>
-  <?php redirect('Pages/index'); ?>
+  <?php redirect('pages/Dashboard'); ?>
 <?php else: ?>
   <!DOCTYPE html>
 <html>
@@ -67,7 +67,7 @@
     </div>
   </div>
 
-  <script src="../js/login.js"></script>
+ 
 
 </body>
 </html>

@@ -4,13 +4,13 @@
     
     }
 
-    public function index(){
+    public function dashboard(){
       $data = [
         'title' => 'welcome'
        ];
 
       
-      $this->view('pages/index', $data);
+      $this->view('pages/Dashboard', $data);
     }
 
 

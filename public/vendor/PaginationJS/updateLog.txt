@@ -1,0 +1,76 @@
+ September 20th 2019 (Update) -> Pagination is complete and working, The last button has been 
+  removed and replaced with the last page showing up after "..." and before "Next" buttons. Also 
+  the ability to change the number of items displayed on the table per page has been added.
+
+  September 23th 2019 (update) -> Added the ability to use a sort search bar to sort through the 
+  table, it works and re sets the table on keyup. Also Added the edit button, when clicked 
+  an overlay is displayed with a form with all the fields populated. The user can then close the
+  form. There is a submit button however the functionality to submit is to long for the time I had
+  Left. But other than that the module is almost done.
+
+  October 8th 2019(update) -> I found an error with search bar, the error would mess up the search results.
+  This error was easily fixable, now the Search bar should be working perfectly. I believe this module
+  is ready for to be added to the website, any other errors that should arise should be minor and easily
+  fixed if we keep the JavaScript of each module separated.
+
+  October 11th 2019 (update) -> Fixed a new issue with the search bar, instead i just delete everything
+  in the searchResults before re searching the data. The second thing I fixed was the delete button issue,
+  the issue was if you deleted something while searching then it would not delete and would mess up the
+  table display. Finally after some testing i found out how to recreate the issue with the table
+  displaying a weird amount of items on the table.
+
+  October 15th 2019 (update) -> Fixed the issue with the final page messing up the the specific page
+  function due to the last page not always having a full set of data. This should be one of the last
+  updates needed before the module is added to the template.
+
+  October 16th 2019 (update) -> Found an issue with the delete button, if the user deleted the last item on the
+  page the table would just show a blank page and the pagination would get messed up. To fix this I decided
+  to add code to the displayTable function that would check if there are no items displaying on the screen.
+  if the number of nulls that show up in the for loop are equal to the number of items that are able to be
+  displayed on the screen then the table is empty. So all i did was add a check for this and then remove 
+  the table and pagination if this is true and reduce the page number by 1 and the pageStart and pageEnd
+  by the number of items able to be displayed on the screen. This seem to fix the issue but a little 
+  more testing should be done, other than testing this fix I cant think of any other issues that could 
+  arise with this module.
+
+  October 18th 2019 (update) -> Earlier this week I attempted to build a program based on an idea I had about a 
+  website for RPG encounters(role playing), which would allow the user to keep track of engagements made during
+  Warhammer 40k RPG sessions. While I was setting this up I had a plan to build a table that would display
+  all the possible enemies and their stats. While I was trying to do this I realized that the code for the 
+  table I have been building for this task manager could easily be used for my Warhammer idea. At its current
+  state the program is hard coded to only fit this task program, however after much thought I realized that with
+  some modifications to the code I could reuse this table/pagination project for other programs down the line
+  instead of constantly having to re program a slightly different version of the same program each time.
+
+  Today I began the process of restructuring the code I currently have, first I moved all the code to its own
+  JS file. I also added the code and put it inside of a JavaScript class, setting up all the variables inside
+  of the constructor and kept all the functions. I had to do some minor changes to make the code work like 
+  adding "this" to the variables I declared in the constructor and binding "this" to event handlers. Finally
+  to get the table to work and display, I create a new Table object and call the function createTable(). There
+  are still a few things to add to help make this table/pagination program reusable.
+
+  October 21st 2019 (update) -> I continued the the restructuring of this code and I am almost finished everything
+  required for this program to be complete. Today I made a lot more changes, first things I removed the delete
+  and edit eventListeners and their functions and moved them each to a separate folder. The reason for this
+  that the functionality of these two things are not core to pagination and table display, they are things that
+  can be added on top of it to make it better and I have designed the code so that other programmers can use 
+  their code with this. I also added the functionality to have the table, pagination, search bar and dropdown
+  to be added bia JavaScript. This allows me to put in checks to see if the user wants the search bar and 
+  dropdown to even display. I also removed the overlay and its form since that is not something I am keeping
+  with the core code of this program, this code is meant to be simple and reusable, I just want the functions
+  that will be used across the projects and anything else can be tailored to the program of choice.
+
+  I only have a few things left to add to this program, I should have this done by the end of the current
+  week, if not by the end of the month for sure. Once everything is added, I will comment my code properly and
+  clean it up, then I will be able to start using it for my other programs.
+
+
+  October 21st 2019 (update & release) -> Today I finished up the last things to do for this project/module.
+  I added the ability for the programmer to have their own numbers to be added to the display dropdown.
+  I also added in some validation for the inputs going into the constructor and before the table is
+  created. I finally organized the two other folders that contain the delete and edit functions i created.
+  Finally I will be puting the example code from this module in a folder, and the main folder housing
+  this module will have the JS file and a folder that says example. 
+
+  ==================================== V1 Release =================================================
+  
