@@ -5,7 +5,7 @@
    * URL FORMAT - /controller/method/params
    */
   class Core {
-    protected $currentController = 'Pages';
+    protected $currentController = 'DashboardController';
     protected $currentMethod = 'Dashboard';
     protected $params = [];
 
@@ -52,7 +52,7 @@
         $url = explode('/', $url);
         return $url;
       }else{
-        $pages = ['Pages'];    
+        $pages = ['Dash'];    
         return $pages;        
         }
     }

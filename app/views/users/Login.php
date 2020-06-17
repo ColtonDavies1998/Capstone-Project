@@ -10,7 +10,7 @@
 -->
 
 <?php if(isset($_SESSION['user_id'])): ?>
-  <?php redirect('pages/Dashboard'); ?>
+  <?php redirect('dashboard/Dashboard'); ?>
 <?php else: ?>
   <!DOCTYPE html>
 <html>

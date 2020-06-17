@@ -181,7 +181,7 @@
             }else{
                 $_SESSION['user_account_type'] = false;
             }
-            redirect('pages/Dashboard');
+            redirect('DashboardController/dashboard');
         }
 
         public function logout(){
