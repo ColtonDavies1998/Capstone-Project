@@ -1,11 +1,12 @@
 <?php
   class DashboardController extends Controller {
     public function __construct(){
-      $this->userModel = $this->model('Dashboard');
+      $this->userModel = $this->model('DashboardModel');
     }
 
     public function dashboard(){
       $data['dailyTasks'] = $this->userModel->getDailyTasks();
+      $data['taskCount'] = $this->userModel->totalDailyTasks();
       
       $this->view('dashboard/Dashboard', $data);
     }

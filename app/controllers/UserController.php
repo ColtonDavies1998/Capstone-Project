@@ -1,8 +1,8 @@
 <?php 
 
-    class Users extends Controller{
+    class UserController extends Controller{
         public function __construct(){
-            $this->userModel = $this->model('User');
+            $this->userModel = $this->model('UserModel');
         }
 
         public function register(){
@@ -20,7 +20,7 @@
                     'email'=> trim($_POST['email']),
                     'password' => trim($_POST['password']),
                     'confirm_password' => trim($_POST['confirm_password']),
-                    'buisness_user' => trim($_POST['buisnessUser']),
+                    'buisness_user' =>   (empty($_POST['buisnessUser']) ? '' : trim($_POST['buisnessUser'])) ,
                     'first_name_error' => '',
                     'last_name_error' => '',
                     'email_error'=> '',
@@ -73,7 +73,7 @@
                     //Register User
                     if($this->userModel->register($data)){
                         flash('register_success', 'You are registered and can log in');
-                        redirect('users/login');
+                        redirect('userController/login');
                     }else{
                         die('Something went Wrong');
                     }
@@ -81,7 +81,7 @@
 
                 }else{
                     //Load view with errors
-                    $this->view('users/Register',$data);
+                    $this->view('user/Register',$data);
                 }
 
 
@@ -93,6 +93,7 @@
                     'email'=> '',
                     'password' => '',
                     'confirm_password' => '',
+                    'buisness_user' => '',
                     'first_name_error' => '',
                     'last_name_error' => '',
                     'email_error'=> '',
@@ -101,7 +102,7 @@
                 ];
 
                 //load view
-                $this->view('users/register', $data);
+                $this->view('user/Register', $data);
             }
         }
 
@@ -151,11 +152,11 @@
                      }else{
                         $data['password_error'] = 'Password incorrect';
 
-                        $this->view('users/login', $data);
+                        $this->view('user/login', $data);
                      }
                 }else{
                      //Load view with errors
-                     $this->view('users/login',$data);
+                     $this->view('user/login',$data);
                  }
 
             }else{
@@ -168,7 +169,7 @@
                 ];
 
                 //load view
-                $this->view('users/login', $data);
+                $this->view('user/login', $data);
             }
         }
 
@@ -190,7 +191,7 @@
             unset($_SESSION['user_name']);
             unset($_SESSION['user_account_type']);
             session_destroy();
-            redirect('users/login');
+            redirect('userController/login');
         }
 
         public function isLoggedIn(){

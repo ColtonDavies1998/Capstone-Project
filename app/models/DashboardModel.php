@@ -1,6 +1,6 @@
 <?php 
 
-class Dashboard{
+class DashboardModel{
     private $db;
 
     public function __construct(){
@@ -37,6 +37,16 @@ class Dashboard{
         }else{
             return false;
         }
+    }
+
+    public function totalDailyTasks(){
+        $this->db->query('SELECT * FROM tasks WHERE Task_Start_Date = CURDATE()');
+
+        $this->db->execute();
+
+        $row = $this->db->rowCount();
+
+        return $row;
     }
 
 }

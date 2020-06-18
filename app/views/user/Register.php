@@ -32,7 +32,7 @@
           <img src="../img/face.png">
         </div>
 
-        <form action="<?php echo URLROOT;?>/users/register" method="post">
+        <form action="<?php echo URLROOT;?>/userController/register" method="post">
             <div class="col-12 form-input">
             <div>
                 <div class="form-group">
@@ -63,8 +63,12 @@
                 </div>
                 <div >
 
-                  <label class="checkboxLabel errorMsg" style="word-wrap:break-word"  for="buisnessUser">
-                    <input class="checkboxInput" type="checkbox" name="buisnessUser" value="Yes" /> Buisness user
+                  <label class="checkboxLabel errorMsg" style="word-wrap:break-word"  for="buisnessUser">  
+                    <?php if(empty($data['buisness_user'])): ?> 
+                      <input class="checkboxInput" type="checkbox" name="buisnessUser" value="Yes" /> Buisness user
+                    <?php else: ?>
+                      <input class="checkboxInput" type="checkbox" name="buisnessUser" value="Yes" checked/> Buisness user
+                    <?php endif;?>
                   </label>
                   
                 </div>
@@ -78,7 +82,7 @@
 
 
         <div class="col-12 forgot">
-          <a href="<?php echo URLROOT; ?>/users/login">Have an account? Log In</a>
+          <a href="<?php echo URLROOT; ?>/userController/login">Have an account? Log In</a>
         </div>
 
 

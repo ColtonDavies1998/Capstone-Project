@@ -10,7 +10,7 @@
 -->
 
 <?php if(isset($_SESSION['user_id'])): ?>
-  <?php redirect('dashboard/Dashboard'); ?>
+  <?php redirect('dashboardController/Dashboard'); ?>
 <?php else: ?>
   <!DOCTYPE html>
 <html>
@@ -36,15 +36,15 @@
 
         <?php flash('register_success');?>
 
-        <form action="<?php echo URLROOT;?>/users/login" method="post">
+        <form action="<?php echo URLROOT;?>/userController/login" method="post">
           <div class="col-12 form-input">
             <div>
               <div class="form-group">
-                <input id="email" name="email" type="email" class="form-control" placeholder="Enter Email">
+                <input id="email" name="email" type="email" class="form-control" placeholder="Enter Email" value="<?php echo $data['email']; ?>">
                 <div class="errorMsg" id="emailError"><?php echo $data['email_error']; ?></div>
               </div>
               <div class="form-group">
-                <input id="password" name="password" type="password" class="form-control" placeholder="Enter Password">
+                <input id="password" name="password" type="password" class="form-control" placeholder="Enter Password" value="<?php echo $data['password']; ?>">
                 <div class="errorMsg" id="passwordError"><?php echo $data['password_error']; ?></div>
               </div>
               <input id="formButton"  type="submit" value="Login" class="btn btn-success" >
@@ -56,7 +56,7 @@
 
 
         <div class="col-12 forgot">
-          <a href="<?php echo URLROOT; ?>/users/register">Register</a>
+          <a href="<?php echo URLROOT; ?>/userController/register">Register</a>
         </div>
 
         <div class="col-12 forgot">
