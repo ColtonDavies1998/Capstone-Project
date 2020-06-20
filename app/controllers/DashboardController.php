@@ -7,6 +7,15 @@
     public function dashboard(){
       $data['dailyTasks'] = $this->userModel->getDailyTasks();
       $data['taskCount'] = $this->userModel->totalDailyTasks();
+      $data['projects'] = $this->userModel->getProjects();
+
+      $numberOfCompleted = $this->userModel->totalDailyTasksCompleted();
+
+      if($data['taskCount'] == 0){
+        $data['taskCompletion'] = 100;
+      }else{
+        $data['taskCompletion'] = $numberOfCompleted / $data['taskCount'] * 100;
+      }
       
       $this->view('dashboard/Dashboard', $data);
     }
@@ -69,13 +78,58 @@
 
         }else{
             //Load view with errors
-            $this->view('DashboardController/dashboard',$data);
+            redirect('dashboardController/dashboard');
         }
-
         
       }
 
     }
 
+    
+    public function newProject(){
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+        //Sanitize POST data
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+        //Init Data
+        $data = [
+          'project_name'=> trim($_POST['projectNameInput']),
+          'project_type'=> trim($_POST['projectTypeInput']),
+          'project_description'=> trim($_POST['projectDescriptionInput']),
+          'project_name_error' => '',
+          'project_type_error' => '',
+          'project_description_error'=> ''
+        ];
+
+        //Validate Project Name
+        if(empty($data['project_name'])){
+          $data['project_name_error'] = 'Please enter a name for the project';
+        }
+        if(empty($data['project_type'])){
+          $data['project_type_error'] = 'Please enter a type for the project';
+        }
+        if(empty($data['project_description'])){
+          $data['project_description_error'] = 'Please enter a description for the project';
+        }
+
+
+        if(empty($data['project_name_error']) && empty($data['project_type_error']) && empty($data['task_start_time_error']) && empty($data['project_description_error'])){
+
+          //Input New Task
+          if($this->userModel->createNewProject($data)){
+            redirect('dashboardController/dashboard');
+          }else{
+            die('Something went Wrong');
+          }
+
+        }else{
+          //Load view with errors
+          $this->view('dashboard/Dashboard',$data);
+        }
+
+
+      }
+    }
 
   }

@@ -37,6 +37,7 @@
         //prepare statement with query
         public function query($sql){
             $this->stmt = $this->dbh->prepare($sql);
+            
         }
 
         //Bind values
@@ -59,10 +60,13 @@
             }
 
             $this->stmt->bindValue($param, $value, $type);
+            
+    
         }
 
         //Execute the prepared statement
         public function execute(){
+            
             return $this->stmt->execute();
         }
 

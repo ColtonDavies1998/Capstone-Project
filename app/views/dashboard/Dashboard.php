@@ -1,5 +1,16 @@
+<!-- 
+  TO DO LIST FOR THIS PAGE
+
+    - Display a list of tasks where revenue source is,
+    - Find something to put in Earnings Overview
+    - make the progress bars load up 
+    - error handeling now working and strucutred well for the project and task forms on dahsboard
+
+-->
+
 <?php if(isset($_SESSION['user_id'])): ?>
     <?php var_dump($data); ?>
+    <?php var_dump($_SESSION);?>
 
   <?php require APPROOT . '/views/inc/header.php'; ?>
 
@@ -51,11 +62,11 @@
                       <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Daily Task Completion</div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                          <div  class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $data["taskCompletion"];?>%</div>
                         </div>
                         <div class="col">
                           <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-info" role="progressbar" id="DailyCompletionProgressBar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
                       </div>
@@ -170,26 +181,29 @@
                   <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
                 </div>
                 <div class="card-body">
-                  <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Sales Tracking <span class="float-right">40%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Customer Database <span class="float-right">60%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Payout Details <span class="float-right">80%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Account Setup <span class="float-right">Complete!</span></h4>
-                  <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
+                  <?php if(count($data['projects']) == 0): ?>
+                    <h4 class="small font-weight-bold">No Projects have been created </h4>
+                  <?php else: ?>
+                    <?php foreach($data['projects'] as $project): ?>
+                      
+                      <h4 class="small font-weight-bold"><?php echo $project->Project_Name; ?> <span class="float-right"><?php echo $project->Project_Completion;?>%</span></h4>
+                      <div class="progress mb-4">
+                        <div 
+                          <?php if($project->Project_Completion >= 0 && $project->Project_Completion <= 20):?>
+                            class="progress-bar bg-danger" 
+                          <?php elseif($project->Project_Completion >= 21 && $project->Project_Completion <= 41):?>
+                            class="progress-bar bg-warning"
+                          <?php elseif($project->Project_Completion >= 42 && $project->Project_Completion <= 62):?>
+                            class="progress-bar"
+                          <?php elseif($project->Project_Completion >= 63 && $project->Project_Completion <= 83):?>
+                            class="progress-bar bg-info"
+                          <?php else: ?>
+                            class="progress-bar bg-success"
+                          <?php endif;?>
+                        role="progressbar" style="width: <?php echo $project->Project_Completion;?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    <?php endforeach;?>
+                  <?php endif;?>
                 </div>
               </div>
             </div>
@@ -207,7 +221,7 @@
                   <form action="<?php echo URLROOT;?>/dashboardController/newTask" method="post">
                     <div class="form-group">
                       <label for="nameInput">Task Name</label>
-                      <input type="text" class="form-control" name="nameInput" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name">
+                      <input type="text" class="form-control" name="nameInput" id="nameInput"  placeholder="Enter Name">
                     </div>
 
                     <div class="form-group">
@@ -251,11 +265,28 @@
               <!-- Approach -->
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Create Personal Project</h6>
                 </div>
                 <div class="card-body">
-                  <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce CSS bloat and poor page performance. Custom CSS classes are used to create custom components and custom utility classes.</p>
-                  <p class="mb-0">Before working with this theme, you should become familiar with the Bootstrap framework, especially the utility classes.</p>
+                  <form action="<?php echo URLROOT;?>/dashboardController/newProject" method="post"> 
+                    <div class="form-group">
+                      <label for="projectNameInput">Project Name</label>
+                      <input type="text" class="form-control" name="projectNameInput" id="projectNameInput"  placeholder="Project Name">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="projectTypeInput">Project Type</label>
+                      <input type="text" class="form-control" name="projectTypeInput" id="projectTypeInput"  placeholder="Project Type">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="projectDescriptionInput">Project Description</label>
+                      <textarea class="form-control" id="projectDescriptionInput" name="projectDescriptionInput" rows="5"></textarea>
+                    </div>
+
+                    <input id="formButton"  type="submit" value="Create" class="btn btn-primary" >
+
+                  </form>
                 </div>
               </div>
 
@@ -267,6 +298,46 @@
 
       </div>
       <!-- End of Main Content -->
+
+
+      <script>
+        //This section is called on the program load and loads the progress bar
+        // uses the completionPercentage as the width
+        function move(elem) {
+            
+            completionPercentage = <?php echo $data["taskCompletion"] ?>; 
+            var width = 0;
+            var id = setInterval(frame, 0.5);
+            function frame() {
+              
+                if(width < completionPercentage){
+                    width++; 
+                    elem.style.width = width + '%'; 
+
+                    if(width > 0 &&  width <= 20){
+                        elem.style.backgroundColor = "#e74a3b";
+                    }
+                    else if(width > 20 &&  width <= 40){
+                        elem.style.backgroundColor = "#f6c23e";
+                    }
+                    else if(width > 40 &&  width <= 60){
+                        elem.style.backgroundColor = "#4e73df";
+                    }
+                    else if(width > 60 &&  width <= 80){
+                        elem.style.backgroundColor = "#36b9cc";
+                    }
+                    else{
+                        elem.style.backgroundColor = "#1cc88a";
+                    }
+                }else{
+                    clearInterval(id);
+                }
+            }
+        }
+
+        move(document.getElementById("DailyCompletionProgressBar"));
+      
+      </script>
 
 
       <?php require APPROOT . '/views/inc/footer.php'; ?>
