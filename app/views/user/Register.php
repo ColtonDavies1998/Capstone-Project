@@ -64,7 +64,7 @@
                 <div >
 
                   <label class="checkboxLabel errorMsg" style="word-wrap:break-word"  for="buisnessUser">  
-                    <?php if(empty($data['buisness_user'])): ?> 
+                    <?php if(empty($data['buisness_User'])): ?> 
                       <input class="checkboxInput" type="checkbox" name="buisnessUser" value="Yes" /> Buisness user
                     <?php else: ?>
                       <input class="checkboxInput" type="checkbox" name="buisnessUser" value="Yes" checked/> Buisness user

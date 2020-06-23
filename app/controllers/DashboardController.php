@@ -5,6 +5,8 @@
     }
 
     public function dashboard(){
+      $_SESSION['current_page'] = 'Dashboard';
+      
       $data['dailyTasks'] = $this->userModel->getDailyTasks();
       $data['taskCount'] = $this->userModel->totalDailyTasks();
       $data['projects'] = $this->userModel->getProjects();

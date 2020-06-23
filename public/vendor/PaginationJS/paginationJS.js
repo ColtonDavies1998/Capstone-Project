@@ -1,6 +1,6 @@
 class Table{
     constructor(Data , parameterObject){
-
+         console.log(Data)
          //This is the data being fed to the table
         if(Array.isArray(Data) == true){
           this.data = Data;
@@ -39,6 +39,7 @@ class Table{
         this.pageEnd = 5; // this is where the loop will end on the array
         this.pageNumber = 1;
         this.maxItemsPerPage = 5; // this is the max number of items that will display per page
+        console.log(this.data);
         this.maxPages = Math.ceil(this.data.length / this.maxItemsPerPage); //displays the max number of pages
         this.searchResults = [];
         this.inSearchMode = false;
@@ -141,8 +142,9 @@ class Table{
 
         for(var i = 0; i < this.objectFields.length; i++){
             for(var j = 0; j < 10; j++ ){
-
+                
                 if(this.data[j].hasOwnProperty(objectFields[i]) == false){
+                  
                     return false;
                 }
             }

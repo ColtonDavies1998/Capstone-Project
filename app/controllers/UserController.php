@@ -6,6 +6,8 @@
         }
 
         public function register(){
+            $_SESSION['current_page'] = 'Register';
+
             //Check for POST
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 //Process form
@@ -107,6 +109,8 @@
         }
 
         public function login(){
+            $_SESSION['current_page'] = 'Login';
+
             //Check for POST
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 //Process form
@@ -176,11 +180,12 @@
         public function createUserSession($user){
             $_SESSION['user_id'] = $user->User_Id;
             $_SESSION['user_email'] = $user->Email;
-            $_SESSION['user_name'] = $user->User_First_Name . ' ' . $user->User_Last_Name;
-            if($user->Buisness_user = 1){
-                $_SESSION['user_account_type'] = true;
+            $_SESSION['user_name'] = $user->User_First_Name . ' ' . $user->User_Last_Name;            
+
+            if($user->Buisness_User == 1){
+                $_SESSION['buisness_user_account_type'] = true;
             }else{
-                $_SESSION['user_account_type'] = false;
+                $_SESSION['buisness_user_account_type'] = false;
             }
             redirect('DashboardController/dashboard');
         }
@@ -189,7 +194,7 @@
             unset($_SESSION['user_id']);
             unset($_SESSION['user_email']);
             unset($_SESSION['user_name']);
-            unset($_SESSION['user_account_type']);
+            unset($_SESSION['buisness_user_account_type']);
             session_destroy();
             redirect('userController/login');
         }

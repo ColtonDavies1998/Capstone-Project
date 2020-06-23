@@ -56,6 +56,12 @@
   <script src="<?php echo URLROOT; ?>/js/demo/chart-pie-demo.js"></script>
 
   <script src="<?php echo URLROOT; ?>/js/main.js"></script>
+  
+  <?php if($_SESSION['current_page'] == 'TaskHistory'):?>
+    <!--Only for task history module -->
+    <script defer src="<?php echo URLROOT; ?>/js/taskHistoryScript.js"></script>
+  <?php endif;?>
+  
 
 </body>
 

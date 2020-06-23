@@ -12,8 +12,8 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+      <li class="nav-item <?php echo ($_SESSION['current_page'] == 'Dashboard') ?'active': ''; ?> ">
+        <a class="nav-link" href="<?php echo URLROOT; ?>/DashboardController/dashboard">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -21,8 +21,8 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      <li class="nav-item">
-        <a class="nav-link" href="index.html">
+      <li class="nav-item <?php echo ($_SESSION['current_page'] == 'TaskHistory') ?'active': ''; ?>">
+        <a class="nav-link" href="<?php echo URLROOT; ?>/TaskHistoryController/taskHistory"> 
           <i class="fas fa-fw fa-table"></i>
           <span>Task History</span></a>
       </li>
@@ -46,13 +46,20 @@
       </li>
 
       <!-- Divider -->
-      <hr class="sidebar-divider">
+      
 
-      <li class="nav-item">
-        <a class="nav-link" href="index.html">
-          <i class="fas fa-user-friends"></i>
-          <span>Groups</span></a>
-      </li>
+      <?php if($_SESSION["buisness_user_account_type"] == true): ?>
+        <hr class="sidebar-divider">
+        
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">
+            <i class="fas fa-user-friends"></i>
+            <span>Groups</span>
+          </a>
+        </li>
+
+      <?php endif;?>
+      
 
       <!-- Divider -->
       <hr class="sidebar-divider">

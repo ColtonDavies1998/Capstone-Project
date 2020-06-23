@@ -42,7 +42,9 @@ class DashboardModel{
     }
 
     public function totalDailyTasks(){
-        $this->db->query('SELECT * FROM tasks WHERE Task_Start_Date = CURDATE()');
+        $this->db->query('SELECT * FROM tasks WHERE Task_Start_Date = CURDATE() && User_Id = :userId');
+
+        $this->db->bind(':userId', $_SESSION['user_id']);
 
         $this->db->resultSet();
 
@@ -53,7 +55,9 @@ class DashboardModel{
 
 
     public function totalDailyTasksCompleted(){
-        $this->db->query('SELECT * FROM tasks WHERE Task_Completed = 1');
+        $this->db->query('SELECT * FROM tasks WHERE Task_Completed = 1 && Task_Start_Date = CURDATE() &&  User_Id = :userId');
+
+        $this->db->bind(':userId', $_SESSION['user_id']);
 
         $this->db->resultSet();
 

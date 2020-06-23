@@ -9,7 +9,7 @@ class UserModel{
 
     //Register User
     public function register($data){
-        if($data['buisness_user'] == "Yes"){
+        if($data['buisness_User'] == "Yes"){
             //if the buisness user was checked then the user has a different account type
             $buisnessUser = 1;
         }else{
@@ -17,7 +17,7 @@ class UserModel{
         }
 
 
-        $this->db->query('INSERT INTO users (User_First_Name, User_Last_Name, Dashboard_Calendar_Display, Dashboard_Projects_Display, Password, Email, Buisness_user) 
+        $this->db->query('INSERT INTO users (User_First_Name, User_Last_Name, Dashboard_Calendar_Display, Dashboard_Projects_Display, Password, Email, Buisness_User) 
         VALUES(:firstName, :lastName, :dashboardCalendar, :dashboardProject, :password, :email, :buisnessUser)');
         //bind values
         $this->db->bind(':firstName', $data['first_name']);
