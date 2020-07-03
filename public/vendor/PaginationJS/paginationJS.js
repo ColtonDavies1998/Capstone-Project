@@ -1,6 +1,6 @@
 class Table{
     constructor(Data , parameterObject){
-         console.log(Data)
+         
          //This is the data being fed to the table
         if(Array.isArray(Data) == true){
           this.data = Data;
@@ -39,7 +39,6 @@ class Table{
         this.pageEnd = 5; // this is where the loop will end on the array
         this.pageNumber = 1;
         this.maxItemsPerPage = 5; // this is the max number of items that will display per page
-        console.log(this.data);
         this.maxPages = Math.ceil(this.data.length / this.maxItemsPerPage); //displays the max number of pages
         this.searchResults = [];
         this.inSearchMode = false;
@@ -753,17 +752,39 @@ class Table{
 
           //grabs all of the keys of the current object
           var keys = Object.keys(displayData[i]);
+
+          
             //This goes through a loop of all the object fields inputed
           for(var z = 0; z < this.objectFields.length; z++){
             //Then goes through a loop of the keys that have been pulled from the object
             for(var j = 0; j < keys.length; j++){
                 //if the objectfield matches the key then we build a td tag for the object property
                 if(this.objectFields[z] == keys[j]){
+                    
                     var cell = document.createElement("td");
-                    var textNode = document.createTextNode(displayData[i][keys[j]]);
-                    cell.setAttribute("class", "Table-Item");
+
+                    if(this.objectFields[z] == "Task_Completed"){
+                      
+                      if(displayData[i][keys[j]] == 1){
+                        
+                        var textNode = document.createTextNode("Completed");
+                        cell.setAttribute("class", "Table-Item");
+
+                      }else{
+                        
+                        var textNode = document.createTextNode("Incomplete");
+                        cell.setAttribute("class", "Table-Item");
+                      }
+                    }else{
+                      var textNode = document.createTextNode(displayData[i][keys[j]]);
+                      cell.setAttribute("class", "Table-Item");
+                      
+                    }
+
                     cell.appendChild(textNode);
                     row.appendChild(cell);
+
+                    
                 }
             }
           }

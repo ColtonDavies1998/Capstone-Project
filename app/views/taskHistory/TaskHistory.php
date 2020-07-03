@@ -54,15 +54,15 @@
       <?php require APPROOT . '/views/inc/footer.php'; ?>
 
       <script>
-            var tableHeads = ["Id", "Name", "Start Time", "Type", "Date","Priority", "Completed", "Edit", "Remove"];
-            var objectFields = ["Task_Id", "Task_Name","Task_Start_Time", "Task_End_Time" ,"Task_Start_Date", "Task_End_Date","Task_Completed"];
+            var tableHeads = ["Id", "Name", "Start Time", "End Time", "Start Date","End Date", "Task Type" , "Completed", "Edit", "Remove"];
+            var objectFields = ["Task_Id", "Task_Name","Task_Start_Time", "Task_End_Time" ,"Task_Start_Date", "Task_End_Date", "Task_Type","Task_Completed"];
             var sourceId = document.getElementById("table");
            
             
             $.ajax({url: "<?php echo URLROOT; ?>/TaskHistoryController/getUsersTasks", async: false, success: function(result){
-                console.log(JSON.parse(result));
                 
-                var table = new Table(JSON.parse(result), {
+                
+              var table = new Table(JSON.parse(result), {
               tableHeaders: tableHeads,
               tableId: sourceId,
               fields: objectFields,
@@ -89,6 +89,69 @@
                 
             }});
 
+
+            /*This function when called  sets the values of the inputs in the overlay, to the values
+            of the row that was clicked*/
+            function editTask(e) {
+
+              //console.log(e.target.parentElement.parentElement.firstChild.innerText);
+              
+              var http = new XMLHttpRequest();
+              var url = '<?php echo URLROOT; ?>/TaskHistoryController/getSingleTaskInfo';
+              var params = 'id=' + e.target.parentElement.parentElement.firstChild.innerText;
+              http.open('POST', url, true);
+
+              //Send the proper header information along with the request
+              http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+              http.onreadystatechange = function() {//Call a function when the state changes.
+                  if(http.readyState == 4 && http.status == 200) {
+                    
+                      var info = JSON.parse(http.responseText);
+
+                      document.getElementById("editTaskNameOverlay").style.display = "block";
+
+                      document.getElementById("taskNameEdit").value = info.Task_Name;  
+
+                      document.getElementById("taskId").value = info.Task_Id; 
+
+                      document.getElementById("startDateInput").value =  info.Task_Start_Date;
+
+                      document.getElementById("endDateInput").value =  info.Task_End_Date;
+
+                      document.getElementById("startTimeInput").value = info.Task_Start_Time;
+
+                      document.getElementById("endTimeInput").value = info.Task_End_Time;
+
+                      if(info.Task_Type == "Work"){
+                        document.getElementById("taskTypeInput").selectedIndex = "0";
+                      }else if(info.Task_Type == "Education"){
+                        document.getElementById("taskTypeInput").selectedIndex = "1";
+                      }else if(info.Task_Type == "Home"){
+                        document.getElementById("taskTypeInput").selectedIndex = "2";
+                      }else if(info.Task_Type == "Chores"){
+                        document.getElementById("taskTypeInput").selectedIndex = "3";
+                      }else{
+                        document.getElementById("taskTypeInput").selectedIndex = "4";
+                      }
+
+                     
+
+                      if(info.Task_Completed == 1){
+                          document.getElementById("CompletedRadio1").checked = true;
+                      }else{
+                          document.getElementById("CompletedRadio2").checked = true;
+                      }
+
+                  }
+              }
+              http.send(params);
+
+             
+
+
+              
+            }
             
           
           </script>

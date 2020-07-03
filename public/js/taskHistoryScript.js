@@ -50,7 +50,9 @@ function loadDeleteFunctions() {
 }
 
 //displays the delete task overlay
-function deleteTask() {
+function deleteTask(e) {
+  console.log(e.target.parentElement.parentElement.firstChild.innerText.toString());
+  document.getElementById("deleteValueId").value = e.target.parentElement.parentElement.firstChild.innerText.toString();
   document.getElementById("confirmationOverlay").style.display = "block";
 }
 
@@ -61,11 +63,13 @@ function cancelDeletion() {
 
 //This function is called when the cancel button is clicked on the edit overlay and it hides it
 function cancelEditTask(){
+  /*
   document.getElementById("taskNameEdit").classList.remove("is-invalid");
   document.getElementById("startTimeInput").classList.remove("is-invalid");
+  document.getElementById("endTimeInput").classList.remove("is-invalid");
   document.getElementById("taskTypeInput").classList.remove("is-invalid");
-  document.getElementById("taskDateInput").classList.remove("is-invalid");
-  document.getElementById("priorityInput").classList.remove("is-invalid");
+  document.getElementById("startDateInput").classList.remove("is-invalid");
+  document.getElementById("endDateInput").classList.remove("is-invalid"); */
   
   document.getElementById("editTaskNameOverlay").style.display = "none";
 }
@@ -87,26 +91,7 @@ function loadEditFunctions() {
   }
 }
 
-/*This function when called  sets the values of the inputs in the overlay, to the values
-of the row that was clicked*/
-function editTask(e) {
-  
-  document.getElementById("editTaskNameOverlay").style.display = "block";
 
-  document.getElementById("taskNameEdit").value = e.target.parentElement.parentElement.childNodes[1].innerText;  
-  
-  document.getElementById("taskDateInput").value = convertDate("month/dd/yyyy", e.target.parentElement.parentElement.childNodes[4].innerText);
-  
-  document.getElementById("priorityInput").value = e.target.parentElement.parentElement.childNodes[5].innerText;
-
-  document.getElementById("startTimeInput").value = convertTime(e.target.parentElement.parentElement.childNodes[2].innerText)
-
-  if(e.target.parentElement.parentElement.childNodes[6].innerText == "true"){
-      document.getElementById("CompletedRadio1").checked = true;
-  }else{
-      document.getElementById("CompletedRadio2").checked = true;
-  }
-}
 
 /*This function when called takes a parameter of the time from the row clicked. and then converts
 the time to something the input tag can read */
