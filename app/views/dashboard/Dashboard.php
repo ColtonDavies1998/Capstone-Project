@@ -1,16 +1,11 @@
 <!-- 
   TO DO LIST FOR THIS PAGE
-
-    - Display a list of tasks where revenue source is,
-    - Find something to put in Earnings Overview
-    - make the progress bars load up 
     - error handeling now working and strucutred well for the project and task forms on dahsboard
 
 -->
 
 <?php if(isset($_SESSION['user_id'])): ?>
-    <?php var_dump($data); ?>
-    <?php var_dump($_SESSION);?>
+ 
 
   <?php require APPROOT . '/views/inc/header.php'; ?>
 
@@ -146,7 +141,7 @@
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Mini Calendar</h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>

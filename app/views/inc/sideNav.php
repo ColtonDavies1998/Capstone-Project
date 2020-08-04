@@ -59,16 +59,6 @@
         </li>
 
       <?php endif;?>
-      
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <li class="nav-item">
-        <a class="nav-link" href="index.html">
-          <i class="fas fa-user-circle"></i>
-          <span>Account</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
