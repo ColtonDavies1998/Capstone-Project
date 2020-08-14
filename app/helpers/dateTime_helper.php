@@ -5,4 +5,14 @@
         return $monthName . " " . date("d") . ' ' . date("Y"); // Output: May
     }
 
+    function militaryToCivilianTime($time){
+        return date("g:i a", strtotime($time));
+    }
+
+    function civilianToMilitaryTime ($time){
+        return date("H:i", strtotime($time));
+    }
+
+    
+
 ?>

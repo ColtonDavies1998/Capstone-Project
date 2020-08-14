@@ -98,6 +98,21 @@ class DashboardModel{
         return $rows;
     }
 
+
+    public function changeIncompleteTask($id){
+        $this->db->query('UPDATE tasks SET Task_Completed = 1 WHERE Task_Id = :taskid && User_Id = :userId');
+
+        $this->db->bind(':taskid', $id);
+        $this->db->bind(':userId', $_SESSION['user_id']);
+
+        //call execute if you want to insert
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }
 
 ?>

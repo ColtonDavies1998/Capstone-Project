@@ -12,9 +12,7 @@
 -->
 
 <?php if(isset($_SESSION['user_id'])): ?>
-<?php //var_dump($data);?>
-<?php //echo $data[0]->User_Id;?>
-<?php var_dump($_SESSION['user_email']);?>
+
 
  <?php require APPROOT . '/views/inc/header.php'; ?>
 
@@ -235,34 +233,7 @@
                </div>
              </div>
 
-             <!-- Approach -->
-             <div class="card shadow mb-4">
-               <div class="card-header py-3">
-                 <h6 class="m-0 font-weight-bold text-primary">Create Personal Project</h6>
-               </div>
-               <div class="card-body">
-                 <form action="<?php echo URLROOT;?>/dashboardController/newProject" method="post"> 
-                   <div class="form-group">
-                     <label for="projectNameInput">Project Name</label>
-                     <input type="text" class="form-control" name="projectNameInput" id="projectNameInput"  placeholder="Project Name">
-                   </div>
-
-                   <div class="form-group">
-                     <label for="projectTypeInput">Project Type</label>
-                     <input type="text" class="form-control" name="projectTypeInput" id="projectTypeInput"  placeholder="Project Type">
-                   </div>
-
-                   <div class="form-group">
-                     <label for="projectDescriptionInput">Project Description</label>
-                     <textarea class="form-control" id="projectDescriptionInput" name="projectDescriptionInput" rows="5"></textarea>
-                   </div>
-
-                   <input id="formButton"  type="submit" value="Create" class="btn btn-primary" >
-
-                 </form>
-               </div>
-             </div>
-
+     
            </div>
          </div>
 

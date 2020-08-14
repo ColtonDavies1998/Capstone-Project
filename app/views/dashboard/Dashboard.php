@@ -57,7 +57,7 @@
                       <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Daily Task Completion</div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
-                          <div  class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $data["taskCompletion"];?>%</div>
+                          <div  class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo round($data["taskCompletion"]);?>%</div>
                         </div>
                         <div class="col">
                           <div class="progress progress-sm mr-2">
@@ -107,9 +107,10 @@
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
+                      <div class="dropdown-header">Task Display:</div>
+                      <a class="dropdown-item text-success" href="#">Incomplete Only</a>
+                      <a class="dropdown-item" href="#">Completed Only</a>
+                      <a class="dropdown-item" href="#">Both</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Something else here</a>
                     </div>
@@ -124,10 +125,11 @@
                         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start ">
                         <div class="d-flex w-100 justify-content-between">
                           <h5 class="mb-1"><?php echo $tasks->Task_Name; ?></h5>
-                          <small><?php echo $tasks->Task_Start_Time; ?></small> 
+                          <small><b>Start Time: </b><?php echo militaryToCivilianTime($tasks->Task_Start_Time); ?></small> 
+                          <small><b>End Time: </b><?php echo militaryToCivilianTime($tasks->Task_End_Time); ?></small>
                         </div>
                         <p class="mb-1">Add task description later</p>
-                        <p class="mb-1 btn btn-danger">Incomplete</p>
+                        <button class="mb-1 btn btn-danger singleTask taskId-<?php echo $tasks->Task_Id ?>">Incomplete</button>
                       </a>
                       <?php endif;?>
                     <?php endforeach;?>
@@ -295,6 +297,46 @@
 
 
       <script>
+        window.addEventListener('load', (event) => {
+          
+          tasks = document.getElementsByClassName('singleTask');
+          console.log(tasks);
+
+          for(let i = 0; i < tasks.length; i++){
+            
+            tasks[i].addEventListener("click", (event)=> {
+              for(let j = 0; j < event.target.classList.length; j++){
+                if(event.target.classList[j].includes("taskId")){
+                  var temp = event.target.classList[j].split("-");
+                  var taskId = temp[1];
+                  console.log(taskId)
+
+                  var http = new XMLHttpRequest();
+                  var url = '<?php echo URLROOT; ?>/DashboardController/taskCompleteChange';
+
+                  var params = 'id=' + taskId;
+                  http.open('POST', url, true);
+
+                  //Send the proper header information along with the request
+                  http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+                  http.onreadystatechange = function() {//Call a function when the state changes.
+                  }
+                  http.send(params);
+
+                  event.target.classList.remove("btn-danger");
+                  event.target.classList.add("btn-success");
+                  event.target.innerText = "Completed";
+
+                }
+              }
+            });
+          }
+
+        });
+
+
+
         //This section is called on the program load and loads the progress bar
         // uses the completionPercentage as the width
         function move(elem) {

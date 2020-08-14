@@ -134,4 +134,14 @@
       }
     }
 
+    function taskCompleteChange(){
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        
+        $id = $_POST['id'];
+
+        $this->userModel->changeIncompleteTask($id);
+
+      }
+    }
+
   }
