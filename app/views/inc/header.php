@@ -24,6 +24,10 @@
 
 </head>
 
+<?php if($_SESSION['current_page'] == 'Calendar'):?>
+  <script src="<?php echo URLROOT; ?>/vendor/CalendarJS/calendarJS.js"></script>
+<?php endif;?>
+
 <?php if($_SESSION['current_page'] == 'TaskHistory'):?>
   <script src="<?php echo URLROOT; ?>/js/data.js"></script>
 

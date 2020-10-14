@@ -39,8 +39,8 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      <li class="nav-item">
-        <a class="nav-link" href="index.html">
+      <li class="nav-item <?php echo ($_SESSION['current_page'] == 'Calendar') ?'active': ''; ?>">
+        <a class="nav-link" href="<?php echo URLROOT; ?>/CalendarController/calendar">
           <i class="fas fa-calendar-alt"></i>
           <span>Calendar</span></a>
       </li>

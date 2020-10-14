@@ -11,6 +11,7 @@
 
    <?php require APPROOT . '/views/inc/sideNav.php'; ?>
 
+
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -218,6 +219,9 @@
                     <div class="form-group">
                       <label for="nameInput">Task Name</label>
                       <input type="text" class="form-control" name="nameInput" id="nameInput"  placeholder="Enter Name">
+                      <?php if(isset($_SESSION['errorData']['task_name_error'])): ?>
+                        <span class="text-danger"> <?php echo $_SESSION['errorData']['task_name_error'] ?> </span>
+                      <?php endif; ?>
                     </div>
 
                     <div class="form-group">
@@ -229,26 +233,41 @@
                         <option value="Chores">Chores</option>
                         <option value="Other">Other</option>
                       </select>
+                      <?php if(isset($_SESSION['errorData']['task_type_error'])): ?>
+                        <span class="text-danger"> <?php echo $_SESSION['errorData']['task_type_error'] ?> </span>
+                      <?php endif; ?>
                     </div>
 
                     <div class="form-group">
                       <label for="startTimeInput">Start Time</label>
-                      <input type="time" class="form-control" name="startTimeInput" id="startTimeInput" >
+                      <input type="time" class="form-control" name="startTimeInput" id="startTimeInput" step="300">
+                      <?php if(isset($_SESSION['errorData']['task_start_time_error'])): ?>
+                        <span class="text-danger"> <?php echo $_SESSION['errorData']['task_start_time_error'] ?> </span>
+                      <?php endif; ?>
                     </div>
 
                     <div class="form-group">
                       <label for="endTimeInput">End Time</label>
-                      <input type="time" class="form-control" name="endTimeInput" id="endTimeInput"  >
+                      <input type="time" class="form-control" name="endTimeInput" id="endTimeInput" step="300" >
+                      <?php if(isset($_SESSION['errorData']['task_end_time_error'])): ?>
+                        <span class="text-danger"> <?php echo $_SESSION['errorData']['task_end_time_error'] ?> </span>
+                      <?php endif; ?>
                     </div>
 
                     <div class="form-group">
                       <label for="startDateInput">Start Date</label>
-                      <input type="date" class="form-control" name="startDateInput" id="startDateInput"  >
+                      <input type="date" class="form-control" name="startDateInput" id="startDateInput" >
+                      <?php if(isset($_SESSION['errorData']['task_start_date_error'])): ?>
+                        <span class="text-danger"> <?php echo $_SESSION['errorData']['task_start_date_error'] ?> </span>
+                      <?php endif; ?>
                     </div>
 
                     <div class="form-group">
                       <label for="endDateInput">End Date</label>
                       <input type="date" class="form-control" name="endDateInput" id="endDateInput"  >
+                      <?php if(isset($_SESSION['errorData']['task_end_date_error'])): ?>
+                        <span class="text-danger"> <?php echo $_SESSION['errorData']['task_end_date_error'] ?> </span>
+                      <?php endif; ?>
                     </div>
 
                     <input id="formButton"  type="submit" value="Create" class="btn btn-success" >
@@ -377,6 +396,8 @@
 
 
       <?php require APPROOT . '/views/inc/footer.php'; ?>
+
+      <?php unset($_SESSION["errorData"]) ?>
 
 <?php else: ?>
     <?php redirect('userController/login'); ?>
