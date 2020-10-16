@@ -24,7 +24,7 @@
 
 </head>
 
-<?php if($_SESSION['current_page'] == 'Calendar'):?>
+<?php if($_SESSION['current_page'] == 'Calendar' || $_SESSION['current_page'] == 'Dashboard'):?>
   <script src="<?php echo URLROOT; ?>/vendor/CalendarJS/calendarJS.js"></script>
 <?php endif;?>
 

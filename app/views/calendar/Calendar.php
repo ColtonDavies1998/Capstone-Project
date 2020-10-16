@@ -270,7 +270,7 @@
 
       <script>
 
-            var http = new XMLHttpRequest();
+              var http = new XMLHttpRequest();
               var url = '<?php echo URLROOT; ?>/CalendarController/getUsersTasks';
               http.open('POST', url, true);
 

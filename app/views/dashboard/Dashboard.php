@@ -1,8 +1,3 @@
-<!-- 
-  TO DO LIST FOR THIS PAGE
-    - error handeling now working and strucutred well for the project and task forms on dahsboard
-
--->
 
 <?php if(isset($_SESSION['user_id'])): ?>
  
@@ -11,9 +6,210 @@
 
    <?php require APPROOT . '/views/inc/sideNav.php'; ?>
 
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
+
+      <style>
+        .text-left {
+              text-align: left!important;
+          }
+
+          .text-center{
+              text-align: center;
+          }
+
+          #calendar td{
+              padding: 1.75rem!important;
+              position: relative;
+          }
+
+          .button-spacing{
+              margin-right: 5%;
+          }
+
+          .tableHeading-Spacing{
+              margin-top: 1%;
+              margin-bottom: 1%;
+          }
+
+          .cellNumber{
+              top: 0;
+              right: 10px;
+              position: absolute;
+          }
+
+          .buttonCategory-spacing{
+              margin-right: 100px;
+          }
+
+          th{
+              text-align: center!important;
+          }
+
+          td{
+              height: 110px;
+          }
+
+          .green-dash{
+              background-color: green;
+              width: 70%;
+              height: 18px;
+              font-size: 13px;
+              color: white;
+              position: absolute;
+          }
+
+          .hiddenDisplay{
+              display: none;
+          }
+
+          .timeHeaderSpacing{
+              width: 30%;
+          }
+
+          dl
+          {
+              width: 200px;
+              background: #fff;
+              border: 1px solid #000;
+          }
+
+          dt, dd
+          {
+              display: inline;
+          }     
+
+
+
+          /*Weekly Calender styles */
+          table.weeklyCalendar {
+              margin-bottom: 0;
+          }
+
+          table.weeklyCalendar > thead > tr > th {
+              text-align: center;
+          }
+
+          table.weeklyCalendar > tbody > tr > td {
+              height: 20px;
+          }
+
+          table.weeklyCalendar > tbody > tr > td > div {
+              padding: 8px;
+              height: 40px;
+              overflow: hidden;
+              display: inline-block;
+              vertical-align: middle;
+              float: left;
+          }
+
+          table.weeklyCalendar > tbody > tr > td.has-events {
+              color: white;
+              cursor: pointer;
+              padding: 0;
+              border-radius: 4px;
+          }
+
+          table.weeklyCalendar > tbody > tr > td.has-events > div {
+              background-color: #08C;
+              border-left: 1px solid white;
+          }
+
+          table.weeklyCalendar > tbody > tr > td.has-events > div:first-child {
+              border-left: 0;
+              margin-left: 1px;
+          }
+
+          table.weeklyCalendar > tbody > tr > td.has-events > div.practice {
+              opacity: 0.7;
+          }
+          table.weeklyCalendar > tbody > tr > td.conflicts > div > span.title {
+              color: red;
+          }
+          table.weeklyCalendar > tbody > tr > td.max-conflicts > div {
+              background-color: red;
+              color: white;
+          }
+
+          table.weeklyCalendar > tbody > tr > td.has-events > div > span {
+              display: block;
+              text-align: center;
+          }
+          table.weeklyCalendar > tbody > tr > td.has-events > div > span a {
+              color: white;
+          }
+
+          table.weeklyCalendar > tbody > tr > td.has-events > div > span.title {
+              font-weight: bold;
+          }
+
+          table.table-borderless > thead > tr > th, table.table-borderless > tbody > tr > td {
+              border: 0;
+          }
+
+          .table tbody tr.hover td, .table tbody tr.hover th {
+              background-color: whiteSmoke;
+          }
+
+          /* Day Calendar*/
+          table.weeklyCalendar {
+              margin-bottom: 0;
+          }
+
+          table.dailyCalendar > thead > tr > th {
+              text-align: center;
+          }
+
+          table.dailyCalendar > tbody > tr > td {
+              height: 20px;
+          }
+
+          table.dailyCalendar > tbody > tr > td > div {
+              padding: 8px;
+              height: 40px;
+              overflow: hidden;
+              display: inline-block;
+              vertical-align: middle;
+              float: left;
+          }
+
+          table.dailyCalendar > tbody > tr > td.has-events {
+              color: white;
+              cursor: pointer;
+              padding: 0;
+              border-radius: 4px;
+          }
+
+          table.dailyCalendar > tbody > tr > td.has-events > div {
+              background-color: #08C;
+              border-left: 1px solid white;
+          }
+
+          table.dailyCalendar > tbody > tr > td.has-events > div:first-child {
+              border-left: 0;
+              margin-left: 1px;
+          }
+
+          table.dailyCalendar > tbody > tr > td.has-events > div.practice {
+              opacity: 0.7;
+          }
+          table.dailyCalendar > tbody > tr > td.conflicts > div > span.title {
+              color: red;
+          }
+          table.dailyCalendar > tbody > tr > td.max-conflicts > div {
+              background-color: red;
+              color: white;
+          }
+
+          table.dailyCalendar > tbody > tr > td.has-events > div > span {
+              display: block;
+              text-align: center;
+          }
+
+          .daySized{
+              width: 30%!important;
+          }
+      </style>
 
       <!-- Main Content -->
       <div id="content">
@@ -97,8 +293,8 @@
 
           <div class="row">
 
-            <!-- Area Chart -->
-            <div class="col-xl-8 col-lg-7">
+          
+            <div class="col-xl-7 col-lg-6">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -118,7 +314,7 @@
                   </div>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body" style="overflow-y:scroll;height: 300px; ">
+                <div class="card-body" style="overflow-y:scroll;height: 450px; ">
                   <div class="list-group" >
 
                     <?php foreach($data['dailyTasks'] as $tasks):?>
@@ -139,71 +335,79 @@
               </div>
             </div>
 
-            <!-- Pie Chart -->
-            <div class="col-xl-4 col-lg-5">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Mini Calendar</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
+            <?php if($_SESSION['Dashboard_Calendar_Display']->Dashboard_Calendar_Display == 1):?>
+              <div class="col-xl-5 col-lg-6">
+                <div class="card shadow mb-4">
+                  <!-- Card Header - Dropdown -->
+                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Mini Calendar</h6>
+                    <div class="dropdown no-arrow">
+                      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-header">Dropdown Header:</div>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                      </div>
                     </div>
                   </div>
-                </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                  <ul></ul>
+                  <div class="col-sm-3 col-md-4 col-lg-2">
+                    <div class="row" id="nxtPrevButtons"></div>
+                  </div>
+                  <table class="table table-bordered table-responsive-sm" id="calendar"></table>
                 </div>
               </div>
             </div>
+            <?php endif;?>
+            
           </div>
 
           <!-- Content Row -->
           <div class="row">
 
-            <!-- Content Column -->
-            <div class="col-lg-6 mb-4">
-
-              <!-- Project Card Example -->
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
-                </div>
-                <div class="card-body">
-                  <?php if(count($data['projects']) == 0): ?>
-                    <h4 class="small font-weight-bold">No Projects have been created </h4>
-                  <?php else: ?>
-                    <?php foreach($data['projects'] as $project): ?>
-                      
-                      <h4 class="small font-weight-bold"><?php echo $project->Project_Name; ?> <span class="float-right"><?php echo $project->Project_Completion;?>%</span></h4>
-                      <div class="progress mb-4">
-                        <div 
-                          <?php if($project->Project_Completion >= 0 && $project->Project_Completion <= 20):?>
-                            class="progress-bar bg-danger" 
-                          <?php elseif($project->Project_Completion >= 21 && $project->Project_Completion <= 41):?>
-                            class="progress-bar bg-warning"
-                          <?php elseif($project->Project_Completion >= 42 && $project->Project_Completion <= 62):?>
-                            class="progress-bar"
-                          <?php elseif($project->Project_Completion >= 63 && $project->Project_Completion <= 83):?>
-                            class="progress-bar bg-info"
-                          <?php else: ?>
-                            class="progress-bar bg-success"
-                          <?php endif;?>
-                        role="progressbar" style="width: <?php echo $project->Project_Completion;?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    <?php endforeach;?>
-                  <?php endif;?>
+            <?php if($_SESSION['Dashboard_Projects_Display']->Dashboard_Projects_Display == 1):?>
+              <!-- Content Column -->
+              <div class="col-lg-6 mb-4">
+                <!-- Project Card Example -->
+                <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                  </div>
+                  <div class="card-body">
+                    <?php if(count($data['projects']) == 0): ?>
+                      <h4 class="small font-weight-bold">No Projects have been created </h4>
+                    <?php else: ?>
+                      <?php foreach($data['projects'] as $project): ?>
+                        
+                        <h4 class="small font-weight-bold"><?php echo $project->Project_Name; ?> <span class="float-right"><?php echo $project->Project_Completion;?>%</span></h4>
+                        <div class="progress mb-4">
+                          <div 
+                            <?php if($project->Project_Completion >= 0 && $project->Project_Completion <= 20):?>
+                              class="progress-bar bg-danger" 
+                            <?php elseif($project->Project_Completion >= 21 && $project->Project_Completion <= 41):?>
+                              class="progress-bar bg-warning"
+                            <?php elseif($project->Project_Completion >= 42 && $project->Project_Completion <= 62):?>
+                              class="progress-bar"
+                            <?php elseif($project->Project_Completion >= 63 && $project->Project_Completion <= 83):?>
+                              class="progress-bar bg-info"
+                            <?php else: ?>
+                              class="progress-bar bg-success"
+                            <?php endif;?>
+                          role="progressbar" style="width: <?php echo $project->Project_Completion;?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                      <?php endforeach;?>
+                    <?php endif;?>
+                  </div>
                 </div>
               </div>
-            </div>
+            <?php endif;?>
+
+            
 
             <div class="col-lg-6 mb-4">
 
@@ -317,6 +521,44 @@
 
       <script>
         window.addEventListener('load', (event) => {
+
+          var http = new XMLHttpRequest();
+          var url = '<?php echo URLROOT; ?>/CalendarController/getUsersTasks';
+          http.open('POST', url, true);
+
+          //Send the proper header information along with the request
+          http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+          http.onreadystatechange = function() {//Call a function when the state changes.
+          if(http.readyState == 4 && http.status == 200) { 
+            var data = JSON.parse(http.responseText);
+
+            var calendar = new Calendar(data,{
+                      tables: {
+                          day: false,
+                          week: false,
+                          month: true
+                      },
+                      nextPrevButtons:false,
+                      jumpTo:false,
+                      legend:false,
+                      tableButtons:{
+                        dayBtn: false,
+                        weekBtn: false,
+                        monthBtn: false
+                      }
+                    });
+
+                    calendar.displayCalendar(); 
+                     
+
+
+                  }
+              }
+              http.send();
+
+
+
           
           tasks = document.getElementsByClassName('singleTask');
           console.log(tasks);
@@ -397,7 +639,9 @@
 
       <?php require APPROOT . '/views/inc/footer.php'; ?>
 
-      <?php unset($_SESSION["errorData"]) ?>
+      <?php 
+      unset($_SESSION["errorData"]) 
+      ?>
 
 <?php else: ?>
     <?php redirect('userController/login'); ?>

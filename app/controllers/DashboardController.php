@@ -6,10 +6,13 @@
 
     public function dashboard(){
       $_SESSION['current_page'] = 'Dashboard';
+      $_SESSION['Dashboard_Calendar_Display'] = $this->userModel->Dashboard_Calendar_Display();
+      $_SESSION['Dashboard_Projects_Display'] = $this->userModel->Dashboard_Projects_Display();
       
       $data['dailyTasks'] = $this->userModel->getDailyTasks();
       $data['taskCount'] = $this->userModel->totalDailyTasks();
       $data['projects'] = $this->userModel->getProjects();
+      
 
       $numberOfCompleted = $this->userModel->totalDailyTasksCompleted();
 

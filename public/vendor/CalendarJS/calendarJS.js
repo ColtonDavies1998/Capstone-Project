@@ -55,31 +55,43 @@ class Calendar{
             this.createJumpToItem();
         }
 
+
         /*checks if the user wants the day table displayed, if yes and the user wants the week and or
           month table displayed as well, then the day table will be created but hidden at the start */
-        if(this.allowDayTable == true && this.allowWeekTable == true || this.allowMonthTable == true){
+
+
+        if(this.allowDayTable == true && this.allowWeekTable == true || this.allowDayTable == true && this.allowMonthTable == true){
+            
             this.createDayCalendar(this.currentDay);
             document.getElementById("dayCalendar").classList.add("hiddenDisplay");
         }
+
+
+
         else if(this.allowDayTable == true && this.allowWeekTable == false || this.allowMonthTable == false){
+            
             this.createDayCalendar(this.currentDay);
         }
 
         /*checks if the user wants the week table displayed, if yes and the user wants the month table
           displayed as well, then the week table will be created but hidden at the start */
         if(this.allowWeekTable == true &&  this.allowMonthTable == true){
+            console.log("in")
             this.createWeeklyTable();
             document.getElementById("weekCalendar").classList.add("hiddenDisplay");
         }
         else if(this.allowWeekTable == true && this.allowMonthTable == false){
+            console.log("in")
             this.createWeeklyTable();
         }
         //This if checks if the user wants to display the month table
         if(this.allowMonthTable == true){
+            
             this.createMonthCalendar(this.currentMonth, this.currentYear);
         }
         //This checks if the user wants to display the next and previous buttons
         if(this.allowNextPrevButtons == true){
+  
             this.createNextPrevBtn();
         }
 
@@ -643,12 +655,15 @@ class Calendar{
   
 
         // filing data about month and in the page via DOM.
-        this.monthAndYear.innerHTML = this.months[month] + " " + year;
+        if(this.allowNextPrevButtons == true){
+            this.monthAndYear.innerHTML = this.months[month] + " " + year;
 
-        this.selectYear = document.getElementById("year");
-        this.selectMonth = document.getElementById("month");
-        this.selectYear.value = year;
-        this.selectMonth.value = month; 
+            this.selectYear = document.getElementById("year");
+            this.selectMonth = document.getElementById("month");
+            this.selectYear.value = year;
+            this.selectMonth.value = month; 
+        }
+
 
         // creating all cells
         let date = 1;

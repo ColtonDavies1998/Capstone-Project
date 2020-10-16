@@ -66,6 +66,22 @@ class DashboardModel{
         return $row;
     }
 
+    public function Dashboard_Calendar_Display(){
+        $this->db->query('SELECT Dashboard_Calendar_Display  FROM users WHERE User_Id = :userId');
+
+        $this->db->bind(':userId', $_SESSION['user_id']);
+
+        return $this->db->single();
+    }
+
+    public function Dashboard_Projects_Display(){
+        $this->db->query('SELECT Dashboard_Projects_Display  FROM users WHERE User_Id = :userId');
+
+        $this->db->bind(':userId', $_SESSION['user_id']);
+
+        return $this->db->single();
+    }
+
     public function createNewProject($data){
 
         $this->db->query('INSERT INTO projects (Project_Name, User_Id, Group_Id, Project_Type, Project_Description, Project_Completion) 
