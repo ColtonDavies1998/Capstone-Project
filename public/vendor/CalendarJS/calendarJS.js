@@ -223,14 +223,32 @@ class Calendar{
         var tempSingleDay = this.currentMonth + 1 + "/" + this.currentDay + "/" + this.currentYear;
         var tableBody = table.childNodes[1];
 
+        var taskForToday = [];
+        let taskCounter = 0;
+
+        for(let z = 0; z < tempTaskArray.length; z++){
+
+            var tempDateSplit = tempTaskArray[z].Task_Start_Date.toString().split("-");
+            var taskNumberDate = tempDateSplit[1] + "/" + tempDateSplit[2] + "/" + tempDateSplit[0];
+
+            if(taskNumberDate == tempSingleDay){
+ 
+                taskForToday[taskCounter] = tempTaskArray[z];
+                taskCounter++;
+            }
+        }
+
         for(var i = 0; i < tableBody.childNodes.length; i++){
             
-            for(var j = 0; j < tempTaskArray.length; j++){ 
+            for(var j = 0; j < taskForToday.length; j++){ 
                 
-                var tempDateSplit = tempTaskArray[j].Task_Start_Date.toString().split("-");
+                var tempDateSplit = taskForToday[j].Task_Start_Date.toString().split("-");
                 var taskNumberDate = tempDateSplit[1] + "/" + tempDateSplit[2] + "/" + tempDateSplit[0];
-                if(taskNumberDate == tempSingleDay){
-                    if(tempTaskArray[j].Task_Start_Time == tableBody.childNodes[i].childNodes[0].innerText){
+
+
+                let convertStartTime = this.convertMilitaryToCivilianTime(taskForToday[j].Task_Start_Time.toString());
+
+                    if(convertStartTime == tableBody.childNodes[i].childNodes[0].innerText){
                         
                         var div = document.createElement("div");
                         div.classList.add("row-fluid");
@@ -240,12 +258,12 @@ class Calendar{
 
                         var divSpan = document.createElement("span");
                         divSpan.classList.add("title");
-                        divSpan.innerText = tempTaskArray[j].Task_Name;
+                        divSpan.innerText = taskForToday[j].Task_Name;
             
                         div.appendChild(divSpan);
 
                         var timeSpan = document.createElement("span");
-                        timeSpan.innerText = tempTaskArray[j].Task_Start_Time + "-" + tempTaskArray[j].Task_End_Time;
+                        timeSpan.innerText = convertStartTime + "-" + this.convertMilitaryToCivilianTime(taskForToday[j].Task_End_Time.toString()); 
 
                         div.appendChild(timeSpan);
 
@@ -253,7 +271,7 @@ class Calendar{
                         var colCounter = 0;
 
                         for(var z = 0; z < tableBody.childNodes.length; z++){
-                            if(tableBody.childNodes[incrementor].childNodes[0].innerText == tempTaskArray[j].Task_Start_Time){
+                            if(tableBody.childNodes[incrementor].childNodes[0].innerText == convertStartTime){
                                 break;
                             }else{
                                 incrementor++;
@@ -263,7 +281,7 @@ class Calendar{
                         var startMarker = incrementor;
 
                         for(var z = incrementor; z < tableBody.childNodes.length; z++){
-                            if(tableBody.childNodes[incrementor].childNodes[0].innerText == tempTaskArray[j].Task_End_Time){
+                            if(tableBody.childNodes[incrementor].childNodes[0].innerText == this.convertMilitaryToCivilianTime(taskForToday[j].Task_End_Time.toString())){
                                 break;
                             }else{
                                 if(z != startMarker){
@@ -278,7 +296,7 @@ class Calendar{
                         tableBody.childNodes[startMarker].childNodes[1].classList.add("has-events");
                         tableBody.childNodes[startMarker].childNodes[1].rowSpan = colCounter;
                     }
-                }
+                
             }
         }
     }
@@ -330,47 +348,31 @@ class Calendar{
 
         //========================Task creation display============================
         var tempTaskArray = this.dataSet.slice(0);
-        
+
         var tableBody = this.weeklyTable.childNodes[1];
 
         var foundMatch = false;
-          
+
         for(var i = 0; i < tableBody.childNodes.length; i++){
-            
             for(var j = 0; j < tempTaskArray.length; j++){ 
-                var tempTaskTime = this.convertMilitaryToCivilianTime(tempTaskArray[j].Task_Start_Time)
-                tempTaskTime = tempTaskTime.toString().split(":");
 
-                let tempTaskHour = tempTaskTime[0];
+                //Since the time coming from the database has seconds at the end we have to split it by the : character
+                let tempStartTimeSplit = tempTaskArray[j].Task_Start_Time.split(":")
+                //then rejoin the hours and minutes together so its the same format as before minus the seconda
+                let correctStartTime = tempStartTimeSplit[0] + ":" + tempStartTimeSplit[1]; 
+                //Converts the military time to civilian time, this function does not accept seconds for time
+                correctStartTime = this.convertMilitaryToCivilianTime(correctStartTime);
+                //This if checks the converted start time with the time listed on the table
+                if(correctStartTime == tableBody.childNodes[i].childNodes[0].innerText){
+                    //same issue as the start time, the time has seconds so we split
+                    let tempEndTimeSplit = tempTaskArray[j].Task_End_Time.split(":");
+                    //Put the strong back together
+                    let correctEndTime = tempEndTimeSplit[0] + ":" + tempEndTimeSplit[1]; 
+                    //Convert the milatry time to civilian time
+                    correctEndTime = this.convertMilitaryToCivilianTime(correctEndTime);
 
-                tempTaskTime = tempTaskTime[1].toString().split(" ");
-
-                let tempTaskMinute = tempTaskTime[0];
-
-                tempTaskTime = tempTaskTime[1].split(".")
-                
-                let tempTaskAmPm = tempTaskTime[0] + tempTaskTime[1];
-
-                var tempTablePosition = tableBody.childNodes[i].childNodes[0].innerText.toString().split(":");
-
-                var tempTableHour = tempTablePosition[0];
-
-                var tempTableMinutes = tempTablePosition[1];
-                tempTableMinutes = tempTableMinutes.split(" ");
-                
-                var tempTableAmOrPm = tempTableMinutes[1];
-                tempTableMinutes = Number(tempTableMinutes[0]);
-
-                if(tempTaskHour == tempTableHour && 
-                    tempTaskMinute == tempTableMinutes || tempTaskMinute  ){
-
-                }
-
-                if(tempTaskArray[j].Task_Start_Time == tableBody.childNodes[i].childNodes[0].innerText){
-                    
                     var tempSplitDate = tempTaskArray[j].Task_Start_Date.toString().split("-");
                     var taskNumberDate = tempSplitDate[1] + "/" + tempSplitDate[2] + "/" + tempSplitDate[0];
-                    console.log(taskNumberDate)
                     for(var z = 0; z < this.theCurrentWeek.length; z++){
 
                         if(taskNumberDate == this.theCurrentWeek[z]){
@@ -395,7 +397,7 @@ class Calendar{
                         div.appendChild(divSpan);
 
                         var timespan = document.createElement("span");
-                        timespan.innerText = tempTaskArray[j].Task_Start_Time + " - " + tempTaskArray[j].Task_End_Time;
+                        timespan.innerText = correctStartTime + " - " + correctEndTime;
 
                         div.appendChild(timespan);
 
@@ -404,7 +406,7 @@ class Calendar{
 
 
                         for(var z = 0; z < tableBody.childNodes.length; z++){
-                            if(tableBody.childNodes[incrementor].childNodes[0].innerText == tempTaskArray[j].Task_Start_Time){
+                            if(tableBody.childNodes[incrementor].childNodes[0].innerText == correctStartTime){
                                 break;
                             }else{
                                 incrementor++;
@@ -414,7 +416,7 @@ class Calendar{
                         var startMarker = incrementor;
                     
                         for(var z = incrementor; z < tableBody.childNodes.length; z++){
-                            if(tableBody.childNodes[incrementor].childNodes[0].innerText == tempTaskArray[j].Task_End_Time){
+                            if(tableBody.childNodes[incrementor].childNodes[0].innerText == correctEndTime){
                                 break;
                             }else{
                                 if(z != startMarker){
@@ -435,6 +437,7 @@ class Calendar{
                 }
             }
         } 
+        
     }
 
     monthSingleDayClick(e){
@@ -1177,7 +1180,7 @@ class Calendar{
         }
 
         timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
-        timeValue += (hours >= 12) ? " P.M." : " A.M.";  // get AM/PM
+        timeValue += (hours >= 12) ? " PM" : " AM";  // get AM/PM
 
         return timeValue;
 

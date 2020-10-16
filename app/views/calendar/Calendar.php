@@ -281,7 +281,7 @@
                   if(http.readyState == 4 && http.status == 200) {
                     
                     var data = JSON.parse(http.responseText);
-                    console.log(data)
+      
 
                     var calendar = new Calendar(data,{
                       tables: {
