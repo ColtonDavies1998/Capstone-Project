@@ -30,8 +30,8 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      <li class="nav-item">
-        <a class="nav-link" href="index.html">
+      <li class="nav-item <?php echo ($_SESSION['current_page'] == 'MultiplePages') ?'active': ''; ?>">
+        <a class="nav-link" href="<?php echo URLROOT; ?>/MultipleProjectsController/multipleProjects">
           <i class="fas fa-fw fa-folder"></i>
           <span>Projects</span></a>
       </li>

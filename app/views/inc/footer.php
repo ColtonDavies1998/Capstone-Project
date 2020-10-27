@@ -62,6 +62,9 @@
     <script defer src="<?php echo URLROOT; ?>/js/taskHistoryScript.js"></script>
   <?php endif;?>
 
+  <?php if($_SESSION['current_page'] == 'MultipleProjects'):?>
+    <script src="<?php echo URLROOT; ?>/js/multipleProjectsScript.js"></script>
+  <?php endif;?>
 
   
 

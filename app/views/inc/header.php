@@ -20,12 +20,14 @@
   <!-- Custom styles for this template-->
   <link href="<?php echo URLROOT; ?>/css/sb-admin-2.css" rel="stylesheet">
 
-
-
 </head>
 
 <?php if($_SESSION['current_page'] == 'Calendar' || $_SESSION['current_page'] == 'Dashboard'):?>
   <script src="<?php echo URLROOT; ?>/vendor/CalendarJS/calendarJS.js"></script>
+<?php endif;?>
+
+<?php if($_SESSION['current_page'] == 'MultipleProjects'):?>
+  <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/multipleProjectsStyle.css">
 <?php endif;?>
 
 <?php if($_SESSION['current_page'] == 'TaskHistory'):?>
@@ -101,6 +103,86 @@
 </div>
 <?php endif;?>
 
+<?php if($_SESSION['current_page'] == 'MultipleProjects'):?>
+
+  <div id="overlay">
+    <div id="overlayBlock">
+      <h1>Add Project</h1>
+      <form action="<?php echo URLROOT;?>/MultipleProjectsController/createProject" method="post">
+        <div class="form-group">
+          <label for="ProjectNameInput">Project Name</label>
+          <input type="text" class="form-control" name="ProjectNameInput" id="ProjectNameInput" >
+        </div>
+        <div class="form-group">
+          <label for="ProjectTypeInput">Project Type</label>
+          <input type="text" class="form-control" name="ProjectTypeInput" id="ProjectTypeInput" >
+        </div>
+        <div class="form-group">
+          <label for="ProjectImageInput">Project Image</label>
+          <input type="file" class="form-control-file" name="ProjectImageInput" id="ProjectImageInput">
+        </div>
+        <div class="form-group">
+          <label for="ProjectDescription">Description</label>
+          <textarea class="form-control" name="ProjectDescription" id="ProjectDescription" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary" id="projectSubmitBtn" value="Submit">
+          <a class="btn btn-danger" style="color:white;" id="cancelOverlayBtn">Cancel</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+
+  <div id="confirmationOverlay">
+      <div id="confirmationOverlayBlock">
+        <h5>Are you sure you want to delete this item? All files inside the project will be deleted as well.</h5>
+        <form action="<?php echo URLROOT;?>/MultipleProjectsController/deleteProject" method="post">
+          <div class="form-group">
+            <input type="hidden" id="deleteId" name="deleteId" >
+            <input type="submit" class="btn btn-danger" value="Delete">
+            <a class="btn btn-primary" style="color:white;" id="cancelDelete">Cancel</a>
+          </div>
+        </form>
+      </div>
+  </div>
+
+
+  <div id="editNameOverlay">
+    <div id="editOverlayBlock">
+      <h5>Edit Project Name</h5>
+      
+        <form action="<?php echo URLROOT;?>/MultipleProjectsController/editProject" method="post">
+          <div class="form-group">
+            <input type="hidden" id="projectEditId" name="projectEditId">
+            <label for="ProjectNameInput">Project Name</label>
+            <input type="text" class="form-control" style="margin-bottom: 5px;" name="ProjectNameEdit" id="ProjectNameEdit" >
+          </div>
+          <div class="form-group">
+            <label for="ProjectTypeInput">Project Type</label>
+            <input type="text" class="form-control" name="ProjectTypeEdit" id="ProjectTypeEdit" >
+          </div>
+          <div class="form-group">
+            <label for="ProjectImageInput">Project Image</label>
+            <p>Current Project Image: <span id="currentProjectImg"></span></p>
+            <input type="file" class="form-control-file" name="ProjectImageEdit" id="ProjectImageEdit">
+          </div>
+          <div class="form-group">
+            <label for="ProjectDescription">Description</label>
+            <textarea class="form-control" name="ProjectDescriptionEdit" id="ProjectDescriptionEdit" rows="5"></textarea>
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Submit">
+            <a class="btn btn-danger" style="color:white;" id="cancelEdit"> Cancel </a>
+          </div>
+        </form>
+    
+      
+    </div>
+  </div>
+
+<?php endif;?>
 
 <body id="page-top">
   <!-- Page Wrapper -->
