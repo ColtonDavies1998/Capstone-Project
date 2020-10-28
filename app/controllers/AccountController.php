@@ -7,7 +7,18 @@
     public function accountSetting(){
         $_SESSION['current_page'] = 'Account';
 
-        $data= $this->accountModel->getAccountInfo();
+        $AccountInfo= $this->accountModel->getAccountInfo();
+
+        
+
+        if($AccountInfo[0]->Buisness_User == 1){
+          $_SESSION['buisness_user_account_type'] = true;
+        }else{
+          $_SESSION['buisness_user_account_type'] = false;
+        }
+
+        $data["accountInfo"] = $AccountInfo[0];
+        $data["groupsInfo"] = $this->accountModel->getGroups();
 
         $this->view('account/AccountSettings', $data);
     }
@@ -151,6 +162,7 @@
        if(empty($data['first_name_error']) && empty($data['last_name_error']) && empty($data['email_error'])){
           
           if($this->accountModel->changeInfo($data)){
+            
             redirect('accountController/accountSetting');
           }else{
             die('Something went Wrong');

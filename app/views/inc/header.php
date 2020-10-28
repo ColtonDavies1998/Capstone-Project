@@ -27,7 +27,11 @@
 <?php endif;?>
 
 <?php if($_SESSION['current_page'] == 'MultipleProjects'):?>
-  <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/multipleProjectsStyle.css">
+  <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/multipleProjectStyle.css">
+<?php endif;?>
+
+<?php if($_SESSION['current_page'] == 'Groups'):?>
+  <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/groupsStyle.css">
 <?php endif;?>
 
 <?php if($_SESSION['current_page'] == 'TaskHistory'):?>
@@ -183,6 +187,70 @@
   </div>
 
 <?php endif;?>
+
+<?php if($_SESSION['current_page'] == 'Groups'): ?>
+
+  <div id="overlay">
+    <div id="overlayBlock">
+      <h1>Create Group</h1>
+      <form action="<?php echo URLROOT;?>/GroupsController/createGroup" method="post">
+        <div class="form-group">
+          <label for="ProjectNameInput">Group Name</label>
+          <input type="text" class="form-control" name="GroupNameInput" id="GroupNameInput" >
+        </div>
+        <div class="form-group">
+          <label for="ProjectDescription">Group Description</label>
+          <textarea class="form-control" name="GroupDescription" id="GroupDescription" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary" id="projectSubmitBtn" value="Submit">
+          <a class="btn btn-danger" style="color:white;" id="cancelOverlayBtn">Cancel</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+
+  <div id="confirmationOverlay">
+      <div id="confirmationOverlayBlock">
+        <h5>Are you sure you want to delete this item? All files inside the Group will be deleted as well.</h5>
+        <form action="<?php echo URLROOT;?>/GroupsController/deleteGroup" method="post">
+          <div class="form-group">
+            <input type="hidden" id="deleteGroupId" name="deleteGroupId">
+            <input type="submit" class="btn btn-danger" value="Delete">
+            <a class="btn btn-primary" style="color:white;" id="cancelDelete">Cancel</a>
+          </div>
+        </form>
+      </div>
+  </div>
+
+
+  <div id="editNameOverlay">
+    <div id="editOverlayBlock">
+      <h5>Edit Group Name</h5>
+      
+        <form action="<?php echo URLROOT;?>/GroupsController/editGroup" method="post">
+          <div class="form-group">
+            <input type="hidden" id="groupEditId" name="groupEditId">
+            <label for="GroupNameEdit">Group Name</label>
+            <input type="text" class="form-control" style="margin-bottom: 5px;" name="GroupNameEdit" id="GroupNameEdit" >
+          </div>
+          <div class="form-group">
+            <label for="GroupDescriptionEdit">Group Description</label>
+            <textarea class="form-control" name="GroupDescriptionEdit" id="GroupDescriptionEdit" rows="5"></textarea>
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Submit">
+            <a class="btn btn-danger" style="color:white;" id="cancelEdit"> Cancel </a>
+          </div>
+        </form>
+    
+      
+    </div>
+  </div>
+
+<?php endif; ?>
 
 <body id="page-top">
   <!-- Page Wrapper -->

@@ -8,7 +8,8 @@
       display groups
     - display section for statistics
     - error handeling now working and strucutred well for the project and task forms on dahsboard
-
+    - Fix the section for displaying groups, if there are groups they will be displayed as projects so that has to change
+    
 -->
 
 <?php if(isset($_SESSION['user_id'])): ?>
@@ -70,7 +71,7 @@
 
    <!-- Content Wrapper -->
    <div id="content-wrapper" class="d-flex flex-column">
-
+    
      <!-- Main Content -->
      <div id="content">
 
@@ -104,21 +105,21 @@
                <form action="<?php echo URLROOT;?>/accountController/changeInfo" method="post">
                     <div class="form-group">
                       <label for="firstName">First Name</label>
-                      <input type="text" class="form-control" name="firstName" id="firstName" value="<?php echo $data[0]->User_First_Name;?>">
+                      <input type="text" class="form-control" name="firstName" id="firstName" value="<?php echo $data["accountInfo"]->User_First_Name;?>">
                     </div>
 
                     <div class="form-group">
                       <label for="lastName">Last Name</label>
-                      <input type="text" class="form-control" name="lastName" id="lastName" value="<?php echo $data[0]->User_Last_Name;?>">
+                      <input type="text" class="form-control" name="lastName" id="lastName" value="<?php echo $data["accountInfo"]->User_Last_Name;?>">
                     </div>
 
 
                     <div class="form-group">
                       <label for="email">Email</label>
-                      <input type="text" class="form-control" name="email" id="email" value="<?php echo $data[0]->Email;?>">
+                      <input type="text" class="form-control" name="email" id="email" value="<?php echo $data["accountInfo"]->Email;?>">
                     </div>
 
-                    <?php if($data[0]->Buisness_User ==="1"): ?>
+                    <?php if($data["accountInfo"]->Buisness_User ==="1"): ?>
                       <label for="buisnessUser">Cancel Buisness User Account</label>
                       <input type="checkbox" name="buisnessUser" value="unSub">
                     <?php else: ?>
@@ -148,13 +149,13 @@
                     <li>
                         Dashboard Calendar Display
                         <label class="switch">
-                            <input id="dashboardCalendar" type="checkbox" <?php echo ($data[0]->Dashboard_Calendar_Display === "1")? 'checked' : ''; ?>/> <span class="slider"></span>
+                            <input id="dashboardCalendar" type="checkbox" <?php echo ($data["accountInfo"]->Dashboard_Calendar_Display === "1")? 'checked' : ''; ?>/> <span class="slider"></span>
                         </label>
                     </li>
                     <li>
                         Dashboard Project Display
                         <label class="switch">
-                            <input id="dashboardProject" type="checkbox" <?php echo ($data[0]->Dashboard_Projects_Display === "1")? 'checked' : ''; ?>/> <span class="slider"></span>
+                            <input id="dashboardProject" type="checkbox" <?php echo ($data["accountInfo"]->Dashboard_Projects_Display === "1")? 'checked' : ''; ?>/> <span class="slider"></span>
                         </label>
                     </li>
                  </ul>
@@ -175,10 +176,10 @@
                  <h6 class="m-0 font-weight-bold text-primary">Groups</h6>
                </div>
                <div class="card-body">
-                 <?php if(count($data['projects']) == 0): ?>
-                   <h4 class="small font-weight-bold">No Projects have been created </h4>
+                 <?php if(count($data['groupsInfo']) == 0): ?>
+                   <h4 class="small font-weight-bold">No Groups have been created </h4>
                  <?php else: ?>
-                   <?php foreach($data['projects'] as $project): ?>
+                   <?php foreach($data['groupsInfo'] as $project): ?>
                      
                      <h4 class="small font-weight-bold"><?php echo $project->Project_Name; ?> <span class="float-right"><?php echo $project->Project_Completion;?>%</span></h4>
                      <div class="progress mb-4">

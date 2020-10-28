@@ -34,22 +34,35 @@ class AccountModel{
 
     public function changeInfo($data){
 
-        $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email, 
-        Buisness_User = :buisness_user WHERE User_Id = :userId ');
-
         
-        $this->db->bind(':firstName', $data['first_name'] );
-        $this->db->bind(':lastName', $data['last_name'] );
-        $this->db->bind(':email', $data['email'] );
 
-        if(isset($data['buisnessUser'])){
-            if($data['buisnessUser'] == "Sub"){
+        if(isset($data['buisness_user'])){
+            if($data['buisness_user'] == "sub"){
+                $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email, 
+                Buisness_User = :buisness_user WHERE User_Id = :userId ');
+                $this->db->bind(':firstName', $data['first_name'] );
+                $this->db->bind(':lastName', $data['last_name'] );
+                $this->db->bind(':email', $data['email'] );
+
                 $this->db->bind(':buisness_user', 1);
-            }else{
+
+                $_SESSION['buisness_user_account_type'] == true;
+
+            }else if($data['buisness_user'] == "unSub"){
+                $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email, 
+                Buisness_User = :buisness_user WHERE User_Id = :userId ');
+                $this->db->bind(':firstName', $data['first_name'] );
+                $this->db->bind(':lastName', $data['last_name'] );
+                $this->db->bind(':email', $data['email'] );
                 $this->db->bind(':buisness_user', 0);
+                $_SESSION['buisness_user_account_type'] == false;
+            }else{
+                $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email
+                WHERE User_Id = :userId ');
+                $this->db->bind(':firstName', $data['first_name'] );
+                $this->db->bind(':lastName', $data['last_name'] );
+                $this->db->bind(':email', $data['email'] );
             }
-        }else{
-            $this->db->bind(':buisness_user', 0);
         }
 
 
@@ -124,5 +137,15 @@ class AccountModel{
         }else{
             return false;
         }
+    }
+
+    public function getGroups(){
+        $this->db->query('SELECT * FROM groups WHERE Group_Leader = :userId' );
+
+        $this->db->bind(':userId', $_SESSION['user_id']);
+
+        $rows = $this->db->resultSet();
+
+        return $rows;
     }
 }

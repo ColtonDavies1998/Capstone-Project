@@ -1,6 +1,8 @@
 <!-- 
  - When uploading an image, the controller for this view does not accept the file the user gives, later on allow the user to upload
  the file they want to use and find a place to store it.
+
+ - Also need error handeling for the edit delete and create forms, make sure to add error session variable
 -->
 <?php if(isset($_SESSION['user_id'])): ?>
 

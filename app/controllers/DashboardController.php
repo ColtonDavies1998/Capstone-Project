@@ -119,9 +119,6 @@
 
         }
 
-
-
-
         if(empty($data['task_name_error']) && empty($data['task_type_error']) && empty($data['task_start_time_error']) && empty($data['task_end_time_error'])
         && empty( $data['task_start_date_error']) && empty( $data['task_end_date_error'])){
           //Validated

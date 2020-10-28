@@ -1,7 +1,7 @@
 window.addEventListener('load', (event) => {
 
     //Event listeners for the buttons that will display the overlays
-    document.getElementById("addProjectBtn").addEventListener("click", overlayOn);
+    document.getElementById("addGroupsBtn").addEventListener("click", overlayOn);
     document.getElementById("cancelOverlayBtn").addEventListener("click", overlayOff);
     document.getElementById("cancelDelete").addEventListener("click", cancelDeletion);
     document.getElementById("cancelEdit").addEventListener("click", cancelEdit);
@@ -34,12 +34,3 @@ window.addEventListener('load', (event) => {
 });
 
 
-//This function is called  when the remove project button is clicked
-function removeProject(e){
-    let id = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
-    let idArray = id.split("-");
-    id = idArray[1];
-
-    document.getElementById("deleteId").value = id;
-    document.getElementById("confirmationOverlay").style.display = "block";
-}

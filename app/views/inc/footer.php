@@ -66,6 +66,10 @@
     <script src="<?php echo URLROOT; ?>/js/multipleProjectsScript.js"></script>
   <?php endif;?>
 
+  <?php if($_SESSION['current_page'] == 'Groups'):?>
+    <script src="<?php echo URLROOT; ?>/js/groupsScript.js"></script>
+  <?php endif;?>
+
   
 
 </body>

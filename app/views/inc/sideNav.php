@@ -51,8 +51,8 @@
       <?php if($_SESSION["buisness_user_account_type"] == true): ?>
         <hr class="sidebar-divider">
         
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">
+        <li class="nav-item <?php echo ($_SESSION['current_page'] == 'Groups') ?'active': ''; ?>">
+          <a class="nav-link" href="<?php echo URLROOT; ?>/GroupsController/groupsDisplay">
             <i class="fas fa-user-friends"></i>
             <span>Groups</span>
           </a>
