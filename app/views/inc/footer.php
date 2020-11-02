@@ -77,14 +77,14 @@
 
   ?>
 
-
+  
   <script>
-    let notificationDisplay;
+  let notificationDisplay;
     let notifications;
 
     
     document.getElementById("notificationNumDisplay").addEventListener("click", function(){
-      console.log(notifications)
+     
       var notificationIcon = document.getElementById("notificationAlert");
 
       if(notificationIcon){
@@ -115,7 +115,7 @@
       $.ajax({url: "<?php echo URLROOT; ?>/NotificationController/getNotifications", async: false, success: function(result){
      
           let data = JSON.parse(result);
-          console.log(data);
+    
           notifications = data;
     
           if(data.length > 3){
@@ -338,9 +338,6 @@
 
     }
 
- 
-  
-    
   </script>
 
 
