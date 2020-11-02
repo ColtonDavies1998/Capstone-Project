@@ -119,6 +119,19 @@
                       <input type="text" class="form-control" name="email" id="email" value="<?php echo $data["accountInfo"]->Email;?>">
                     </div>
 
+                    <div class="form-group">
+                      <label for="timezone">Timezone</label>
+                      <select class="form-control" name="timezone" id="timezone">
+                        <?php foreach($data['timezones'] as $timezone): ?>
+                          <?php if($timezone == $data["accountInfo"]->Timezone): ?>
+                            <option selected="selected" value="<?php echo $data["accountInfo"]->Timezone; ?>"><?php echo $data["accountInfo"]->Timezone; ?></option>
+                          <?php else: ?>
+                            <option value="<?php echo $timezone; ?>"><?php echo $timezone; ?></option>
+                          <?php endif;?>
+                        <?php endforeach;?>
+                    </select>
+                    </div>
+
                     <?php if($data["accountInfo"]->Buisness_User ==="1"): ?>
                       <label for="buisnessUser">Cancel Buisness User Account</label>
                       <input type="checkbox" name="buisnessUser" value="unSub">
@@ -141,7 +154,7 @@
              <div class="card shadow mb-4">
                <!-- Card Header - Dropdown -->
                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                 <h6 class="m-0 font-weight-bold text-primary">Dashboard Utilities</h6>
+                 <h6 class="m-0 font-weight-bold text-primary">Utilities</h6>
                </div>
                <!-- Card Body -->
                <div class="card-body">
@@ -157,6 +170,12 @@
                         <label class="switch">
                             <input id="dashboardProject" type="checkbox" <?php echo ($data["accountInfo"]->Dashboard_Projects_Display === "1")? 'checked' : ''; ?>/> <span class="slider"></span>
                         </label>
+                    </li>
+                    <li>
+                      Notification Display
+                      <label class="switch">
+                        <input id="notificationsDisplay" type="checkbox" <?php echo ($data["accountInfo"]->Notification_Display === "1")? 'checked' : ''; ?>/> <span class="slider"></span>
+                      </label>
                     </li>
                  </ul>
                </div>
@@ -175,28 +194,17 @@
                <div class="card-header py-3">
                  <h6 class="m-0 font-weight-bold text-primary">Groups</h6>
                </div>
+
                <div class="card-body">
                  <?php if(count($data['groupsInfo']) == 0): ?>
-                   <h4 class="small font-weight-bold">No Groups have been created </h4>
+                   <h2 class=" font-weight-bold">No Groups have been created </h2>
                  <?php else: ?>
-                   <?php foreach($data['groupsInfo'] as $project): ?>
+                   <?php foreach($data['groupsInfo'] as $group): ?>
+                     <a href="<?php echo URLROOT; ?>/AccountController/transferToGroup?groupId=<?php echo $group->Group_Id;  ?>">
+                      <h2 class=" font-weight-bold"><?php echo $group->Group_Name; ?></h2>
+                     </a>
                      
-                     <h4 class="small font-weight-bold"><?php echo $project->Project_Name; ?> <span class="float-right"><?php echo $project->Project_Completion;?>%</span></h4>
-                     <div class="progress mb-4">
-                       <div 
-                         <?php if($project->Project_Completion >= 0 && $project->Project_Completion <= 20):?>
-                           class="progress-bar bg-danger" 
-                         <?php elseif($project->Project_Completion >= 21 && $project->Project_Completion <= 41):?>
-                           class="progress-bar bg-warning"
-                         <?php elseif($project->Project_Completion >= 42 && $project->Project_Completion <= 62):?>
-                           class="progress-bar"
-                         <?php elseif($project->Project_Completion >= 63 && $project->Project_Completion <= 83):?>
-                           class="progress-bar bg-info"
-                         <?php else: ?>
-                           class="progress-bar bg-success"
-                         <?php endif;?>
-                       role="progressbar" style="width: <?php echo $project->Project_Completion;?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                     </div>
+                     
                    <?php endforeach;?>
                  <?php endif;?>
                </div>
@@ -270,6 +278,25 @@
         var url = '<?php echo URLROOT; ?>/AccountController/dashboardChange';
 
         var params = 'id=' + dashboardProject.id + '&result=' + dashboardProject.checked;
+        http.open('POST', url, true);
+
+        //Send the proper header information along with the request
+        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        http.onreadystatechange = function() {//Call a function when the state changes.
+          
+        }
+
+        http.send(params);
+
+      });
+
+      var notificationsDisplay = document.getElementById("notificationsDisplay");
+      notificationsDisplay.addEventListener("change", (event) => {
+        var http = new XMLHttpRequest();
+        var url = '<?php echo URLROOT; ?>/AccountController/dashboardChange';
+
+        var params = 'id=' + notificationsDisplay.id + '&result=' + notificationsDisplay.checked;
         http.open('POST', url, true);
 
         //Send the proper header information along with the request

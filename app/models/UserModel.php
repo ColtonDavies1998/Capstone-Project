@@ -17,8 +17,8 @@ class UserModel{
         }
 
 
-        $this->db->query('INSERT INTO users (User_First_Name, User_Last_Name, Dashboard_Calendar_Display, Dashboard_Projects_Display, Password, Email, Buisness_User) 
-        VALUES(:firstName, :lastName, :dashboardCalendar, :dashboardProject, :password, :email, :buisnessUser)');
+        $this->db->query('INSERT INTO users (User_First_Name, User_Last_Name, Dashboard_Calendar_Display, Dashboard_Projects_Display, Password, Email, Timezone , Buisness_User) 
+        VALUES(:firstName, :lastName, :dashboardCalendar, :dashboardProject, :password, :email, :timezone , :buisnessUser)');
         //bind values
         $this->db->bind(':firstName', $data['first_name']);
         $this->db->bind(':lastName', $data['last_name']);
@@ -26,6 +26,7 @@ class UserModel{
         $this->db->bind(':dashboardProject', 0);
         $this->db->bind(':password', $data['password']);
         $this->db->bind(':email', $data['email']);
+        $this->db->bind(':timezone', $data['timezone']);
         $this->db->bind(':buisnessUser', $buisnessUser);
 
         //call execute if you want to insert

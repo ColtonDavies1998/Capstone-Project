@@ -23,6 +23,7 @@
   <title><?php echo SITENAME; ?></title>
 </head>
 <body>
+  
 
   <div class="modal-dialog text-center">
     <div class="col-sm-9 main-section">
@@ -60,6 +61,13 @@
                     <input id="confirmPassword" name="confirm_password" type="password" class="form-control <?php echo (!empty($data['confirm_password_error'])) ? 'is-invalid': '';?>"  
                     placeholder="Confirm Password" value="<?php echo $data['confirm_password']; ?>">
                     <div class="errorMsg" id="confirmPasswordError"><?php echo $data['confirm_password_error']; ?></div>
+                </div>
+                <div class="form-group">
+                  <select class="form-control" name="timezones" id="timezones">
+                      <?php foreach($data['timezones'] as $timezone): ?>
+                        <option value="<?php echo $timezone; ?>"><?php echo $timezone; ?></option>
+                      <?php endforeach;?>
+                  </select>
                 </div>
                 <div >
 

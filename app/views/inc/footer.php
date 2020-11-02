@@ -70,7 +70,280 @@
     <script src="<?php echo URLROOT; ?>/js/groupsScript.js"></script>
   <?php endif;?>
 
+  <?php 
+    $date = new DateTime("now", new DateTimeZone($_SESSION["user_timezone"]) );
+    echo $date->format('H:i:s');
+    
+
+  ?>
+
+
+  <script>
+    let notificationDisplay;
+    let notifications;
+
+    
+    document.getElementById("notificationNumDisplay").addEventListener("click", function(){
+      console.log(notifications)
+      var notificationIcon = document.getElementById("notificationAlert");
+
+      if(notificationIcon){
+        notificationIcon.remove();
+      }
+      
+      $.ajax({url: "<?php echo URLROOT; ?>/NotificationController/notificationsViewed" ,type: 'POST',data: {notifications: notifications}, async: false, success: function(result){
+         
+      }}) 
+
+    }) 
+
+
+    $.ajax({url: "<?php echo URLROOT; ?>/NotificationController/getNotificationSetting", async: false, success: function(result){
+        let data = JSON.parse(result);
+        
+
+        if(parseInt(data.Notification_Display) == 0){
+          notificationDisplay = false;
+        }else{
+          notificationDisplay = true;
+        }
+        
+    }})
+
   
+    if(notificationDisplay == true){
+      $.ajax({url: "<?php echo URLROOT; ?>/NotificationController/getNotifications", async: false, success: function(result){
+     
+          let data = JSON.parse(result);
+          console.log(data);
+          notifications = data;
+    
+          if(data.length > 3){
+            for(let j = 0; j < 3; j++){
+              let dropdownItem = document.createElement("a");
+              dropdownItem.classList.add("dropdown-item");
+              dropdownItem.classList.add("d-flex");
+              dropdownItem.classList.add("align-items-center");
+              dropdownItem.classList.add("notification-dropdown-Item");
+    
+              let mr = document.createElement("div");
+              mr.classList.add("mr-3");
+    
+              let iconCircle = document.createElement("div");
+              iconCircle.classList.add("icon-circle");
+              iconCircle.classList.add("bg-danger");
+    
+              let i = document.createElement("i");
+              i.classList.add("fas");
+              i.classList.add("fa-file-alt");
+              i.classList.add("text-white");
+    
+              let nonClassDiv = document.createElement("div");
+    
+              let smallText = document.createElement("div");
+              smallText.classList.add("small");
+              smallText.classList.add("text-gray-500");
+              smallText.innerText = data[j].Notification_Date;
+          
+    
+              nonClassDiv.appendChild(smallText);
+    
+              let taskMissedDiv = document.createElement("div");
+              taskMissedDiv.innerText = "Task '" + data[j].Notification_Message + " ' was not completed"
+    
+              nonClassDiv.appendChild(taskMissedDiv);
+    
+              iconCircle.appendChild(i);
+    
+              mr.appendChild(iconCircle);
+    
+              dropdownItem.appendChild(mr);
+              dropdownItem.appendChild(nonClassDiv);
+    
+              document.getElementById("notificationSection").appendChild(dropdownItem);
+    
+            }
+            //Create show all alerts
+            let showAllTag = document.createElement("a");
+              showAllTag.classList.add("dropdown-item");
+              showAllTag.classList.add("text-center");
+              showAllTag.classList.add("small");
+              showAllTag.classList.add("text-gray-500");
+              showAllTag.innerText = "Show All Alerts";
+              
+              showAllTag.addEventListener("click", function(){
+                let notificationSetting = document.getElementById("notificationSection");
+
+                while (notificationSetting.firstChild) {
+                  notificationSetting.removeChild(notificationSetting.firstChild);
+                }
+
+                let dropdownHeader = document.createElement("h6");
+                dropdownHeader.classList.add("dropdown-header");
+                dropdownHeader.innerText = "Notifications"
+
+                notificationSetting.appendChild(dropdownHeader);
+
+                for(let z = 0; z < notifications.length; z++){
+
+                  let dropdownItem = document.createElement("a");
+                  dropdownItem.classList.add("dropdown-item");
+                  dropdownItem.classList.add("d-flex");
+                  dropdownItem.classList.add("align-items-center");
+                  dropdownItem.classList.add("notification-dropdown-Item");
+        
+                  let mr = document.createElement("div");
+                  mr.classList.add("mr-3");
+        
+                  let iconCircle = document.createElement("div");
+                  iconCircle.classList.add("icon-circle");
+                  iconCircle.classList.add("bg-danger");
+        
+                  let i = document.createElement("i");
+                  i.classList.add("fas");
+                  i.classList.add("fa-file-alt");
+                  i.classList.add("text-white");
+        
+                  let nonClassDiv = document.createElement("div");
+        
+                  let smallText = document.createElement("div");
+                  smallText.classList.add("small");
+                  smallText.classList.add("text-gray-500");
+                  smallText.innerText = data[z].Notification_Date;
+
+        
+                  nonClassDiv.appendChild(smallText);
+        
+                  let taskMissedDiv = document.createElement("div");
+                  taskMissedDiv.innerText = "Task '" + data[z].Notification_Message + " ' was not completed"
+        
+                  nonClassDiv.appendChild(taskMissedDiv);
+        
+                  iconCircle.appendChild(i);
+        
+                  mr.appendChild(iconCircle);
+        
+                  dropdownItem.appendChild(mr);
+                  dropdownItem.appendChild(nonClassDiv);
+        
+                  document.getElementById("notificationSection").appendChild(dropdownItem);
+        
+                  
+                }
+              });
+    
+              document.getElementById("notificationSection").appendChild(showAllTag);
+    
+              let totalNotificationCount = document.createElement("span");
+              totalNotificationCount.classList.add("badge");
+              totalNotificationCount.classList.add("badge-danger");
+              totalNotificationCount.classList.add("badge-counter");
+              totalNotificationCount.innerText = "3+";
+
+              totalNotificationCount.setAttribute("id", "notificationAlert");
+    
+              document.getElementById("notificationNumDisplay").appendChild(totalNotificationCount);
+    
+          }else{
+            for(let j = 0; j < data.length; j++){
+              let dropdownItem = document.createElement("a");
+              dropdownItem.classList.add("dropdown-item");
+              dropdownItem.classList.add("d-flex");
+              dropdownItem.classList.add("align-items-center");
+              dropdownItem.classList.add("notification-dropdown-Item");
+    
+              let mr = document.createElement("div");
+              mr.classList.add("mr-3");
+    
+              let iconCircle = document.createElement("div");
+              iconCircle.classList.add("icon-circle");
+              iconCircle.classList.add("bg-danger");
+    
+              let i = document.createElement("i");
+              i.classList.add("fas");
+              i.classList.add("fa-file-alt");
+              i.classList.add("text-white");
+    
+              let nonClassDiv = document.createElement("div");
+    
+              let smallText = document.createElement("div");
+              smallText.classList.add("small");
+              smallText.classList.add("text-gray-500");
+              smallText.innerText = data[j].Notification_Date;
+
+    
+              nonClassDiv.appendChild(smallText);
+    
+              let taskMissedDiv = document.createElement("div");
+              taskMissedDiv.innerText = "Task '" + data[j].Notification_Message + " ' was not completed"
+    
+              nonClassDiv.appendChild(taskMissedDiv);
+    
+              iconCircle.appendChild(i);
+    
+              mr.appendChild(iconCircle);
+    
+              dropdownItem.appendChild(mr);
+              dropdownItem.appendChild(nonClassDiv);
+    
+              document.getElementById("notificationSection").appendChild(dropdownItem);
+    
+              let totalNotificationCount = document.createElement("span");
+              totalNotificationCount.classList.add("badge");
+              totalNotificationCount.classList.add("badge-danger");
+              totalNotificationCount.classList.add("badge-counter");
+              totalNotificationCount.innerText = data.length;
+
+              totalNotificationCount.setAttribute("id", "notificationAlert");
+    
+              document.getElementById("notificationNumDisplay").appendChild(totalNotificationCount);
+            }
+          }
+            
+        }});
+    }else{
+      let dropdownItem = document.createElement("a");
+      dropdownItem.classList.add("dropdown-item");
+      dropdownItem.classList.add("d-flex");
+      dropdownItem.classList.add("align-items-center");
+      dropdownItem.classList.add("notification-dropdown-Item");
+    
+      let mr = document.createElement("div");
+      mr.classList.add("mr-3");
+    
+      let iconCircle = document.createElement("div");
+      iconCircle.classList.add("icon-circle");
+      iconCircle.classList.add("bg-secondary");
+    
+      let i = document.createElement("i");
+      i.classList.add("fas");
+      i.classList.add("fa-file-alt");
+      i.classList.add("text-white");
+    
+      let nonClassDiv = document.createElement("div");
+    
+      let notificationDiv = document.createElement("div");
+      notificationDiv.innerText = "Notifications have been turned off"
+    
+      nonClassDiv.appendChild(notificationDiv);
+    
+      iconCircle.appendChild(i);
+    
+      mr.appendChild(iconCircle);
+    
+      dropdownItem.appendChild(mr);
+      dropdownItem.appendChild(nonClassDiv);
+    
+      document.getElementById("notificationSection").appendChild(dropdownItem);
+
+    }
+
+ 
+  
+    
+  </script>
+
+
 
 </body>
 

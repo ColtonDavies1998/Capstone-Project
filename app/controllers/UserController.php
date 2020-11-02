@@ -22,12 +22,14 @@
                     'email'=> trim($_POST['email']),
                     'password' => trim($_POST['password']),
                     'confirm_password' => trim($_POST['confirm_password']),
+                    'timezone' => trim($_POST['timezones']),
                     'buisness_user' =>   (empty($_POST['buisnessUser']) ? '' : trim($_POST['buisnessUser'])) ,
                     'first_name_error' => '',
                     'last_name_error' => '',
                     'email_error'=> '',
                     'password_error' => '',
                     'confirm_password_error' => ''
+
                 ];
 
                 //Validate Name
@@ -89,6 +91,8 @@
 
             }else{
                 //Init Data
+                $timezones = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
+
                 $data = [
                     'first_name'=> '',
                     'last_name'=> '',
@@ -100,7 +104,8 @@
                     'last_name_error' => '',
                     'email_error'=> '',
                     'password_error' => '',
-                    'confirm_password_error' => ''
+                    'confirm_password_error' => '',
+                    'timezones' => $timezones
                 ];
 
                 //load view
@@ -180,7 +185,8 @@
         public function createUserSession($user){
             $_SESSION['user_id'] = $user->User_Id;
             $_SESSION['user_email'] = $user->Email;
-            $_SESSION['user_name'] = $user->User_First_Name . ' ' . $user->User_Last_Name;            
+            $_SESSION['user_name'] = $user->User_First_Name . ' ' . $user->User_Last_Name;    
+            $_SESSION['user_timezone'] = $user->Timezone;       
 
             if($user->Buisness_User == 1){
                 $_SESSION['buisness_user_account_type'] = true;

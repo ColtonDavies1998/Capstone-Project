@@ -229,7 +229,6 @@
   <div id="editNameOverlay">
     <div id="editOverlayBlock">
       <h5>Edit Group Name</h5>
-      
         <form action="<?php echo URLROOT;?>/GroupsController/editGroup" method="post">
           <div class="form-group">
             <input type="hidden" id="groupEditId" name="groupEditId">

@@ -1,4 +1,8 @@
 <?php
+  /* 
+    - When the individual group page is created come back and link the groups displayed to the function to transfer them to the 
+    proper page
+  */
   class AccountController extends Controller { 
     public function __construct(){
         $this->accountModel = $this->model('AccountModel');
@@ -19,6 +23,7 @@
 
         $data["accountInfo"] = $AccountInfo[0];
         $data["groupsInfo"] = $this->accountModel->getGroups();
+        $data["timezones"] = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
 
         $this->view('account/AccountSettings', $data);
     }
@@ -32,7 +37,9 @@
           $this->accountModel->changeDashboardCalendar($_POST['result']);
         }elseif($id == "dashboardProject"){
           $this->accountModel->changeDashboardProjects($_POST['result']);
-        }        
+        }elseif($id == "notificationsDisplay"){
+          $this->accountModel->changeNotificationStatus($_POST['result']);
+        }       
        
       }
     }
@@ -128,6 +135,7 @@
           'last_name' => trim($_POST['lastName']),
           'email'=> trim($_POST['email']),
           'buisness_user' => (isset($_POST['buisnessUser']))? trim($_POST['buisnessUser']): "" ,
+          'timezone' => trim($_POST['timezone']),
           'first_name_error' => '',
           'last_name_error' => '',
           'email_error'=> '',
@@ -160,7 +168,7 @@
 
        }
        if(empty($data['first_name_error']) && empty($data['last_name_error']) && empty($data['email_error'])){
-          
+   
           if($this->accountModel->changeInfo($data)){
             
             redirect('accountController/accountSetting');
@@ -176,8 +184,13 @@
 
       }else{
         //load view
-        //this->view('user/Register', $data);
+        $this->view('user/Register', $data);
       }
+    }
+
+    //When the individual group page is created this function will move to that page, do for later
+    public function transferToGroup(){
+
     }
 
     

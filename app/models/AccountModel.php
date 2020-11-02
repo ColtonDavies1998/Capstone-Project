@@ -38,35 +38,42 @@ class AccountModel{
 
         if(isset($data['buisness_user'])){
             if($data['buisness_user'] == "sub"){
-                $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email, 
+                $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email, Timezone = :timezone
                 Buisness_User = :buisness_user WHERE User_Id = :userId ');
                 $this->db->bind(':firstName', $data['first_name'] );
                 $this->db->bind(':lastName', $data['last_name'] );
                 $this->db->bind(':email', $data['email'] );
-
+                $this->db->bind(':timezone', $data['timezone'] );
                 $this->db->bind(':buisness_user', 1);
 
                 $_SESSION['buisness_user_account_type'] == true;
+                
 
             }else if($data['buisness_user'] == "unSub"){
-                $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email, 
+                $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email, Timezone = :timezone
                 Buisness_User = :buisness_user WHERE User_Id = :userId ');
                 $this->db->bind(':firstName', $data['first_name'] );
                 $this->db->bind(':lastName', $data['last_name'] );
                 $this->db->bind(':email', $data['email'] );
+                $this->db->bind(':timezone', $data['timezone'] );
                 $this->db->bind(':buisness_user', 0);
                 $_SESSION['buisness_user_account_type'] == false;
+               
             }else{
-                $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email
+                $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email, Timezone = :timezone
                 WHERE User_Id = :userId ');
                 $this->db->bind(':firstName', $data['first_name'] );
                 $this->db->bind(':lastName', $data['last_name'] );
                 $this->db->bind(':email', $data['email'] );
+                
+                
             }
         }
 
-
+        
         $this->db->bind(':userId', $_SESSION['user_id']);
+
+        $_SESSION['user_timezone'] = $data['timezone'];
 
         if($this->db->execute()){
             return true;
@@ -130,6 +137,24 @@ class AccountModel{
             $input = 0;
         }
         $this->db->bind(':DPD', $input);
+        $this->db->bind(':userId', $_SESSION['user_id']);
+
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function changeNotificationStatus($result){
+        $this->db->query('UPDATE users SET Notification_Display = :notificationDisplay WHERE User_Id = :userId ');
+
+        if($result == "true"){
+            $input = 1;
+        }else{
+            $input = 0;
+        }
+        $this->db->bind(':notificationDisplay', $input);
         $this->db->bind(':userId', $_SESSION['user_id']);
 
         if($this->db->execute()){
