@@ -34,12 +34,3 @@ window.addEventListener('load', (event) => {
 });
 
 
-//This function is called  when the remove project button is clicked
-function removeProject(e){
-    let id = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
-    let idArray = id.split("-");
-    id = idArray[1];
-
-    document.getElementById("deleteId").value = id;
-    document.getElementById("confirmationOverlay").style.display = "block";
-}

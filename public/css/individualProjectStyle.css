@@ -1,0 +1,147 @@
+#projectFilesBtn, #taskDisplayBtn{
+    cursor: pointer;
+}
+
+#fileDisplay{
+    display: none;
+}
+
+.addFileBtn {
+    float: right;
+    font-size: 2.50rem;
+    cursor: pointer;
+}
+
+#projectHeading {
+    padding-bottom: 1%;
+}
+
+/* overlay styles */
+#createFileOverlay{
+    display:none;
+    z-index: 2;
+}
+
+#createFileOverlayBlock{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 40%;
+    width: 55%;
+    background-color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1%;
+    border: 1px solid white;
+    border-radius: 30px;
+}
+.img-wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 200px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.img-wrapper, img{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#editFileOverlay{
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 3;
+    cursor: pointer;
+}
+
+#deleteFileOverlay, #fileDisplayOverlay{
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 3;
+    cursor: pointer;
+}
+
+
+
+#deleteFileOverlayBlock{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 12%;
+    width: 25%;
+    background-color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1%;
+    border: 1px solid white;
+    border-radius: 30px;
+}
+
+#fileDisplayOverlayBlock{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 75%;
+    width: 65%;
+    background-color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1%;
+    border: 1px solid white;
+    border-radius: 30px;
+}
+
+#editFileOverlayBlock{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 40%;
+    width: 55%;
+    background-color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1%;
+    border: 1px solid white;
+    border-radius: 30px;
+}
+.fileOverlayDisplayLink:hover{
+    cursor: pointer;
+}
+
+#closeOverlayBtn {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    float: right;
+    background: none;
+    color: white;
+    border: none;
+}

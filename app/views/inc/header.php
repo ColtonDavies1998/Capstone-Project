@@ -30,6 +30,10 @@
   <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/multipleProjectStyle.css">
 <?php endif;?>
 
+<?php if($_SESSION['current_page'] == 'IndividualProject'):?> 
+  <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/individualProjectStyle.css">
+<?php endif;?>
+
 <?php if($_SESSION['current_page'] == 'Groups'):?>
   <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/groupsStyle.css">
 <?php endif;?>
@@ -39,7 +43,7 @@
 
 <script src="<?php echo URLROOT; ?>/vendor/PaginationJS/paginationJS.js"></script>
 
-<div id="confirmationOverlay">
+<div id="projectConfirmationOverlay">
   <div id="confirmationOverlayBlock">
     <h5>Are you sure you want to delete this item?</h5>
     <form action="<?php echo URLROOT;?>/TaskHistoryController/deleteTask" method="post"> 
@@ -250,6 +254,93 @@
   </div>
 
 <?php endif; ?>
+
+<?php if($_SESSION['current_page'] == 'IndividualProject'):?>
+  
+  <div id="confirmationOverlay">
+    <div id="createFileOverlayBlock">
+      <h5>Create File</h5>
+        <form action="<?php echo URLROOT;?>/IndividualProjectController/createFile" method="post">
+          <div class="form-group">
+            <label for="fileName">File Name</label>
+            <input type="hidden" name="projectId" value="<?php echo $data["projectInformation"]->Project_Id ?>">
+            <input type="text" class="form-control" style="margin-bottom: 5px;" name="fileName" id="fileName" >
+          </div>
+          <div class="form-group">
+            <label for="fileLink">File Link (link your google drive docments here)</label>
+            <input type="text" class="form-control" style="margin-bottom: 5px;" name="fileLink" id="fileLink" >
+          </div>
+          <div class="form-group">
+            <label for="fileType">File Type</label>
+            <select class="form-control" name="fileType" id="fileType">
+              <option value="word">Word Document</option>
+              <option value="excel">Excel Document</option>
+              <option value="powerPoint">PowerPoint</option>
+              <option value="pdf">PDF File</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Submit">
+            <a class="btn btn-danger" style="color:white;" id="cancelCreateFile"> Cancel </a>
+          </div>
+        </form>
+    </div>
+  </div>
+
+  <div id="editFileOverlay">
+    <div id="editFileOverlayBlock">
+      <h5>Edit File Information</h5>
+        <form action="<?php echo URLROOT;?>/IndividualProjectController/editFile" method="post">
+          <div class="form-group">
+            <input type="hidden" id="fileEditId" name="fileEditId">
+            <input type="hidden" id="fileEditProjectId" name="projectId" value="<?php echo $data["projectInformation"]->Project_Id ?>">
+            <label for="FileNameEdit">File Name</label>
+            <input type="text" class="form-control" style="margin-bottom: 5px;" name="FileNameEdit" id="FileNameEdit" >
+          </div>
+          <div class="form-group">
+            <label for="FileLinkEdit">File Link</label>
+            <input type="text" class="form-control" style="margin-bottom: 5px;" name="FileLinkEdit" id="FileLinkEdit" >
+          </div>
+          <div class="form-group">
+            <label for="FileTypeEdit">File Type</label>
+            <select class="form-control" id="FileTypeEdit" name="FileTypeEdit">
+              <option value="word">Word Document</option>
+              <option value="excel">Excel Document</option>
+              <option value="powerPoint">PowerPoint</option>
+              <option value="pdf">PDF File</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Submit">
+            <a class="btn btn-danger" style="color:white;" id="cancelEditFile"> Cancel </a>
+          </div>
+        </form>
+    </div>
+  </div>
+
+  <div id="deleteFileOverlay">
+      <div id="deleteFileOverlayBlock">
+        <h5>Are you sure you want to delete this File?</h5>
+        <form action="<?php echo URLROOT;?>/IndividualProjectController/deleteFile" method="post">
+          <div class="form-group">
+            <input type="hidden" id="deleteFileId" name="deleteFileId">
+            <input type="submit" class="btn btn-danger" value="Delete">
+            <a class="btn btn-primary" style="color:white;" id="cancelDeleteFile">Cancel</a>
+          </div>
+        </form>
+      </div>
+  </div>
+ 
+  <div id="fileDisplayOverlay">
+    <button id="closeOverlayBtn">X</button>
+      <div id="fileDisplayOverlayBlock" style="overflow: hidden;">
+        <iframe width='100%' height='1000' id="documentDisplayIFrame" ></iframe>
+      </div>
+  </div>
+
+<?php endif;?>
 
 <body id="page-top">
   <!-- Page Wrapper -->

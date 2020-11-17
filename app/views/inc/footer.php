@@ -71,9 +71,7 @@
   <?php endif;?>
 
   <?php 
-    $date = new DateTime("now", new DateTimeZone($_SESSION["user_timezone"]) );
-    echo $date->format('H:i:s');
-    
+    $date = new DateTime("now", new DateTimeZone($_SESSION["user_timezone"]) );    
 
   ?>
 

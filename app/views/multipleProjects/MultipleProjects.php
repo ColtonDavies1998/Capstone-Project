@@ -34,7 +34,9 @@
                 <div class="col-lg-3 col-md-3 col-sm-3 projects" id="project-<?php echo $project->Project_Id; ?>">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary headerLink"><?php echo $project->Project_Name; ?></h6>
+                            <h6 class="m-0 font-weight-bold text-primary headerLink">
+                                <a href="<?php echo URLROOT; ?>/IndividualProjectController/individualProject?projectId=<?php echo $project->Project_Id; ?>"><?php echo $project->Project_Name; ?></a>
+                            </h6>
                             <div class="dropdown no-arrow">
                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -75,7 +77,7 @@
        <!-- Content Row -->
      </div>
      <!-- /.container-fluid -->
-
+     <?php require APPROOT . '/views/inc/footer.php'; ?>
    </div>
    <!-- End of Main Content -->
 
@@ -114,10 +116,20 @@
             projectEditOption[i].addEventListener('click', displayEditOverlay);
             projectDeleteOption[i].addEventListener('click', removeProject);
         }
+
+        //This function is called  when the remove project button is clicked
+        function removeProject(e){
+            let id = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
+            let idArray = id.split("-");
+            id = idArray[1];
+
+            document.getElementById("deleteId").value = id;
+            document.getElementById("confirmationOverlay").style.display = "block";
+        }
    </script>
 
 
-   <?php require APPROOT . '/views/inc/footer.php'; ?>
+   
 
 
 <?php else: ?>
