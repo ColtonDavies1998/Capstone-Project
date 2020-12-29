@@ -29,7 +29,7 @@
                 <div class="col-lg-3 col-md-3 col-sm-3 groups" id="group-<?php echo $group->Group_Id; ?>">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary headerLink"><?php echo $group->Group_Name; ?></h6>
+                            <a href="<?php echo URLROOT;?>/IndividualGroupController/individualGroup?groupId=<?php echo $group->Group_Id; ?>" class="m-0 font-weight-bold text-primary headerLink"><?php echo $group->Group_Name; ?></a>
                             <div class="dropdown no-arrow">
                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -44,9 +44,9 @@
                         </div>
                         <div class="card-body">
                             <?php if($group->Group_Img != null):?>
-                                <div class="img-wrapper imageLink" style="background-image:url('../img/<?php echo $group->Group_Img; ?>');"></div>
+                                <a href="<?php echo URLROOT;?>/IndividualGroupController/individualGroup?groupId=<?php echo $group->Group_Id; ?>" class="img-wrapper imageLink" style="background-image:url('../img/<?php echo $group->Group_Img; ?>');"></a>
                             <?php else:?>
-                                <div class="img-wrapper imageLink" style="background-image:url('../img/face.png');"></div>
+                                <a href="<?php echo URLROOT;?>/IndividualGroupController/individualGroup?groupId=<?php echo $group->Group_Id; ?>" class="img-wrapper imageLink" style="background-image:url('../img/face.png');"></a>
                             <?php endif;?>
                             
                         </div>
@@ -63,7 +63,7 @@
                 </div>
             <?php endif;?>
        <?php else:?>
-        <h1>You do not have any Groups</h2>
+        <h1>You do not have any Groups</h1>
        <?php endif;?>
   
  
