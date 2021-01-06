@@ -106,6 +106,7 @@
                     <div class="form-group">
                       <label for="firstName">First Name</label>
                       <input type="text" class="form-control" name="firstName" id="firstName" value="<?php echo $data["accountInfo"]->User_First_Name;?>">
+                      <input type="hidden" class="form-control" name="userId" id="userId" value="<?php echo $data["accountInfo"]->User_Id;?>">
                     </div>
 
                     <div class="form-group">

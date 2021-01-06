@@ -18,6 +18,12 @@
   }
 
   #confirmationOverlayBlock{
+      display: none;
+  }
+
+  
+
+  #confirmationOverlayBlock{
     position: absolute;
     top: 50%;
     left: 50%;

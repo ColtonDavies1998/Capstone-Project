@@ -75,12 +75,14 @@
      
 
        <!-- Content Row -->
+       
      </div>
      <!-- /.container-fluid -->
      <?php require APPROOT . '/views/inc/footer.php'; ?>
    </div>
+   
    <!-- End of Main Content -->
-
+   
 
    <script>
     

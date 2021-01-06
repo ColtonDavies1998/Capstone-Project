@@ -33,43 +33,24 @@ class AccountModel{
     }
 
     public function changeInfo($data){
-
         
+        $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email, Timezone = :timezone,
+        Buisness_User = :buisness_user WHERE User_Id = :userId ');
+         
+        $this->db->bind(':firstName', $data['first_name'] );
+        $this->db->bind(':lastName', $data['last_name'] );
+        $this->db->bind(':email', $data['email'] );
+        $this->db->bind(':timezone', $data['timezone'] );
 
-        if(isset($data['buisness_user'])){
-            if($data['buisness_user'] == "sub"){
-                $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email, Timezone = :timezone
-                Buisness_User = :buisness_user WHERE User_Id = :userId ');
-                $this->db->bind(':firstName', $data['first_name'] );
-                $this->db->bind(':lastName', $data['last_name'] );
-                $this->db->bind(':email', $data['email'] );
-                $this->db->bind(':timezone', $data['timezone'] );
-                $this->db->bind(':buisness_user', 1);
+        if($data['buisness_user'] == "sub"){
+            $this->db->bind(':buisness_user', 1);
 
-                $_SESSION['buisness_user_account_type'] == true;
-                
+            $_SESSION['buisness_user_account_type'] == true;
+        }else{
+            $this->db->bind(':buisness_user', 0);
 
-            }else if($data['buisness_user'] == "unSub"){
-                $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email, Timezone = :timezone
-                Buisness_User = :buisness_user WHERE User_Id = :userId ');
-                $this->db->bind(':firstName', $data['first_name'] );
-                $this->db->bind(':lastName', $data['last_name'] );
-                $this->db->bind(':email', $data['email'] );
-                $this->db->bind(':timezone', $data['timezone'] );
-                $this->db->bind(':buisness_user', 0);
-                $_SESSION['buisness_user_account_type'] == false;
-               
-            }else{
-                $this->db->query('UPDATE users SET User_First_Name = :firstName, User_Last_Name = :lastName, Email = :email, Timezone = :timezone
-                WHERE User_Id = :userId ');
-                $this->db->bind(':firstName', $data['first_name'] );
-                $this->db->bind(':lastName', $data['last_name'] );
-                $this->db->bind(':email', $data['email'] );
-                
-                
-            }
+            $_SESSION['buisness_user_account_type'] == false;
         }
-
         
         $this->db->bind(':userId', $_SESSION['user_id']);
 
@@ -172,5 +153,67 @@ class AccountModel{
         $rows = $this->db->resultSet();
 
         return $rows;
+    }
+
+    public function changeFriendConnectionNames($firstName, $lastName, $isPersonOne){
+        if($isPersonOne == true){
+            $this->db->query('UPDATE friendconnection SET PersonOneName = :personOneName WHERE PersonOneId = :userId ');
+
+            $FullName = $firstName . " " . $lastName;
+
+            $this->db->bind(':personOneName', $FullName);
+            $this->db->bind(':userId', $_SESSION['user_id']);
+
+            if($this->db->execute()){
+                return true;
+            }else{
+                return false;
+            }
+
+
+        }else{
+            $this->db->query('UPDATE friendconnection SET PersonTwoName = :personTwoName WHERE PersonTwoId = :userId ');
+
+            $FullName = $firstName . " " . $lastName;
+
+            $this->db->bind(':personTwoName', $FullName);
+            $this->db->bind(':userId', $_SESSION['user_id']);
+
+            if($this->db->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
+    public function changeFriendRequestConnectionNames($firstName, $lastName, $isReceiver){
+        if($isReceiver == true){
+            $this->db->query('UPDATE friendrequestconnection SET ReceiverName = :receiverName WHERE ReceiverId = :userId ');
+
+            $FullName = $firstName . " " . $lastName;
+
+            $this->db->bind(':receiverName', $FullName);
+            $this->db->bind(':userId', $_SESSION['user_id']);
+
+            if($this->db->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            $this->db->query('UPDATE friendrequestconnection SET SenderName = :senderName WHERE SenderId = :userId ');
+
+            $FullName = $firstName . " " . $lastName;
+
+            $this->db->bind(':senderName', $FullName);
+            $this->db->bind(':userId', $_SESSION['user_id']);
+
+            if($this->db->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
 }

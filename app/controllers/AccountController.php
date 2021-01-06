@@ -170,6 +170,12 @@
        if(empty($data['first_name_error']) && empty($data['last_name_error']) && empty($data['email_error'])){
    
           if($this->accountModel->changeInfo($data)){
+
+            $this->accountModel->changeFriendConnectionNames($data["first_name"], $data["last_name"], true);
+            $this->accountModel->changeFriendRequestConnectionNames($data["first_name"], $data["last_name"], true);
+
+            $this->accountModel->changeFriendConnectionNames($data["first_name"], $data["last_name"], false);
+            $this->accountModel->changeFriendRequestConnectionNames($data["first_name"], $data["last_name"], false);
             
             redirect('accountController/accountSetting');
           }else{

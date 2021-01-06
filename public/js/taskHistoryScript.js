@@ -51,14 +51,13 @@ function loadDeleteFunctions() {
 
 //displays the delete task overlay
 function deleteTask(e) {
-  console.log(e.target.parentElement.parentElement.firstChild.innerText.toString());
   document.getElementById("deleteValueId").value = e.target.parentElement.parentElement.firstChild.innerText.toString();
-  document.getElementById("confirmationOverlay").style.display = "block";
+  document.getElementById("confirmationOverlayBlock").style.display = "block";
 }
 
 //This button hides the delete project overlay
 function cancelDeletion() {
-  document.getElementById("confirmationOverlay").style.display = "none";
+  document.getElementById("confirmationOverlayBlock").style.display = "none";
 }
 
 //This function is called when the cancel button is clicked on the edit overlay and it hides it
