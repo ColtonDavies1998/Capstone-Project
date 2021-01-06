@@ -23,9 +23,12 @@ class FriendsListController extends Controller {
 
         $requestConnections = $this->friendsListModel->getConnections();
 
+        $friendsList = $this->friendsListModel->getFriends();
+
         $userSearch = $this->friendsListModel->userSearch($firstName, $lastName);
 
         $returnData = [];
+        
 
         for($j=0; $j < sizeof($userSearch); $j++){
             $trigger = false;
@@ -42,7 +45,17 @@ class FriendsListController extends Controller {
 
         }
 
-        
+        for($i=0; $i < sizeof($friendsList); $i++){
+     
+            for($j=0; $j < sizeof($returnData); $j++){
+                if($returnData[$j]->User_Id == $friendsList[$i]->PersonOneId || $returnData[$j]->User_Id == $friendsList[$i]->PersonTwoId){
+                    unset($returnData[$j]);
+                    $returnData = array_values($returnData);
+                    break;
+                }
+            }
+            
+        }
 
         echo  json_encode($returnData);
     }
@@ -81,7 +94,7 @@ class FriendsListController extends Controller {
 
         $otherUsersName = $this->friendsListModel->getOtherUsersName($senderId);
         
-        $this->friendsListModel->requestAccepted($friendConnectionId, $otherUsersName);
+        $this->friendsListModel->requestAccepted($otherUsersName, $senderId);
 
         $returnData = $this->friendsListModel->cancelRequest($friendConnectionId);
 
@@ -96,6 +109,15 @@ class FriendsListController extends Controller {
         $this->friendsListModel->removeFriend($friendConnectionId);
 
         redirect('FriendsListController/friendsList');
+    }
+
+    public function getNumberOfFriendRequests(){
+
+        $returnData = $this->friendsListModel->getFriendRequestCount();
+
+        $count = sizeof($returnData);
+
+        echo  json_encode($count);
     }
 }
 

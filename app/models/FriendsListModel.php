@@ -19,9 +19,7 @@ class FriendsListModel{
 
     
     public function userSearch($firstName, $lastName){
-        //$test = "SELECT users.User_Id, users.User_First_Name, users.User_Last_Name, friendsconnection.friendConnectionId, ";
-
-        $query = "SELECT * FROM users WHERE User_Id !=" . $_SESSION['user_id'] . " AND User_First_Name LIKE '%" . $firstName ."%' OR '%" . $lastName . "%'   ";
+        $query = "SELECT User_Id, User_First_Name, User_Last_Name, Email FROM users WHERE User_Id !=" . $_SESSION['user_id'] . " AND User_First_Name LIKE '%" . $firstName ."%' OR '%" . $lastName . "%'   ";
         
         $this->db->query($query);
 
@@ -84,14 +82,14 @@ class FriendsListModel{
         return $rows;
     }
 
-    public function requestAccepted($otherUsersId, $otherUsersName){
+    public function requestAccepted($otherUsersName, $senderId){
 
         $otherUsersFullName = $otherUsersName->User_First_Name . " " . $otherUsersName->User_Last_Name;
 
         $this->db->query('INSERT INTO friendconnection ( PersonOneId, PersonTwoId, PersonOneName, PersonTwoName) 
         VALUES(:personOneId, :personTwoId, :personOneName, :personTwoName)'); 
 
-        $this->db->bind(':personOneId', $otherUsersId);
+        $this->db->bind(':personOneId', $senderId);
         $this->db->bind(':personTwoId', $_SESSION['user_id']);
         $this->db->bind(':personOneName', $otherUsersFullName);
         $this->db->bind(':personTwoName', $_SESSION['user_name']);
@@ -133,6 +131,16 @@ class FriendsListModel{
 
         $this->db->bind(':idOne', $_SESSION['user_id']);
         $this->db->bind(':idTwo', $_SESSION['user_id']);
+
+        $rows = $this->db->resultSet();
+
+        return $rows;
+    }
+
+    public function getFriendRequestCount(){
+        $this->db->query('SELECT * FROM friendrequestconnection WHERE ReceiverId = :idOne' );
+
+        $this->db->bind(':idOne', $_SESSION['user_id']);
 
         $rows = $this->db->resultSet();
 

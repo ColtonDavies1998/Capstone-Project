@@ -30,7 +30,7 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      <li class="nav-item <?php echo ($_SESSION['current_page'] == 'MultiplePages') ?'active': ''; ?>">
+      <li class="nav-item <?php echo ($_SESSION['current_page'] == 'MultipleProjects' || $_SESSION['current_page'] == 'IndividualProject') ?'active': ''; ?>">
         <a class="nav-link" href="<?php echo URLROOT; ?>/MultipleProjectsController/multipleProjects">
           <i class="fas fa-fw fa-folder"></i>
           <span>Projects</span></a>
@@ -51,7 +51,7 @@
       <?php if($_SESSION["buisness_user_account_type"] == true): ?>
         <hr class="sidebar-divider">
         
-        <li class="nav-item <?php echo ($_SESSION['current_page'] == 'Groups') ?'active': ''; ?>">
+        <li class="nav-item <?php echo ($_SESSION['current_page'] == 'Groups' || $_SESSION['current_page'] == 'IndividualGroup') ?'active': ''; ?>">
           <a class="nav-link" href="<?php echo URLROOT; ?>/GroupsController/groupsDisplay">
             <i class="fas fa-user-friends"></i>
             <span>Groups</span>

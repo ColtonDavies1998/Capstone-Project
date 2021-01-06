@@ -159,8 +159,14 @@
                                                 </div>
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                                     <form action="<?php echo URLROOT;?>/FriendsListController/acceptFriendRequest" method="post">
+
+                                                        <?php if($tasks->SenderId == $_SESSION["user_id"]): ?>
+                                                            <input type="hidden" value="<?php echo $tasks->ReceiverId; ?>" name="senderId">
+                                                        <?php else:?>
+                                                            <input type="hidden" value="<?php echo $tasks->SenderId; ?>" name="senderId">
+                                                        <?php endif;?>
                                                         <input type="hidden" value="<?php echo $tasks->FriendConnectionId; ?>" name="friendConnectionId">
-                                                        <input type="hidden" value="<?php echo $tasks->SenderId; ?>" name="senderId">
+                                                        
                                                         <input type="submit" value="accept" class="btn btn-outline-success">
                                                     </form>
                                                 </div>
@@ -329,11 +335,110 @@
 
             //Prevents all accounts from being displayed if the user input is empty
             if(e.target.value.trim() != "" || firstName.trim() != ""){
-                $.ajax({url: "<?php echo URLROOT; ?>/FriendsListController/getUsers", async: false, data: {firstName: e.target.value, lastName: lastName}, success: function(result){
+                $.ajax({url: "<?php echo URLROOT; ?>/FriendsListController/getUsers", async: false, data: {firstName: firstName, lastName: e.target.value}, success: function(result){
+                    let data = JSON.parse(result);
 
+                    let searchBody = document.getElementById("searchCardBody");
+
+                    if(data.length <= 10 ){
+                        
+                        for(let i = 0; i < data.length; i++){
+                            let row = document.createElement("div");
+                            row.classList.add("row")
+
+                            let nameSection = document.createElement("div");
+                            nameSection.classList.add("col-xl-6")
+                            nameSection.classList.add("col-lg-6")
+                            nameSection.classList.add("col-md-6")
+                            nameSection.classList.add("col-sm-6")
+
+                            let ptag = document.createElement("p");
+                            ptag.innerText = data[i].User_First_Name + " " + data[i].User_Last_Name
+
+                            let addButtonSection = document.createElement("div");
+                            addButtonSection.classList.add("col-xl-6")
+                            addButtonSection.classList.add("col-lg-6")
+                            addButtonSection.classList.add("col-md-6")
+                            addButtonSection.classList.add("col-sm-6")
+
+                            let form = document.createElement("form");
+                            form.setAttribute("action", "<?php echo URLROOT;?>/FriendsListController/sendFriendRequest")
+                            form.setAttribute("method", "POST")
+
+                            let otherUserIdInput = document.createElement("input");
+                            otherUserIdInput.setAttribute("type", "hidden")
+                            otherUserIdInput.setAttribute("name", "otherUserId")
+                            otherUserIdInput.setAttribute("value", data[i].User_Id)
+
+                            let formSubmitBtn = document.createElement("input");
+                            formSubmitBtn.setAttribute("type", "submit")
+                            formSubmitBtn.setAttribute("value", "Add")
+                            formSubmitBtn.classList.add("btn")
+                            formSubmitBtn.classList.add("btn-primary")
+                            
+
+                            form.appendChild(otherUserIdInput);
+                            form.appendChild(formSubmitBtn);
+
+                            nameSection.appendChild(ptag);
+                            addButtonSection.appendChild(form);
+                            row.appendChild(nameSection);
+                            row.appendChild(addButtonSection);
+
+                            searchBody.appendChild(row);
+
+                        }
+
+                    }else{
+                        for(let i = 0; i < 11; i++){
+                            let row = document.createElement("div");
+                            row.classList.add("row")
+
+                            let nameSection = document.createElement("div");
+                            nameSection.classList.add("col-xl-6")
+                            nameSection.classList.add("col-lg-6")
+                            nameSection.classList.add("col-md-6")
+                            nameSection.classList.add("col-sm-6")
+
+                            let ptag = document.createElement("p");
+                            ptag.innerText = data[i].User_First_Name + " " + data[i].User_Last_Name
+
+                            let addButtonSection = document.createElement("div");
+                            addButtonSection.classList.add("col-xl-6")
+                            addButtonSection.classList.add("col-lg-6")
+                            addButtonSection.classList.add("col-md-6")
+                            addButtonSection.classList.add("col-sm-6")
+
+                            let form = document.createElement("form");
+                            form.setAttribute("action", "<?php echo URLROOT;?>/FriendsListController/sendFriendRequest")
+                            form.setAttribute("method", "POST")
+
+                            let otherUserIdInput = document.createElement("input");
+                            otherUserIdInput.setAttribute("type", "hidden")
+                            otherUserIdInput.setAttribute("name", "otherUserId")
+                            otherUserIdInput.setAttribute("value", data[i].User_Id)
+
+                            let formSubmitBtn = document.createElement("input");
+                            formSubmitBtn.setAttribute("type", "submit")
+                            formSubmitBtn.setAttribute("value", "Add")
+                            formSubmitBtn.classList.add("btn")
+                            formSubmitBtn.classList.add("btn-primary")
+                            
+
+                            form.appendChild(otherUserIdInput);
+                            form.appendChild(formSubmitBtn);
+
+                            nameSection.appendChild(ptag);
+                            addButtonSection.appendChild(form);
+                            row.appendChild(nameSection);
+                            row.appendChild(addButtonSection);
+
+                            searchBody.appendChild(row);
+
+                        }
+
+                    }
                 }});
-            }else{
-
             }
 
 

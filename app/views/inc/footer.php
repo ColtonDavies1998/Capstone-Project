@@ -336,6 +336,26 @@
 
     }
 
+
+    $.ajax({url: "<?php echo URLROOT; ?>/FriendsListController/getNumberOfFriendRequests", async: false, success: function(result){
+        let friendRequestCount = result;
+
+        
+
+        if(friendRequestCount != 0){
+          let friendListBadge = document.createElement("span");
+          friendListBadge.classList.add("badge");
+          friendListBadge.classList.add("badge-danger");
+          friendListBadge.classList.add("badge-counter");
+          friendListBadge.innerText = friendRequestCount;
+
+          document.getElementById("friendsListLink").appendChild(friendListBadge);
+        }
+
+
+
+    }})
+
   </script>
 
 
