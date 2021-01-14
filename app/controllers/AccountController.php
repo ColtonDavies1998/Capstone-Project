@@ -3,11 +3,30 @@
     - When the individual group page is created come back and link the groups displayed to the function to transfer them to the 
     proper page
   */
+
+
+  /**
+   * This is the Account controller
+   * 
+   * 
+   * @package    Account
+   * @subpackage Controller
+   * @author     Colton Davies
+   */
   class AccountController extends Controller { 
+
+    /**
+     * Constructor
+     * 
+     */
     public function __construct(){
         $this->accountModel = $this->model('AccountModel');
     }
 
+    /**
+     * accountSetting
+     * 
+     */
     public function accountSetting(){
         $_SESSION['current_page'] = 'Account';
 
@@ -28,6 +47,10 @@
         $this->view('account/AccountSettings', $data);
     }
 
+    /**
+     * dashboardChange
+     * 
+     */
     public function dashboardChange(){
       if($_SERVER['REQUEST_METHOD'] == 'POST'){
         
@@ -43,7 +66,10 @@
        
       }
     }
-
+   /**
+     * changePassword
+     * 
+     */
     public function changePassword(){
       if($_SERVER['REQUEST_METHOD'] == 'POST'){
         //Sanitize POST data
@@ -64,9 +90,6 @@
         if(empty($data['old_password'])){
           $data['old_password_error'] = 'You cannot leave the old password blank';
         }
-
-        
-        //var_dump($this->accountModel->checkPassword($data['old_password'])) ;
 
 
         if($this->accountModel->checkPassword($data['old_password']) == false){
@@ -121,7 +144,11 @@
         redirect('accountController/accountSetting');
       }
     }
-
+    
+    /**
+     * changeInfo
+     * 
+     */
     public function changeInfo(){
       //Check for POST
       if($_SERVER['REQUEST_METHOD'] == 'POST'){

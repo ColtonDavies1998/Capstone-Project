@@ -14,7 +14,7 @@
 
                 //Sanitize POST data
                 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
+                $theZones = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
                 //Init Data
                 $data = [
                     'first_name'=> trim($_POST['first_name']),
@@ -28,7 +28,8 @@
                     'last_name_error' => '',
                     'email_error'=> '',
                     'password_error' => '',
-                    'confirm_password_error' => ''
+                    'confirm_password_error' => '',
+                    'timezones' => $theZones
 
                 ];
 
@@ -85,6 +86,7 @@
 
                 }else{
                     //Load view with errors
+                    
                     $this->view('user/Register',$data);
                 }
 

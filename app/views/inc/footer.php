@@ -356,6 +356,26 @@
 
     }})
 
+    $.ajax({url: "<?php echo URLROOT; ?>/MessageController/checkForNewMessages", async: false, success: function(result){
+        let messageCount = result;
+
+        
+
+        if(messageCount != 0){
+          let messageCountBadge = document.createElement("span");
+          messageCountBadge.classList.add("badge");
+          messageCountBadge.classList.add("badge-danger");
+          messageCountBadge.classList.add("badge-counter");
+          messageCountBadge.innerText = messageCount;
+
+          document.getElementById("messageNumDisplay").appendChild(messageCountBadge);
+        }
+
+
+
+    }})
+
+
   </script>
 
 
