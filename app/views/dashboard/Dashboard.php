@@ -8,7 +8,6 @@
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-
       <style>
         .text-left {
               text-align: left!important;
@@ -466,16 +465,25 @@
                     <div class="form-group">
                       <label for="projectNameInput">Project Name</label>
                       <input type="text" class="form-control" name="projectNameInput" id="projectNameInput"  placeholder="Project Name">
+                      <?php if(isset($_SESSION['projectErrorData']['project_name_error'])): ?>
+                        <span class="text-danger"> <?php echo $_SESSION['projectErrorData']['project_name_error'] ?> </span>
+                      <?php endif; ?>
                     </div>
 
                     <div class="form-group">
                       <label for="projectTypeInput">Project Type</label>
                       <input type="text" class="form-control" name="projectTypeInput" id="projectTypeInput"  placeholder="Project Type">
+                      <?php if(isset($_SESSION['projectErrorData']['project_type_error'])): ?>
+                        <span class="text-danger"> <?php echo $_SESSION['projectErrorData']['project_type_error'] ?> </span>
+                      <?php endif; ?>
                     </div>
 
                     <div class="form-group">
                       <label for="projectDescriptionInput">Project Description</label>
                       <textarea class="form-control" id="projectDescriptionInput" name="projectDescriptionInput" rows="5"></textarea>
+                      <?php if(isset($_SESSION['projectErrorData']['project_description_error'])): ?>
+                        <span class="text-danger"> <?php echo $_SESSION['projectErrorData']['project_description_error'] ?> </span>
+                      <?php endif; ?>
                     </div>
 
                     <input id="formButton"  type="submit" value="Create" class="btn btn-primary" >
@@ -615,7 +623,8 @@
       <?php require APPROOT . '/views/inc/footer.php'; ?>
 
       <?php 
-      unset($_SESSION["errorData"]) 
+      unset($_SESSION["errorData"]);
+      unset($_SESSION["projectErrorData"]);
       ?>
 
 <?php else: ?>

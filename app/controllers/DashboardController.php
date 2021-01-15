@@ -70,7 +70,7 @@
             $data['task_start_time'] = $tempStartTime[0] . ":" . $roundedStartMinutes;
           }
         }
-        if(isset($data['endTimeInput'])){
+        if(isset($data['task_end_time'])){
           $data['task_end_time_error'] = 'Please enter in a end time for the task';
         }else{
           //makes sure the minutes for end time are in 5 minute intervals
@@ -88,10 +88,10 @@
             $data['task_end_time'] = $tempEndTime[0] . ":" . $roundedEndMinutes;
           }
         }
-        if(isset($data['startDateInput'])){
+        if(isset($data['task_start_date'])){
           $data['task_start_date_error'] = 'Please enter in a start date for the task';
         }
-        if(isset($data['endDateInput'])){
+        if(isset($data['task_end_date'])){
           $data['task_end_date_error'] = 'Please enter in a end date for the task';
         }
 
@@ -124,7 +124,7 @@
           //Validated
 
           //Input New Task
-
+          
           if($this->userModel->createNewTask($data)){
               redirect('dashboardController/dashboard');
           }else{
@@ -181,8 +181,9 @@
           }
 
         }else{
-          //Load view with errors
-          $this->view('dashboard/Dashboard',$data);
+          //Load view with errors   HERRRRRRRRRRRRRRRRRRRRRRRRRRE
+          $_SESSION['projectErrorData'] = $data;
+          redirect('dashboardController/dashboard');
         }
 
 

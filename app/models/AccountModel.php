@@ -46,10 +46,16 @@ class AccountModel{
             $this->db->bind(':buisness_user', 1);
 
             $_SESSION['buisness_user_account_type'] == true;
-        }else{
+        }else if($data['buisness_user'] == "unSub"){
             $this->db->bind(':buisness_user', 0);
 
             $_SESSION['buisness_user_account_type'] == false;
+        }else{
+            if($_SESSION['buisness_user_account_type'] == true){
+                $this->db->bind(':buisness_user', 1);
+            }else{
+                $this->db->bind(':buisness_user', 0);
+            }
         }
         
         $this->db->bind(':userId', $_SESSION['user_id']);

@@ -220,11 +220,5 @@
         $this->view('user/Register', $data);
       }
     }
-
-    //When the individual group page is created this function will move to that page, do for later
-    public function transferToGroup(){
-
-    }
-
-    
+ 
   }

@@ -150,6 +150,8 @@
              </div>
            </div>
 
+           
+
            <!-- Pie Chart -->
            <div class="col-xl-6 col-lg-6">
              <div class="card shadow mb-4">
@@ -201,11 +203,7 @@
                    <h2 class=" font-weight-bold">No Groups have been created </h2>
                  <?php else: ?>
                    <?php foreach($data['groupsInfo'] as $group): ?>
-                     <a href="<?php echo URLROOT; ?>/AccountController/transferToGroup?groupId=<?php echo $group->Group_Id;  ?>">
                       <h2 class=" font-weight-bold"><?php echo $group->Group_Name; ?></h2>
-                     </a>
-                     
-                     
                    <?php endforeach;?>
                  <?php endif;?>
                </div>

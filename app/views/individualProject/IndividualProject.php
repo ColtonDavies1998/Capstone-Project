@@ -111,7 +111,7 @@
                 <!-- Illustrations -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Create New Task Today</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Create New Task</h6>
                     </div>
                     <div class="card-body">
                         <form action="<?php echo URLROOT;?>/IndividualProjectController/createNewTask" method="post">
