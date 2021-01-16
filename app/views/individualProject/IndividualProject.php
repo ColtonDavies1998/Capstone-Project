@@ -7,6 +7,14 @@
  
     <?php require APPROOT . '/views/inc/header.php'; ?>
 
+    <?php if(isset($_SESSION['fileErrorData'])):?>
+        <style>
+            #confirmationOverlay{
+                display: block;
+            }
+        </style>
+    <?php endif;?>
+
     <?php require APPROOT . '/views/inc/sideNav.php'; ?>
 
 
@@ -71,21 +79,9 @@
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Daily Tasks</h6>
-                            <div class="dropdown no-arrow">
-                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                                <div class="dropdown-header">Task Display:</div>
-                                <a class="dropdown-item text-success" href="#">Incomplete Only</a>
-                                <a class="dropdown-item" href="#">Completed Only</a>
-                                <a class="dropdown-item" href="#">Both</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
+                            <h6 class="m-0 font-weight-bold text-primary">Incomplete Projects Tasks</h6>
+                            
                         </div>
-                    </div>
                     <!-- Card Body -->
                     <div class="card-body" style="overflow-y:scroll;height: 450px; ">
                         <div class="list-group" >
@@ -97,8 +93,21 @@
                                             <small><b>Start Time: </b><?php echo militaryToCivilianTime($tasks->Task_Start_Time); ?></small> 
                                             <small><b>End Time: </b><?php echo militaryToCivilianTime($tasks->Task_End_Time); ?></small>
                                         </div>
-                                        <p class="mb-1">Add task description later</p>
-                                        <button class="mb-1 btn btn-danger singleTask taskId-<?php echo $tasks->Task_Id ?>">Incomplete</button>
+                                        <?php if($tasks->Task_Completed == 0):?>
+                                            <form action="<?php echo URLROOT;?>/IndividualProjectController/incompleteToComplete" method="post">
+                                                <input type="hidden" name="taskId" value="<?php echo $tasks->Task_Id ?>">
+                                                <input type="submit" value="Incomplete" class="mb-1 btn btn-danger singleTask">
+                                            </form>
+                                        <?php else: ?>
+                                            <form action="<?php echo URLROOT;?>/IndividualProjectController/completeToIncomplete" method="post">
+                                                <input type="hidden" name="taskId" value="<?php echo $tasks->Task_Id ?>">
+                                                <input type="submit" value="Completed" class="mb-1 btn btn-success singleTask">
+                                            </form>
+
+                                        <?php endif;?>
+
+                                        
+                                        
                                     </a>
                                 <?php endif;?>
                             <?php endforeach;?>
@@ -117,7 +126,7 @@
                         <form action="<?php echo URLROOT;?>/IndividualProjectController/createNewTask" method="post">
                         <div class="form-group">
                             <label for="nameInput">Task Name</label>
-                            <input type="hidden" class="form-control" name="idInput" id="idInput" value="<?php echo $data["projectInformation"]->Project_Id;?>">
+                            <input type="hidden" class="form-control" name="idInput" id="idInput" value="<?php echo $_SESSION['current_project'];?>">
                             <input type="text" class="form-control" name="nameInput" id="nameInput"  placeholder="Enter Name">
                             <?php if(isset($_SESSION['errorData']['task_name_error'])): ?>
                             <span class="text-danger"> <?php echo $_SESSION['errorData']['task_name_error'] ?> </span>
@@ -180,10 +189,32 @@
 
             <!-- Content Row -->
             <div class="row">
-     
-                
+                <div class="col-xl-7 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">All Project Tasks</h6>
+                            </div>
+                        <!-- Card Body -->
+                        <div class="card-body" style="overflow-y:scroll;height: 450px; ">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                    <table id="table" class="table"></table>
+                                </div>    
+                            </div>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                    <ul class="pagination" id="pagination"></ul>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
+
         </div>
 
         <div id="fileDisplay">
@@ -384,13 +415,111 @@
             }});
         }
 
+        
+        var tableHeads = ["Id", "Name", "Start Time", "End Time", "Start Date","End Date", "Task Type" , "Completed", "Edit", "Remove"];
+        var objectFields = ["Task_Id", "Task_Name","Task_Start_Time", "Task_End_Time" ,"Task_Start_Date", "Task_End_Date", "Task_Type","Task_Completed"];
+        var sourceId = document.getElementById("table");
+           
+        $.ajax({url: "<?php echo URLROOT; ?>/IndividualProjectController/getProjectTasks", async: false, success: function(result){
+            
+             
+            var table = new Table(JSON.parse(result), {
+              tableHeaders: tableHeads,
+              tableId: sourceId,
+              fields: objectFields,
+              numOfItemsDropdownDisplay: {
+                display: false,
+                numberList: ["5"]
+              },
+              searchBarDisplay: false,
+              specialButtons: [
+                {
+                  btnName: "edit",
+                  btnClasses: ["btn", "btn-warning"],
+                  text: "Edit"
+                },
+                {
+                  btnName: "delete",
+                  btnClasses: ["btn", "btn-danger", "deleteButtons"],
+                  text: "Delete"
+                }
+              ]
+            });
+
+            table.createTable(); 
+                
+            }});
+
+            /*This function when called  sets the values of the inputs in the overlay, to the values
+            of the row that was clicked*/
+            function editTask(e) {
+
+                //console.log(e.target.parentElement.parentElement.firstChild.innerText);
+
+                var http = new XMLHttpRequest();
+                var url = '<?php echo URLROOT; ?>/TaskHistoryController/getSingleTaskInfo';
+                var params = 'id=' + e.target.parentElement.parentElement.firstChild.innerText;
+                http.open('POST', url, true);
+
+                //Send the proper header information along with the request
+                http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+                http.onreadystatechange = function() {//Call a function when the state changes.
+                    if(http.readyState == 4 && http.status == 200) {
+                    
+                        var info = JSON.parse(http.responseText);
+
+                        document.getElementById("editTaskNameOverlay").style.display = "block";
+
+                        document.getElementById("taskNameEdit").value = info.Task_Name;  
+
+                        document.getElementById("taskId").value = info.Task_Id; 
+
+                        document.getElementById("startDateInput").value =  info.Task_Start_Date;
+
+                        document.getElementById("endDateInput").value =  info.Task_End_Date;
+
+                        document.getElementById("startTimeInput").value = info.Task_Start_Time;
+
+                        document.getElementById("endTimeInput").value = info.Task_End_Time;
+
+                        if(info.Task_Type == "Work"){
+                        document.getElementById("taskTypeInput").selectedIndex = "0";
+                        }else if(info.Task_Type == "Education"){
+                        document.getElementById("taskTypeInput").selectedIndex = "1";
+                        }else if(info.Task_Type == "Home"){
+                        document.getElementById("taskTypeInput").selectedIndex = "2";
+                        }else if(info.Task_Type == "Chores"){
+                        document.getElementById("taskTypeInput").selectedIndex = "3";
+                        }else{
+                        document.getElementById("taskTypeInput").selectedIndex = "4";
+                        }
+
+                    
+
+                        if(info.Task_Completed == 1){
+                            document.getElementById("CompletedRadio1").checked = true;
+                        }else{
+                            document.getElementById("CompletedRadio2").checked = true;
+                        }
+
+                    }
+                }
+                http.send(params);
+
+                }
+
+
+
+
         </script>
 
 
         
 
         <?php 
-        unset($_SESSION["errorData"]) 
+        unset($_SESSION["errorData"]) ;
+        unset($_SESSION['fileErrorData']) ;
         ?>
 
     <?php else: ?>

@@ -38,8 +38,8 @@
   <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/groupsStyle.css">
 <?php endif;?>
 
-<?php if($_SESSION['current_page'] == 'TaskHistory'):?>
-  <script src="<?php echo URLROOT; ?>/js/data.js"></script>
+<?php if($_SESSION['current_page'] == 'TaskHistory' || $_SESSION['current_page'] == 'IndividualProject'):?>
+  
 
 <script src="<?php echo URLROOT; ?>/vendor/PaginationJS/paginationJS.js"></script>
 
@@ -265,10 +265,16 @@
             <label for="fileName">File Name</label>
             <input type="hidden" name="projectId" value="<?php echo $data["projectInformation"]->Project_Id ?>">
             <input type="text" class="form-control" style="margin-bottom: 5px;" name="fileName" id="fileName" >
+            <?php if(isset($_SESSION['fileErrorData']['file_name_error'])): ?>
+              <span class="text-danger"> <?php echo $_SESSION['fileErrorData']['file_name_error'] ;?> </span>
+            <?php endif; ?>
           </div>
           <div class="form-group">
             <label for="fileLink">File Link (link your google drive docments here)</label>
             <input type="text" class="form-control" style="margin-bottom: 5px;" name="fileLink" id="fileLink" >
+            <?php if(isset($_SESSION['fileErrorData']['file_link_error'])): ?>
+              <span class="text-danger"> <?php echo $_SESSION['fileErrorData']['file_link_error'] ;?> </span>
+            <?php endif; ?>
           </div>
           <div class="form-group">
             <label for="fileType">File Type</label>

@@ -18,7 +18,7 @@ class IndividualProjectModel{
     }
 
     public function checkForUserProjectMatch($projectId){
-        $this->db->query('SELECT * FROM projects WHERE User_Id = :userId && Project_Id = :projectId');
+        $this->db->query('SELECT * FROM projects WHERE User_Id = :userId AND Project_Id = :projectId');
 
         $this->db->bind(':userId', $_SESSION['user_id']);
         $this->db->bind(':projectId', $projectId);
@@ -130,6 +130,65 @@ class IndividualProjectModel{
         $this->db->bind(':userId', $_SESSION['user_id']);
         $this->db->bind(':fileId', $fileId);
 
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function getIndividualTaskInfo($taskId, $project_Id){
+        $this->db->query('SELECT * FROM tasks WHERE User_Id = :userId AND Project_Id = :projectId AND Task_Id = :taskId' );
+
+        $this->db->bind(':userId', $_SESSION['user_id']);
+        $this->db->bind(':projectId', $projectId);
+        $this->db->bind(':taskId', $taskId);
+
+        $row = $this->db->single();
+
+        return $row;
+    }
+
+    public function changeTaskCompletion($taskId, $changeToComplete){
+        $this->db->query('UPDATE tasks SET Task_Completed = :completionValue WHERE Task_Id = :taskid && User_Id = :userId');
+
+
+        if($changeToComplete == true){
+            $this->db->bind(':completionValue', 1);
+        }else{
+            $this->db->bind(':completionValue', 0);
+        }
+        $this->db->bind(':taskid', $taskId);
+        $this->db->bind(':userId', $_SESSION['user_id']);
+
+        //call execute if you want to insert
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    public function getCompletedProjectTasks($projectId){
+        $this->db->query('SELECT * FROM tasks WHERE User_Id = :userId AND Project_Id = :projectId AND Task_Completed = :completionValue' );
+
+        $this->db->bind(':userId', $_SESSION['user_id']);
+        $this->db->bind(':projectId', $projectId);
+        $this->db->bind(':completionValue', 1);
+
+        $rows = $this->db->resultSet();
+
+        return $rows;
+    }
+
+    public function changeProjectCompletion($projectId, $completionPercent){
+        $this->db->query('UPDATE projects SET Project_Completion = :completionPercent WHERE Project_Id = :projectId ');
+
+        $this->db->bind(':completionPercent', $completionPercent);
+        $this->db->bind(':projectId', $projectId);
+
+        //call execute if you want to insert
         if($this->db->execute()){
             return true;
         }else{

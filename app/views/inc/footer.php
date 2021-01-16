@@ -57,9 +57,9 @@
 
   <script src="<?php echo URLROOT; ?>/js/main.js"></script>
   
-  <?php if($_SESSION['current_page'] == 'TaskHistory'):?>
+  <?php if($_SESSION['current_page'] == 'TaskHistory' || $_SESSION['current_page'] == 'IndividualProject'):?>
     <!--Only for task history module -->
-    <script defer src="<?php echo URLROOT; ?>/js/taskHistoryScript.js"></script>
+    <script src="<?php echo URLROOT; ?>/js/taskHistoryScript.js"></script>
   <?php endif;?>
 
   <?php if($_SESSION['current_page'] == 'MultipleProjects'):?>
@@ -377,7 +377,6 @@
 
 
   </script>
-
 
 
 </body>

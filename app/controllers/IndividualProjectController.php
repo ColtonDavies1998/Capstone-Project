@@ -8,13 +8,17 @@ class IndividualProjectController extends Controller {
 
     public function individualProject(){
         $_SESSION['current_page'] = 'IndividualProject';
-        
+
+       
         $_SESSION['current_project'] = $_GET['projectId'];
+        
         
 
         $projectId = $_SESSION['current_project'];
 
         $actualUsersProject = $this->individualProjectModel->checkForUserProjectMatch($projectId);
+
+   
 
         if($actualUsersProject >= 1){
             $data["actualUsersProject"] = true;
@@ -23,10 +27,15 @@ class IndividualProjectController extends Controller {
         }
 
         $data["projectInformation"] = $this->individualProjectModel->getProjectsInformation($projectId);
-        $data["projectsTasks"] = $this->individualProjectModel->getProjectsTasks($projectId);
+        $data["projectsTasks"] = $this->individualProjectModel->getProjectsTasks($_SESSION['current_project']);
 
         $data["projectFiles"] = $this->individualProjectModel->getProjectFiles($projectId);
         
+
+        //Update completion rate of project incomplete tasks/ completed tasks
+        $totalCompleteTasks = $this->individualProjectModel->getCompletedProjectTasks($_SESSION['current_project']);
+        $completionPercent = (sizeof($totalCompleteTasks) / sizeof($this->individualProjectModel->getProjectsTasks($_SESSION['current_project']))) * 100;
+        $this->individualProjectModel->changeProjectCompletion($projectId, $completionPercent);
 
         $this->view('individualProject/IndividualProject', $data);
     }
@@ -69,7 +78,7 @@ class IndividualProjectController extends Controller {
             if(empty($data['task_type'])){
               $data['task_type_error'] = 'Please select a task type';
             }
-            if(isset($data['startTimeInput'])){
+            if(empty($data['task_start_date'])){
               $data['task_start_time_error'] = 'Please enter in a start time for the task';
             }else{
               //makes sure the minutes are in 5 minute intervals
@@ -86,7 +95,7 @@ class IndividualProjectController extends Controller {
                 $data['task_start_time'] = $tempStartTime[0] . ":" . $roundedStartMinutes;
               }
             }
-            if(isset($data['endTimeInput'])){
+            if(empty($data['task_end_time'])){
               $data['task_end_time_error'] = 'Please enter in a end time for the task';
             }else{
               //makes sure the minutes for end time are in 5 minute intervals
@@ -104,10 +113,10 @@ class IndividualProjectController extends Controller {
                 $data['task_end_time'] = $tempEndTime[0] . ":" . $roundedEndMinutes;
               }
             }
-            if(isset($data['startDateInput'])){
+            if(empty($data['task_start_date'])){
               $data['task_start_date_error'] = 'Please enter in a start date for the task';
             }
-            if(isset($data['endDateInput'])){
+            if(empty($data['task_end_date'])){
               $data['task_end_date_error'] = 'Please enter in a end date for the task';
             }
     
@@ -134,7 +143,8 @@ class IndividualProjectController extends Controller {
               }
     
             }
-    
+           
+
             if(empty($data['task_name_error']) && empty($data['task_type_error']) && empty($data['task_start_time_error']) && empty($data['task_end_time_error'])
             && empty( $data['task_start_date_error']) && empty( $data['task_end_date_error'])){
               //Validated
@@ -142,7 +152,7 @@ class IndividualProjectController extends Controller {
               //Input New Task
     
               if($this->individualProjectModel->createNewTask($data)){
-
+                
                 $path = '/IndividualProjectController/individualProject?projectId=' . $_SESSION['current_project'];          
                 redirect($path);
               }else{
@@ -153,8 +163,10 @@ class IndividualProjectController extends Controller {
             }else{
                 //Load view with errors
                 $_SESSION['errorData'] = $data;
-                $this->individualProject();
-                //redirect('IndividualProjectController/individualProject?projectId='+ $_SESSION['current_project']);
+                $path = '/IndividualProjectController/individualProject?projectId=' . $_SESSION['current_project'];     
+              
+                redirect($path);
+    
             }
             
           }
@@ -186,42 +198,47 @@ class IndividualProjectController extends Controller {
           $fileData['file_link_error'] = 'Please enter a file link';
         }
 
-        //fix the google doc link
-        $stringArray = str_split($fileData['file_link']);
-        $startingIndex = 0;
-        $endingIndex = 0;
-        
-        
-        for($i= sizeof($stringArray)- 1; $i >= 0; $i-- ){
+        if(empty($fileData['file_link_error']) ){
+          //fix the google doc link
+          $stringArray = str_split($fileData['file_link']);
+          $startingIndex = 0;
+          $endingIndex = 0;
           
-          if($stringArray[$i] == "?"){
-            $endingIndex = $i - 1;
+          
+          for($i= sizeof($stringArray)- 1; $i >= 0; $i-- ){
             
-            $temp = $i - 1;
-            $loopCheck = false;
-            while($loopCheck == false){
-              if($stringArray[$temp] == "/"){
-                $startingIndex = $temp + 1;
-                $loopCheck = true;
-              }else{
-                $temp--;
+            if($stringArray[$i] == "?"){
+              $endingIndex = $i - 1;
+              
+              $temp = $i - 1;
+              $loopCheck = false;
+              while($loopCheck == false){
+                if($stringArray[$temp] == "/"){
+                  $startingIndex = $temp + 1;
+                  $loopCheck = true;
+                }else{
+                  $temp--;
+                }
               }
+            break;
             }
-          break;
           }
+
+          $endOfString = "";
+
+          for($i = $endingIndex + 1;  $i < sizeof($stringArray); $i++){
+            $endOfString = $endOfString . $stringArray[$i];
+          }
+
+          $newString =  substr_replace($fileData['file_link'], 'preview' , $startingIndex, $endingIndex);
+
+          $fileData["file_link"] = $newString . $endOfString;
+
         }
 
-        $endOfString = "";
+        
 
-        for($i = $endingIndex + 1;  $i < sizeof($stringArray); $i++){
-          $endOfString = $endOfString . $stringArray[$i];
-        }
-
-        $newString =  substr_replace($fileData['file_link'], 'preview' , $startingIndex, $endingIndex);
-
-        $fileData["file_link"] = $newString . $endOfString;
-
-        echo $fileData["file_link"];
+        
 
         //https://drive.google.com/file/d/1pL6N7eUKtBJvgHiCyXa53kUgtmjZYi9-/preview?usp=sharing
         //https://drive.google.com/file/d/1pL6N7eUKtBJvgHiCyXa53kUgtmjZYi9-/preview?usp=sharing
@@ -236,6 +253,9 @@ class IndividualProjectController extends Controller {
           }else{
               die('Something went Wrong');
           }  
+        }else{
+          $_SESSION['fileErrorData'] = $fileData;
+          redirect('individualProjectController/individualProject');
         }
 
 
@@ -319,6 +339,40 @@ class IndividualProjectController extends Controller {
         redirect($path);
       }
     }
+
+    public function incompleteToComplete(){
+      $taskId = $_POST["taskId"];
+
+      //Check if the taskId belongs to the user and project
+      $taskInfo = $this->individualProjectModel->getIndividualTaskInfo($taskId, $_SESSION['current_project']);
+      if(sizeof($taskInfo) == 1){
+        $this->individualProjectModel->changeTaskCompletion($taskId, true);
+        $path = '/IndividualProjectController/individualProject?projectId=' . $_SESSION['current_project'];          
+        redirect($path);
+      }
+
+
+    }
+
+    public function completeToIncomplete (){
+      $taskId = $_POST["taskId"];
+
+      //Check if the taskId belongs to the user and project
+      $taskInfo = $this->individualProjectModel->getIndividualTaskInfo($taskId, $_SESSION['current_project']);
+      if(sizeof($taskInfo) == 1){
+        $this->individualProjectModel->changeTaskCompletion($taskId, false);
+        $path = '/IndividualProjectController/individualProject?projectId=' . $_SESSION['current_project'];          
+        redirect($path);
+      }
+    }
+
+    public function getProjectTasks(){
+      $tasks = $this->individualProjectModel->getProjectsTasks($_SESSION['current_project']);
+
+      echo json_encode($tasks);
+    }
+
+
 
 
     function roundMinutes($timestring) {

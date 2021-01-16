@@ -181,7 +181,7 @@
           }
 
         }else{
-          //Load view with errors   HERRRRRRRRRRRRRRRRRRRRRRRRRRE
+          //Load view with errors   
           $_SESSION['projectErrorData'] = $data;
           redirect('dashboardController/dashboard');
         }
