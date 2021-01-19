@@ -11,7 +11,32 @@
     public function groupsDisplay(){
         $_SESSION['current_page'] = 'Groups';
 
-        $data = $this->groupsModel->getUsersCreatedGroups();
+       
+
+        $data["userCreateGroups"] = $this->groupsModel->getUsersCreatedGroups();
+        $data["groups"] = [];
+
+        $otherGroupsIds = $this->groupsModel->getGroupRelation();
+        $groups = [];
+
+        
+
+
+        for($i=0; $i < sizeof($otherGroupsIds); $i++){
+            
+            array_push($groups, $otherGroupsIds[$i]);
+            
+        }
+        
+        
+        
+        for($i = 0; $i < sizeof($groups); $i++){
+            $temp = $this->groupsModel->getGroupInformation($groups[$i]->Group_Id);
+            
+            array_push($data["groups"], $temp);
+        }
+        
+    
 
         $this->view('groups/Groups', $data);
     }

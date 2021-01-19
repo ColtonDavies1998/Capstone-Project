@@ -101,9 +101,7 @@
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
                                         <input id="lastNameField" class="form-control">
                                     </div>
- 
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -171,11 +169,44 @@
                                                     </form>
                                                 </div>
                                             </div>
-
-                                            
                                         </div>
                                     </div>
-                                 
+                                <?php endforeach;?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">group Requests </h6>
+                            </div>
+                            <div class="card-body" style="overflow-y:scroll;height: 450px; ">
+                            <?php foreach($data['groupRequests'] as $groupRequests):?>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                            <p><?php echo $groupRequests->Group_Name; ?></p>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                                    <form action="<?php echo URLROOT;?>/FriendsListController/declineGroupRequest" method="post">
+                                                        <input type="hidden" value="<?php echo $groupRequests->Group_Request_Connection_Id; ?>" name="groupConnectionId">
+                                                        <input type="submit" value="decline" class="btn btn-outline-danger">
+                                                    </form>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                                    <form action="<?php echo URLROOT;?>/FriendsListController/acceptGroupRequest" method="post">
+                                                        <input type="hidden" value="<?php echo $groupRequests->Group_Request_Connection_Id; ?>" name="groupConnectionId">
+                                                        <input type="submit" value="accept" class="btn btn-outline-success">
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 <?php endforeach;?>
                             </div>
                         </div>
@@ -319,9 +350,6 @@
 
                 }});
             }
-
-            
-
         });
 
         document.getElementById("lastNameField").addEventListener("keyup", function(e){

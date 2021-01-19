@@ -146,6 +146,56 @@ class FriendsListModel{
 
         return $rows;
     }
+
+    public function getGroupRequests(){
+        $this->db->query('SELECT * FROM grouprequestconnection WHERE Receiver_Id = :idOne' );
+
+        $this->db->bind(':idOne', $_SESSION['user_id']);
+
+        $rows = $this->db->resultSet();
+
+        return $rows;
+    }
+
+    public function getGroupId($groupConnectionId){
+        $this->db->query('SELECT Group_Id FROM grouprequestconnection WHERE Group_Request_Connection_Id = :groupId');
+        //bind values
+        $this->db->bind(':groupId', $groupConnectionId);
+
+        $row = $this->db->single();
+
+        return $row;
+    }
+
+    public function removeGroupConnectionId($groupConnectionId){
+        $this->db->query("DELETE FROM grouprequestconnection WHERE Group_Request_Connection_Id = :connectionId");
+        //bind values
+        $this->db->bind(':connectionId', $groupConnectionId);
+
+        //call execute if you want to insert
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function acceptGroupRequest($groupId){
+        
+        $this->db->query('INSERT INTO groupconnection (Group_Id, User_Id) 
+        VALUES(:groupId, :userId)'); 
+
+        $this->db->bind(':groupId', $groupId);
+        $this->db->bind(':userId', $_SESSION['user_id']);
+
+        
+        //call execute if you want to insert
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        } 
+    }
 }
 
 

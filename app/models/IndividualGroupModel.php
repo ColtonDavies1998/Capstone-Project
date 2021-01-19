@@ -112,18 +112,65 @@ class IndividualGroupModel{
         }
     }
 
-    //NOT COMPLETE FUNCTION, ERROR WITH RETURN
-    public function userSearch($userInput){
-        $query = "SELECT * FROM users WHERE User_First_Name LIKE '%:firstName%'";
-
+    public function userSearch($firstName, $lastName){
+        $query = "SELECT User_Id, User_First_Name, User_Last_Name, Email FROM users WHERE User_Id !=" . $_SESSION['user_id'] . " AND User_First_Name LIKE '%" . $firstName ."%' OR '%" . $lastName . "%'   ";
+        
         $this->db->query($query);
-
-        $this->db->bind(':firstName', $userInput);
-        //$this->db->bind(':lastName', $userInput);
 
         $rows = $this->db->resultSet();
 
         return $rows;
+    }
+
+    public function SendGroupInviteRecord($otherUserId, $userInfo, $groupName){
+        $this->db->query('INSERT INTO grouprequestconnection (Receiver_Id, Group_Id, Group_Name, Receiver_Name) 
+        VALUES(:receiverId, :groupId, :groupName, :receiverName)');
+        //bind values
+        $this->db->bind(':receiverId', $otherUserId);
+        $this->db->bind(':groupId', $_SESSION['current_group']);
+        $this->db->bind(':groupName', $groupName);
+        $this->db->bind(':receiverName', $userInfo->User_First_Name . " " . $userInfo->User_Last_Name);
+
+        //call execute if you want to insert
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function getRequestedConnections(){
+        $this->db->query('SELECT * FROM grouprequestconnection WHERE Group_Id = :idOne' );
+
+        $this->db->bind(':idOne', $_SESSION['current_group']);
+
+
+        $rows = $this->db->resultSet();
+
+        return $rows;
+    }
+
+    public function getGroupFriends(){
+        $this->db->query('SELECT * FROM groupconnection WHERE Group_Id = :idOne ' );
+
+        $this->db->bind(':idOne', $_SESSION['current_group']);
+
+        $rows = $this->db->resultSet();
+
+        return $rows;
+    }
+
+    public function cancelGroupRequestInvitation($otherUserId){
+        $this->db->query('DELETE FROM grouprequestconnection WHERE Receiver_Id = :userId && Group_Id = :groupId');
+
+        $this->db->bind(':userId', $otherUserId);
+        $this->db->bind(':groupId', $_SESSION['current_group']);
+
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

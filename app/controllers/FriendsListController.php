@@ -13,6 +13,8 @@ class FriendsListController extends Controller {
         $data["incomingFriendRequests"] = $this->friendsListModel->getFriendRequests();
         $data["friendsList"] = $this->friendsListModel->getFriends();
 
+        $data["groupRequests"] = $this->friendsListModel->getGroupRequests();
+
 
         $this->view('friends/FriendsList', $data);
     }
@@ -118,6 +120,28 @@ class FriendsListController extends Controller {
         $count = sizeof($returnData);
 
         echo  json_encode($count);
+    }
+
+    public function declineGroupRequest(){
+
+        $groupConnectionId = $_POST["groupConnectionId"];
+
+        $this->friendsListModel->removeGroupConnectionId($groupConnectionId);
+
+        redirect('FriendsListController/friendsList');
+    }
+
+    public function acceptGroupRequest(){
+
+        $groupConnectionId = $_POST["groupConnectionId"];
+
+        $groupInfo = $this->friendsListModel->getGroupId($groupConnectionId);
+
+        $this->friendsListModel->removeGroupConnectionId($groupConnectionId);
+
+        $this->friendsListModel->acceptGroupRequest($groupInfo->Group_Id);
+
+        redirect('FriendsListController/friendsList');
     }
 }
 

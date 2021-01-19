@@ -19,12 +19,10 @@
     
    <!-- Page Heading -->
    <h1 class="h3 mb-4 text-gray-800">Groups <a class="addProjectBtn" id="addGroupsBtn">+</a></h1>
-
-    
-
     <?php $counter = 1;?>
-       <?php if(sizeof($data) > 0): ?>
-        <?php foreach($data as $group): ?>
+       <?php if(sizeof($data["groups"]) > 0): ?>
+        <?php foreach($data["groups"] as $group): ?>
+            <?php $trigger = false; ?>
             <?php if($counter == 1):?><div class="row"> <?php endif;?>
                 <div class="col-lg-3 col-md-3 col-sm-3 groups" id="group-<?php echo $group->Group_Id; ?>">
                     <div class="card shadow mb-4">
@@ -35,10 +33,18 @@
                                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in dropdownClass" aria-labelledby="dropdownMenuLink" x-placement="bottom-end">
-                                    <div class="dropdown-header">Options</div>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item groupEditOption" id="group-<?php echo $group->Group_Id; ?>-edit">Edit Name</a>
-                                    <a class="dropdown-item groupDeleteOption" id="group-<?php echo $group->Group_Id; ?>-delete">Delete</a>
+                                    <?php foreach($data["userCreateGroups"] as $createdGroup): ?>
+                                        <?php if($createdGroup->Group_Id ==  $group->Group_Id): ?>
+                                            <?php $trigger = true;?>
+                                            <?php break;?>
+                                        <?php endif;?>
+                                    <?php endforeach;?>
+                                    <?php if($trigger == true):?>
+                                        <div class="dropdown-header">Options</div>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item groupEditOption" id="group-<?php echo $group->Group_Id; ?>-edit">Edit Name</a>
+                                        <a class="dropdown-item groupDeleteOption" id="group-<?php echo $group->Group_Id; ?>-delete">Delete</a>
+                                    <?php endif;?>
                                 </div>
                             </div>
                         </div>

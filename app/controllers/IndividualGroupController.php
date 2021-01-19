@@ -9,7 +9,7 @@ class IndividualGroupController extends Controller {
 
         $_SESSION['current_group'] = $_GET['groupId'];
 
-        $groupId = $_GET['groupId'];
+        $groupId = $_SESSION['current_group'];
 
         $actualUsersGroup = $this->individualGroupModel->checkForUserGroupMatch($groupId);
 
@@ -31,6 +31,8 @@ class IndividualGroupController extends Controller {
         }
 
         $data["userOwnsThisGroup"] = $this->individualGroupModel->checkIfUserOwnsGroup($groupId);
+
+        $data['groupRequest'] = $this->individualGroupModel->getRequestedConnections();
     
         $this->view('individualGroup/IndividualGroup', $data);
     }
@@ -64,7 +66,7 @@ class IndividualGroupController extends Controller {
             if(empty($data['task_type'])){
               $data['task_type_error'] = 'Please select a task type';
             }
-            if(isset($data['startTimeInput'])){
+            if(empty($data['startTimeInput'])){
               $data['task_start_time_error'] = 'Please enter in a start time for the task';
             }else{
               //makes sure the minutes are in 5 minute intervals
@@ -81,7 +83,7 @@ class IndividualGroupController extends Controller {
                 $data['task_start_time'] = $tempStartTime[0] . ":" . $roundedStartMinutes;
               }
             }
-            if(isset($data['endTimeInput'])){
+            if(empty($data['endTimeInput'])){
               $data['task_end_time_error'] = 'Please enter in a end time for the task';
             }else{
               //makes sure the minutes for end time are in 5 minute intervals
@@ -99,10 +101,10 @@ class IndividualGroupController extends Controller {
                 $data['task_end_time'] = $tempEndTime[0] . ":" . $roundedEndMinutes;
               }
             }
-            if(isset($data['startDateInput'])){
+            if(empty($data['startDateInput'])){
               $data['task_start_date_error'] = 'Please enter in a start date for the task';
             }
-            if(isset($data['endDateInput'])){
+            if(empty($data['endDateInput'])){
               $data['task_end_date_error'] = 'Please enter in a end date for the task';
             }
     
@@ -138,7 +140,7 @@ class IndividualGroupController extends Controller {
     
               if($this->individualGroupModel->createNewTask($data)){
 
-                $path = '/IndividualProjectController/individualProject?groupId=' . $_SESSION['current_group'];          
+                $path = '/IndividualGroupController/individualGroup?groupId=' . $_SESSION['current_group'];          
                 redirect($path);
               }else{
                   die('Something went Wrong');
@@ -148,17 +150,52 @@ class IndividualGroupController extends Controller {
             }else{
                 //Load view with errors
                 $_SESSION['errorData'] = $data;
-                $this->individualGroup();
+                $path = '/IndividualGroupController/individualGroup?groupId=' . $_SESSION['current_group'];          
+                redirect($path);
                 //redirect('IndividualProjectController/individualProject?projectId='+ $_SESSION['current_project']);
             }
             
           }
     }
-    //NOT COMPLETE FUNCTION, ERROR WITH RETURN
+    
     public function getUsers(){
-      $inputValue = $_GET["input"];
+      $firstName = $_GET["firstName"];
+      $lastName = $_GET["lastName"];
 
-      $returnData = $this->individualGroupModel->userSearch($inputValue);
+      $requestConnections = $this->individualGroupModel->getRequestedConnections();
+
+      $friendsList = $this->individualGroupModel->getGroupFriends();
+
+      $userSearch = $this->individualGroupModel->userSearch($firstName, $lastName);
+
+      $returnData = [];
+      
+
+      for($j=0; $j < sizeof($userSearch); $j++){
+          $trigger = false;
+          for($i=0; $i < sizeof($requestConnections); $i++){
+              if($requestConnections[$i]->Receiver_Id == $userSearch[$j]->User_Id){
+                  $trigger = true;
+                  break;
+              }
+          }
+
+          if($trigger == false){
+              array_push($returnData, $userSearch[$j]);
+          }
+
+      }
+
+      for($i=0; $i < sizeof($friendsList); $i++){
+          for($j=0; $j < sizeof($returnData); $j++){
+              if($returnData[$j]->User_Id == $friendsList[$i]->User_Id){
+                  unset($returnData[$j]);
+                  $returnData = array_values($returnData);
+                  break;
+              }
+          }
+          
+      }
 
       echo  json_encode($returnData);
     }
@@ -169,6 +206,32 @@ class IndividualGroupController extends Controller {
       $this->individualGroupModel->removeUserFromTheGroup($removeId);
     }
 
+    public function sendGroupInvite(){
+      $otherUserId = $_POST["otherUserId"];
+      
+      $userInfo = $this->individualGroupModel->getUserInfo($otherUserId);
+
+      $groupInfo = $this->individualGroupModel->getGroupInformation($_SESSION['current_group']); 
+
+      $groupName = $groupInfo->Group_Name;
+
+      $this->individualGroupModel->SendGroupInviteRecord($otherUserId, $userInfo, $groupName);
+
+
+      $path = '/IndividualGroupController/individualGroup?groupId=' . $_SESSION['current_group'];          
+      redirect($path);
+
+      
+    }
+
+    public function cancelRequest(){
+      $otherUserId = $_POST["otherUserId"];
+
+      $this->individualGroupModel->cancelGroupRequestInvitation($otherUserId); 
+
+      $path = '/IndividualGroupController/individualGroup?groupId=' . $_SESSION['current_group'];          
+      redirect($path);
+    }
 
 
     function roundMinutes($timestring) {

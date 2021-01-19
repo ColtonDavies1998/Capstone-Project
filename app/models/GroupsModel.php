@@ -21,10 +21,6 @@ class GroupsModel{
 
         return $rows;
     }
-    //This is to display the groups the user has been invited to. functionality to come soon
-    public function getUsersGroups (){
-
-    }
 
     public function createNewGroup($data){
         $this->db->query('INSERT INTO groups (Group_Name, Group_Description, Group_Leader) 
@@ -68,10 +64,9 @@ class GroupsModel{
     }
 
     public function getGroupInformation($id){
-        $this->db->query('SELECT * FROM groups WHERE Group_Id = :groupId && Group_Id = :userId' );
+        $this->db->query('SELECT * FROM groups WHERE Group_Id = :groupId' );
 
         $this->db->bind(':groupId', $id);
-        $this->db->bind(':userId', $_SESSION['user_id']);
 
         $row = $this->db->single();
 
@@ -118,4 +113,6 @@ class GroupsModel{
             return false;
         }
     }
+
+    public function getGroupIds(){}
 }

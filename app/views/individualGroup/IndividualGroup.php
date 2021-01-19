@@ -79,19 +79,8 @@
                         <div class="card shadow mb-4">
                             <!-- Card Header - Dropdown -->
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">Daily Tasks</h6>
-                                <div class="dropdown no-arrow">
-                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                                    <div class="dropdown-header">Task Display:</div>
-                                    <a class="dropdown-item text-success" href="#">Incomplete Only</a>
-                                    <a class="dropdown-item" href="#">Completed Only</a>
-                                    <a class="dropdown-item" href="#">Both</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
+                                <h6 class="m-0 font-weight-bold text-primary">Tasks</h6>
+                                <div class="dropdown no-arrow">                           
                             </div>
                         </div>
                         <!-- Card Body -->
@@ -122,7 +111,7 @@
                             <h6 class="m-0 font-weight-bold text-primary">Create New Task Today</h6>
                         </div>
                         <div class="card-body">
-                            <form action="<?php echo URLROOT;?>/IndividualGroupController/createNewTask" method="post">
+                            <form action="<?php echo URLROOT;?>/IndividualGroupController/createTask" method="post">
                             <div class="form-group">
                                 <label for="nameInput">Task Name</label>
                                 <input type="hidden" class="form-control" name="idInput" id="idInput" value="<?php echo $data["groupInformation"]->Group_Id;?>">
@@ -196,7 +185,7 @@
                         <!-- Card Body -->
                         <div class="card-body" style="overflow-y:scroll;height: 450px; ">
                             <div class="list-group" >
-                                <?php if(sizeof($data['users']) > 1): ?>
+                                <?php if(sizeof($data['users']) > 0): ?>
                                     <?php foreach($data['users'] as $user):?>
                                         <?php if($user->User_id != $_SESSION['user_id']):?>
                                             <div class="row">
@@ -254,9 +243,8 @@
 
     
     <div id="Admin">
-            
             <div class="row">
-                <div class="col-xl-7 col-lg-6">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -265,7 +253,7 @@
                         <!-- Card Body -->
                         <div class="card-body" style="overflow-y:scroll;height: 450px; ">
                             <div class="list-group" >
-                                <?php if(sizeof($data['users']) > 1): ?>
+                                <?php if(sizeof($data['users']) > 0): ?>
                                     <?php foreach($data['users'] as $user):?>
                                         <?php if($user->User_id != $_SESSION['user_id']):?>
                                             <div class="row">
@@ -291,26 +279,71 @@
                                     <h1>There are no other users in this group</h1>
                                 <?php endif;?>
                             </div>
+                        </div>               
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Search for Users</h6>
+                        </div>
+                        <div id="searchCardBody" class="card-body" style="overflow-y:scroll;height: 450px; ">
+                            
                         </div>
                         <div class="card-footer" >
                             <div class="row">
                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                    <h6>Add people to group: </h6>
+                                    <h6>First Name: </h6>
                                 </div>
-                                <div class="col-lg-5 col-md-5 col-sm-5">
-                                    <input id="addPeopleField" class="form-control">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                                    <input id="firstNameField" class="form-control">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                    <button class="btn btn-success" disabled>Add</button>
+                                    <h6>Last Name: </h6>
                                 </div>
-                            </div>
-                            <div class="row" id="userSearchDisplay">
-                                
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                                    <input id="lastNameField" class="form-control">
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Group Requests</h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body" style="overflow-y:scroll;height: 450px; ">
+                            <div class="list-group" >
+                                <?php if(sizeof($data['groupRequest']) > 0): ?>
+                                    <?php foreach($data['groupRequest'] as $user):?>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <h2 style="padding-top: 25px;"><?php echo $user->Receiver_Name ?></h2>
+                                             </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <form action="<?php echo URLROOT;?>/IndividualGroupController/cancelRequest" method="post">
+                                                    <input type="hidden" name="otherUserId" value="<?php echo $user->Receiver_Id;?>">
+                                                    <input class="btn btn-outline-danger" style="margin-top: 25px;" type="submit" value="Cancel">
+                                                </form>      
+                                            </div>
+                                        </div>
+                                        <hr> 
+                                    <?php endforeach;?>                         
+                                <?php else: ?>
+                                    <h1>There are no other requests for this group</h1>
+                                <?php endif;?>
+                            </div>
+                        </div>     
                     </div>
                 </div>
+            </div>                        
+            
+
             </div>
         </div>
         <!-- /.container-fluid -->
@@ -343,30 +376,6 @@
                 document.getElementById("adminBtnText").classList.add("text-primary");
 
             });
-
-
-            document.getElementById("addPeopleField").addEventListener("keyup", function(e){
-                
-                $.ajax({url: "<?php echo URLROOT; ?>/IndividualGroupController/getUsers", async: false, data: {input: e.target.value}, success: function(result){
-                    console.log(result)
-                    //let data = JSON.parse(result);
-                    //NOT COMPLETE FUNCTION, ERROR WITH RETURN
-                    /*
-                    document.getElementById("editFileOverlay").style.display = "block";
-
-                    document.getElementById("fileEditId").value = data.File_Id;
-                    document.getElementById("FileNameEdit").value = data.File_Name;
-                    document.getElementById("FileLinkEdit").value = data.File_Link;
-                    let typeDropdown = document.getElementById("FileTypeEdit");
-                    for(let i = 0; i < typeDropdown.length; i++){
-                        if(typeDropdown.options[i].value == data.File_Type){
-                            typeDropdown.selectedIndex = i;
-                            break;
-                        }
-                    } */
-                    
-                }});
-            })
 
             function removeUser(e){  
                 $.ajax({url: "<?php echo URLROOT; ?>/IndividualGroupController/removeUserFromGroup", async: false, data: {input: e.target.dataset.userid}, success: function(result){
@@ -488,6 +497,251 @@
             for(let i = 0; i < messageButtons.length; i++){
                 messageButtons[i].addEventListener("click", addUserToMsgList);
             }
+
+
+
+
+
+        document.getElementById("firstNameField").addEventListener("keyup", function(e){
+            
+            let lastName = document.getElementById("lastNameField").value;
+
+            let body = document.getElementById("searchCardBody");
+
+            while (body.firstChild) {
+                body.removeChild(body.lastChild);
+            }
+         
+            //Prevents all accounts from being displayed if the user input is empty
+            if(e.target.value.trim() != "" || lastName.trim() != ""){
+                    $.ajax({url: "<?php echo URLROOT; ?>/individualGroupController/getUsers", async: false, data: {firstName: e.target.value, lastName: lastName}, success: function(result){
+                    
+                    let data = JSON.parse(result);
+                    
+                    let searchBody = document.getElementById("searchCardBody");
+
+                    if(data.length <= 10 ){
+                        
+                        for(let i = 0; i < data.length; i++){
+                            let row = document.createElement("div");
+                            row.classList.add("row")
+
+                            let nameSection = document.createElement("div");
+                            nameSection.classList.add("col-xl-6")
+                            nameSection.classList.add("col-lg-6")
+                            nameSection.classList.add("col-md-6")
+                            nameSection.classList.add("col-sm-6")
+
+                            let ptag = document.createElement("p");
+                            ptag.innerText = data[i].User_First_Name + " " + data[i].User_Last_Name
+
+                            let addButtonSection = document.createElement("div");
+                            addButtonSection.classList.add("col-xl-6")
+                            addButtonSection.classList.add("col-lg-6")
+                            addButtonSection.classList.add("col-md-6")
+                            addButtonSection.classList.add("col-sm-6")
+
+                            let form = document.createElement("form");
+                            form.setAttribute("action", "<?php echo URLROOT;?>/IndividualGroupController/sendGroupInvite")
+                            form.setAttribute("method", "POST")
+
+                            let otherUserIdInput = document.createElement("input");
+                            otherUserIdInput.setAttribute("type", "hidden")
+                            otherUserIdInput.setAttribute("name", "otherUserId")
+                            otherUserIdInput.setAttribute("value", data[i].User_Id)
+
+                            let formSubmitBtn = document.createElement("input");
+                            formSubmitBtn.setAttribute("type", "submit")
+                            formSubmitBtn.setAttribute("value", "Invite")
+                            formSubmitBtn.classList.add("btn")
+                            formSubmitBtn.classList.add("btn-primary")
+                            
+
+                            form.appendChild(otherUserIdInput);
+                            form.appendChild(formSubmitBtn);
+
+                            nameSection.appendChild(ptag);
+                            addButtonSection.appendChild(form);
+                            row.appendChild(nameSection);
+                            row.appendChild(addButtonSection);
+
+                            searchBody.appendChild(row);
+
+                        }
+
+                    }else{
+                        for(let i = 0; i < 11; i++){
+                            let row = document.createElement("div");
+                            row.classList.add("row")
+
+                            let nameSection = document.createElement("div");
+                            nameSection.classList.add("col-xl-6")
+                            nameSection.classList.add("col-lg-6")
+                            nameSection.classList.add("col-md-6")
+                            nameSection.classList.add("col-sm-6")
+
+                            let ptag = document.createElement("p");
+                            ptag.innerText = data[i].User_First_Name + " " + data[i].User_Last_Name
+
+                            let addButtonSection = document.createElement("div");
+                            addButtonSection.classList.add("col-xl-6")
+                            addButtonSection.classList.add("col-lg-6")
+                            addButtonSection.classList.add("col-md-6")
+                            addButtonSection.classList.add("col-sm-6")
+
+                            let form = document.createElement("form");
+                            form.setAttribute("action", "<?php echo URLROOT;?>/IndividualGroupController/sendGroupInvite")
+                            form.setAttribute("method", "POST")
+
+                            let otherUserIdInput = document.createElement("input");
+                            otherUserIdInput.setAttribute("type", "hidden")
+                            otherUserIdInput.setAttribute("name", "otherUserId")
+                            otherUserIdInput.setAttribute("value", data[i].User_Id)
+
+                            let formSubmitBtn = document.createElement("input");
+                            formSubmitBtn.setAttribute("type", "submit")
+                            formSubmitBtn.setAttribute("value", "Invite")
+                            formSubmitBtn.classList.add("btn")
+                            formSubmitBtn.classList.add("btn-primary")
+                            
+
+                            form.appendChild(otherUserIdInput);
+                            form.appendChild(formSubmitBtn);
+
+                            nameSection.appendChild(ptag);
+                            addButtonSection.appendChild(form);
+                            row.appendChild(nameSection);
+                            row.appendChild(addButtonSection);
+
+                            searchBody.appendChild(row);
+
+                        }
+
+                    }
+
+                }});
+            }
+        });
+
+        document.getElementById("lastNameField").addEventListener("keyup", function(e){
+            let firstName = document.getElementById("firstNameField").value;
+
+            let body = document.getElementById("searchCardBody");
+
+            while (body.firstChild) {
+                body.removeChild(body.lastChild);
+            }
+
+            //Prevents all accounts from being displayed if the user input is empty
+            if(e.target.value.trim() != "" || firstName.trim() != ""){
+                $.ajax({url: "<?php echo URLROOT; ?>/individualGroupController/getUsers", async: false, data: {firstName: firstName, lastName: e.target.value}, success: function(result){
+                    let data = JSON.parse(result);
+
+                    let searchBody = document.getElementById("searchCardBody");
+
+                    if(data.length <= 10 ){
+                        
+                        for(let i = 0; i < data.length; i++){
+                            let row = document.createElement("div");
+                            row.classList.add("row")
+
+                            let nameSection = document.createElement("div");
+                            nameSection.classList.add("col-xl-6")
+                            nameSection.classList.add("col-lg-6")
+                            nameSection.classList.add("col-md-6")
+                            nameSection.classList.add("col-sm-6")
+
+                            let ptag = document.createElement("p");
+                            ptag.innerText = data[i].User_First_Name + " " + data[i].User_Last_Name
+
+                            let addButtonSection = document.createElement("div");
+                            addButtonSection.classList.add("col-xl-6")
+                            addButtonSection.classList.add("col-lg-6")
+                            addButtonSection.classList.add("col-md-6")
+                            addButtonSection.classList.add("col-sm-6")
+
+                            let form = document.createElement("form");
+                            form.setAttribute("action", "<?php echo URLROOT;?>/IndividualGroupController/sendGroupInvite")
+                            form.setAttribute("method", "POST")
+
+                            let otherUserIdInput = document.createElement("input");
+                            otherUserIdInput.setAttribute("type", "hidden")
+                            otherUserIdInput.setAttribute("name", "otherUserId")
+                            otherUserIdInput.setAttribute("value", data[i].User_Id)
+
+                            let formSubmitBtn = document.createElement("input");
+                            formSubmitBtn.setAttribute("type", "submit")
+                            formSubmitBtn.setAttribute("value", "Invite")
+                            formSubmitBtn.classList.add("btn")
+                            formSubmitBtn.classList.add("btn-primary")
+                            
+
+                            form.appendChild(otherUserIdInput);
+                            form.appendChild(formSubmitBtn);
+
+                            nameSection.appendChild(ptag);
+                            addButtonSection.appendChild(form);
+                            row.appendChild(nameSection);
+                            row.appendChild(addButtonSection);
+
+                            searchBody.appendChild(row);
+
+                        }
+
+                    }else{
+                        for(let i = 0; i < 11; i++){
+                            let row = document.createElement("div");
+                            row.classList.add("row")
+
+                            let nameSection = document.createElement("div");
+                            nameSection.classList.add("col-xl-6")
+                            nameSection.classList.add("col-lg-6")
+                            nameSection.classList.add("col-md-6")
+                            nameSection.classList.add("col-sm-6")
+
+                            let ptag = document.createElement("p");
+                            ptag.innerText = data[i].User_First_Name + " " + data[i].User_Last_Name
+
+                            let addButtonSection = document.createElement("div");
+                            addButtonSection.classList.add("col-xl-6")
+                            addButtonSection.classList.add("col-lg-6")
+                            addButtonSection.classList.add("col-md-6")
+                            addButtonSection.classList.add("col-sm-6")
+
+                            let form = document.createElement("form");
+                            form.setAttribute("action", "<?php echo URLROOT;?>/IndividualGroupController/sendGroupInvite")
+                            form.setAttribute("method", "POST")
+
+                            let otherUserIdInput = document.createElement("input");
+                            otherUserIdInput.setAttribute("type", "hidden")
+                            otherUserIdInput.setAttribute("name", "otherUserId")
+                            otherUserIdInput.setAttribute("value", data[i].User_Id)
+
+                            let formSubmitBtn = document.createElement("input");
+                            formSubmitBtn.setAttribute("type", "submit")
+                            formSubmitBtn.setAttribute("value", "Invite")
+                            formSubmitBtn.classList.add("btn")
+                            formSubmitBtn.classList.add("btn-primary")
+                            
+
+                            form.appendChild(otherUserIdInput);
+                            form.appendChild(formSubmitBtn);
+
+                            nameSection.appendChild(ptag);
+                            addButtonSection.appendChild(form);
+                            row.appendChild(nameSection);
+                            row.appendChild(addButtonSection);
+
+                            searchBody.appendChild(row);
+
+                        }
+
+                    }
+                }});
+            }
+
+
+        })
 
         </script>
 
