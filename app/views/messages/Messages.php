@@ -70,77 +70,48 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
         
-      <!-- Page Heading -->
+        <!-- Page Heading -->
 
-      <!--====================MY CODE==================-->
+        <!--====================MY CODE==================-->
 
-      <h1 class="h3 mb-4 text-gray-800">Messages</h1>
-
-      <div class="row">
-        <div class="col-xl-4 col-lg-4">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Friends</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body" style="overflow-y:scroll;height: 450px; ">    
-                    <?php $count = 1; ?>
-                    <?php foreach($data['friends'] as $friends):?>
-                        <div class="list-group">
-                            <?php if($friends->PersonOneName != $_SESSION['user_name'] && $count == 1): ?>
-                                <a id="<?php echo $friends->PersonOneId; ?>" href="#" class="friend-list-item list-group-item list-group-item-action active">
+        <h1 class="h3 mb-4 text-gray-800">Messages</h1>
+        <div class="row">
+            <div class="col-xl-4 col-lg-4">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Friends</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body" style="overflow-y:scroll;height: 450px; ">    
+                        <?php $count = 0; ?>
+                        <?php foreach($data['messagesFrom'] as $connection):?>
+                            <div class="list-group">
+                                <?php 
+                                
+                                if($connection->Group_Id == null){
+                                    $temp = "user-id-" . $connection->User_Id . " group-id-" . "null";
+                                }else{
+                                    $temp = "user-id-" . $connection->User_Id . " group-id-"  . $connection->Group_Id;
+                                }
+                                ?>
+                                <a id="<?php echo $temp;?>" class="friend-list-item list-group-item list-group-item-action <?= ($count == 0)? 'active' :  ''; ?>">
                                     <div class="row">
-                                        <div class="col-xl-6 col-lg-6">
+                                        <div class="col-xl-4 col-lg-4">
                                             <img src="img_girl.jpg" >
                                         </div>
-                                        <div class="col-xl-6 col-lg-6">
-                                            <h5><?php echo $friends->PersonOneName; ?></h5>
+                                        <div class="col-xl-8 col-lg-8">
+                                            <h5 style=""><?php echo $connection->First_Name . " " . $connection->Last_Name; ?> <?= ($connection->Group_Id != null)? '(' . $connection->Group_Name  .')' :  ''; ?></h5>
                                         </div>
                                     </div>           
                                 </a>
-                            <?php elseif($friends->PersonOneName == $_SESSION['user_name'] && $count == 1): ?>
-                                <a id="<?php echo $friends->PersonTwoId; ?>"  href="#" class="friend-list-item list-group-item list-group-item-action active">
-                                    <div class="row">
-                                        <div class="col-xl-6 col-lg-6">
-                                            <img src="img_girl.jpg" >
-                                        </div>
-                                        <div class="col-xl-6 col-lg-6">
-                                            <h5><?php echo $friends->PersonTwoName; ?></h5>
-                                        </div>
-                                    </div>   
-                                </a>
-                            <?php elseif($friends->PersonOneName != $_SESSION['user_name'] && $count != 1): ?>
-                                <a id="<?php echo $friends->PersonOneId; ?>" href="#" class="friend-list-item list-group-item list-group-item-action">
-                                    <div class="row">
-                                        <div class="col-xl-6 col-lg-6">
-                                            <img src="img_girl.jpg" >
-                                        </div>
-                                        <div class="col-xl-6 col-lg-6">
-                                            <h5><?php echo $friends->PersonOneName; ?></h5>
-                                        </div>
-                                    </div>
-                                </a>
-                            <?php elseif($friends->PersonOneName == $_SESSION['user_name'] && $count != 1): ?>
-                                <a id="<?php echo $friends->PersonTwoId; ?>" href="#" class="friend-list-item list-group-item list-group-item-action">
-                                    <div class="row">
-                                        <div class="col-xl-6 col-lg-6">
-                                            <img src="img_girl.jpg" >
-                                        </div>
-                                        <div class="col-xl-6 col-lg-6">
-                                            <h5><?php echo $friends->PersonTwoName; ?></h5>
-                                        </div>
-                                    </div>
-                                </a>
-                            <?php endif;?>
-                        </div>
-                        
-                        <?php $count = $count + 1; ?>
-                    <?php endforeach;?>
-                    
+     
+                            </div>
+                            <?php $count = $count + 1; ?>
+                        <?php endforeach;?>
+                    </div>
                 </div>
             </div>
-         </div>
 
 
             <div class="col-xl-8 col-lg-8">
@@ -154,14 +125,13 @@
                             <?php foreach(array_reverse($data['defaultConvo']) as $messages):?> 
                                 <?php if($messages->Message_Sent_By_Id == $_SESSION['user_id']):?>
                                     <div class="messageContainer darker">
-                                        
-                                        <img class="right" src="<?php echo $messages->Sender_Img; ?>"  style="width:100%;">
+                                        <h5><?php echo $messages->Sender_Name; ?>:</h5>
                                         <p><?php echo $messages->Message_Info;?></p>
                                         <span class="time-right"><?php echo $messages->Date_Time_Sent ?></span>
                                     </div>
                                 <?php else: ?>
                                     <div class="messageContainer">
-                                        <img src="<?php echo $messages->Receiver_Img; ?>" style="width:100%;">
+                                    <h5><?php echo $messages->Sender_Name; ?>:</h5>
                                         <p><?php echo $messages->Message_Info;?></p>
                                         <span class="time-right"><?php echo $messages->Date_Time_Sent ?></span>
                                     </div>
@@ -177,7 +147,6 @@
                                     <button id="sendBtn" type="button" class="btn btn-primary btn-lg">Send</button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -198,17 +167,15 @@
         for(let i = 0; i < friendItems.length; i++){
             friendItems[i].addEventListener("click", function(e){
              
-                
-                const chatCardBodyNode = document.getElementById("chatCardBody");
-
-                while (chatCardBodyNode.firstChild) {
-                    chatCardBodyNode.removeChild(chatCardBodyNode.lastChild);
-                }
-
                 if(e.target.parentNode.parentNode.parentNode.classList.contains('friend-list-item')){
                     let correctNode = e.target.parentNode.parentNode.parentNode;
-
+                  
                     if(!correctNode.classList.contains('active')){
+                        const chatCardBodyNode = document.getElementById("chatCardBody");
+
+                        while (chatCardBodyNode.firstChild) {
+                            chatCardBodyNode.removeChild(chatCardBodyNode.lastChild);
+                        }
                         
                         for(let j = 0; j < friendItems.length; j++){
                             if(friendItems[j].classList.contains('active')){
@@ -224,8 +191,14 @@
 
                 }else if(e.target.parentNode.parentNode.classList.contains('card-body')){
                     let correctNode = e.target;
-  
+                  
                     if(!correctNode.classList.contains('active')){
+
+                        const chatCardBodyNode = document.getElementById("chatCardBody");
+
+                        while (chatCardBodyNode.firstChild) {
+                            chatCardBodyNode.removeChild(chatCardBodyNode.lastChild);
+                        }
                         
                         for(let j = 0; j < friendItems.length; j++){
                             if(friendItems[j].classList.contains('active')){
@@ -239,8 +212,14 @@
                     }
                 }else{
                     let correctNode = e.target.parentNode.parentNode;
-
+                   
                     if(!correctNode.classList.contains('active')){
+
+                        const chatCardBodyNode = document.getElementById("chatCardBody");
+
+                        while (chatCardBodyNode.firstChild) {
+                            chatCardBodyNode.removeChild(chatCardBodyNode.lastChild);
+                        }
                         
                         for(let j = 0; j < friendItems.length; j++){
                             if(friendItems[j].classList.contains('active')){
@@ -259,13 +238,24 @@
 
 
                 function getMessages(otherUserId){
+                    let temp = otherUserId.split(" ");
                     
-                    $.ajax({url: "<?php echo URLROOT; ?>/MessageController/getMessages", async: false, data: {otherUserId: otherUserId}, success: function(result){
+
+                    let tempUserId = temp[0].split("-");
+                    let UserId = tempUserId[2];
+
+                    let tempGroupId = temp[1].split("-");
+                    let GroupId = tempGroupId[2]
+
+             
+
+                    
+                    $.ajax({url: "<?php echo URLROOT; ?>/MessageController/getMessages", async: false, data: {otherUserId: UserId, groupId: GroupId}, success: function(result){
                         document.getElementById("msgTextArea").value = ""
 
                         messages = JSON.parse(result)
 
-                        console.log(messages);
+                        
 
                         for(let z = 0; z < messages.length; z++){
                             if(messages[z].Message_Sent_By_Id == "<?php echo $_SESSION["user_id"] ?>"){
@@ -273,10 +263,10 @@
                                 div.classList.add("messageContainer");
                                 div.classList.add("darker");
 
-                                let img = document.createElement("img");
-                                img.classList.add("right");
-                                img.setAttribute("src", messages[z].Sender_Img);
-                                img.style.width = "100%";
+                                //NEW
+                                let hFiveTag = document.createElement("h5");
+                                hFiveTag.innerText = messages[z].Sender_Name + ":";
+                                
 
                                 let ptag = document.createElement("p");
                                 ptag.innerText = messages[z].Message_Info;
@@ -285,7 +275,7 @@
                                 span.classList.add("time-right")
                                 span.innerText = messages[z].Date_Time_Sent;
 
-                                div.appendChild(img);
+                                div.appendChild(hFiveTag);
                                 div.appendChild(ptag);
                                 div.appendChild(span);
 
@@ -295,9 +285,8 @@
                                 let div = document.createElement("div");
                                 div.classList.add("messageContainer");
 
-                                let img = document.createElement("img");
-                                img.setAttribute("src", messages[z].Sender_Img);
-                                img.style.width = "100%";
+                                let hFiveTag = document.createElement("h5");
+                                hFiveTag.innerText = messages[z].Sender_Name +":";
 
                                 let ptag = document.createElement("p");
                                 ptag.innerText = messages[z].Message_Info;
@@ -306,7 +295,7 @@
                                 span.classList.add("time-right")
                                 span.innerText = messages[z].Date_Time_Sent;
 
-                                div.appendChild(img);
+                                div.appendChild(hFiveTag);
                                 div.appendChild(ptag);
                                 div.appendChild(span);
 
@@ -340,14 +329,26 @@
 
             for(let i = 0; i < friends.length; i++){
                 if(friends[i].classList.contains("active")){
-                    otherUserId = friends[i].getAttribute("id");
+                    domOtherUserId = friends[i].getAttribute("id");
                     break;
                 }
             }
 
-        
+            
+            
+            let temp = domOtherUserId.split(" ")
+            let tempGroupId = temp[1];
+            let tempOtherUserId = temp[0];
+  
 
-            $.ajax({url: "<?php echo URLROOT; ?>/MessageController/sendNewMessage", async: false, data: {message: messageText, userId: otherUserId}, success: function(result){
+            tempGroupId = tempGroupId.split("-");
+            tempOtherUserId = tempOtherUserId.split("-");
+
+            groupId = tempGroupId[2]
+            otherUserId = tempOtherUserId[2]
+
+
+            $.ajax({url: "<?php echo URLROOT; ?>/MessageController/sendNewMessage", async: false, data: {message: messageText, userId: otherUserId, groupId: groupId}, success: function(result){
 
                 document.getElementById("msgTextArea").value = ""
 
@@ -355,21 +356,43 @@
 
            
 
-                let ul = document.createElement("ul");
+                let chatCardBody = document.getElementById("chatCardBody");
+
+                while (chatCardBody.firstChild) {
+                    chatCardBody.removeChild(chatCardBody.lastChild);
+                }
                 
-                ////TODO Add in visibility functionality to limit number of messages show later
+                
  
                 for(let i = messages.length - 1; i >= 0; i--){
-                    let li = document.createElement("li");
+                    let div = document.createElement("div");
+                    div.classList.add("messageContainer")
+                    if(messages[i].Message_Sent_By_Id == "<?php echo $_SESSION['user_id'];?>"){
+                        div.classList.add("darker")
+                    }
 
-                    li.innerText = messages[i].Sender_Name + "( " + messages[i].Date_Time_Sent + " )" + ": " + messages[i].Message_Info;
+                    let hFive = document.createElement("h5");
+                    hFive.innerText = messages[i].Sender_Name;
 
-                    ul.appendChild(li);
+                    let ptag = document.createElement("p");
+                    ptag.innerText = messages[i].Message_Info;
+
+                    let span = document.createElement("span");
+                    span.innerText = messages[i].Date_Time_Sent;
+                    span.classList.add("time-right")
+
+
+
+                    div.appendChild(hFive)
+                    div.appendChild(ptag)
+                    div.appendChild(span)
+
+                    chatCardBody.appendChild(div)
 
                     
                 }
            
-                document.getElementById("chatCardBody").appendChild(ul);
+                
 
             }});
             

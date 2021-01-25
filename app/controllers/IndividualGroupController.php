@@ -233,6 +233,42 @@ class IndividualGroupController extends Controller {
       redirect($path);
     }
 
+    public function getUsersName(){
+      $userId = $_GET["userId"];
+
+      $usersName = $this->individualGroupModel->getTheUsersName($userId); 
+
+      echo $usersName->User_First_Name . " " . $usersName->User_Last_Name;
+    }
+
+    public function sendMessage(){
+      $userId = $_POST["userIdForMessage"];
+      $messageText = $_POST["messageText"];
+
+      if(empty($userId) == false && empty($messageText) == false){
+
+        $usersName = $this->individualGroupModel->getTheUsersName($userId); 
+
+        $groupUserToUserConnection = $this->individualGroupModel->checkGroupMessageConnection($userId); 
+
+        if(sizeof($groupUserToUserConnection) == 0){
+          $groupInfo =  $this->individualGroupModel->getGroupInformation($_SESSION['current_group']); 
+          $this->individualGroupModel->createGroupMessageConnectionRecord($userId, $usersName, $groupInfo);
+        }
+
+        $this->individualGroupModel->sendMessageFromGroup($userId, $messageText, $usersName); 
+
+        $path = '/IndividualGroupController/individualGroup?groupId=' . $_SESSION['current_group'];          
+        redirect($path);
+      }else{
+        $path = '/IndividualGroupController/individualGroup?groupId=' . $_SESSION['current_group'];          
+        redirect($path);
+      }
+
+
+
+    }
+
 
     function roundMinutes($timestring) {
         $minutes = date('i', strtotime($timestring));

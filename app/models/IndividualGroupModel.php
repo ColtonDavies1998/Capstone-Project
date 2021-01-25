@@ -173,4 +173,74 @@ class IndividualGroupModel{
         }
     }
 
+    public function getTheUsersName($userId){
+        $this->db->query('SELECT User_First_Name, User_Last_Name FROM users WHERE User_Id = :userId' );
+
+        $this->db->bind(':userId', $userId);
+
+        $row = $this->db->single();
+
+        return $row;
+    }
+
+    public function sendMessageFromGroup($userId, $messageText, $usersName){
+        $this->db->query('INSERT INTO messages (Message_Info, Message_Sent_By_Id, Message_Received_By_Id, Receiver_Name, Sender_Name, Group_Id, Date_Time_Sent) 
+        VALUES(:messageInfo, :messageSentById, :messageReceivedById, :receiverName, :senderName, :groupId, :dateTimeSent)');
+        //bind values
+        $this->db->bind(':messageInfo', $messageText);
+        $this->db->bind(':messageSentById', $_SESSION['user_id']);
+        $this->db->bind(':messageReceivedById', $userId);
+
+        $fullName = $usersName->User_First_Name . " " . $usersName->User_Last_Name;
+        $this->db->bind(':receiverName', $fullName);
+        $this->db->bind(':senderName', $_SESSION['user_name']);
+        $this->db->bind(':groupId', $_SESSION['current_group']);
+
+        $Object = new DateTime();  
+        $Object->setTimezone(new DateTimeZone('America/Toronto'));
+        $DateAndTime = $Object->format("Y-m-d h:i:s");  
+
+        $this->db->bind(':dateTimeSent', $DateAndTime);
+
+
+        //call execute if you want to insert
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function checkGroupMessageConnection($userId){
+        $this->db->query('SELECT * FROM groupmessageconnection WHERE Person_Two_Id = :userIdOne AND Person_One_Id = :otherIdOne OR Person_Two_Id = :otherIdTwo AND Person_One_Id = :userIdTwo');
+
+        $this->db->bind(':userIdOne', $_SESSION['user_id']);
+        $this->db->bind(':otherIdOne', $userId);
+        $this->db->bind(':otherIdTwo', $userId);
+        $this->db->bind(':userIdTwo', $_SESSION['user_id']);
+
+        $rows = $this->db->resultSet();
+
+        return $rows;
+    }
+
+    public function createGroupMessageConnectionRecord($userId, $usersName, $groupInfo){
+        $this->db->query('INSERT INTO groupmessageconnection (Person_One_Id, Person_Two_Id, Person_Two_Name, Person_One_Name, Group_Id, Group_Name) 
+        VALUES(:receiverId, :senderId, :senderName, :receiverName, :groupId, :groupName)');
+
+        $this->db->bind(':receiverId', $userId);
+        $this->db->bind(':senderId', $_SESSION['user_id']);
+        $this->db->bind(':senderName', $_SESSION['user_name']);
+        $this->db->bind(':receiverName', $usersName->User_First_Name . " " . $usersName->User_Last_Name);
+        $this->db->bind(':groupId', $groupInfo->Group_Id);
+        $this->db->bind(':groupName', $groupInfo->Group_Name);
+
+        //call execute if you want to insert
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

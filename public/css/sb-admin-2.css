@@ -5112,7 +5112,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 
 .list-group-item.active {
   z-index: 2;
-  color: #fff;
+  color: #fff!important;
   background-color: #4e73df;
   border-color: #4e73df;
 }

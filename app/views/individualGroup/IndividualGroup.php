@@ -218,26 +218,28 @@
                             </div>
                         </div>
                         <div class="card-footer" >
-                            <div class="row">
-                                        <div class="col-lg-2 col-md-2 col-sm-2">
-                                            <h6>Send To: </h6>
-                                        </div>
-                                        <div class="col-lg-10 col-md-10 col-sm-10">
-                                            <h6 id="usersSelected">Nobody Selected</h6>
-                                        </div>
+                            <form action="<?php echo URLROOT;?>/IndividualGroupController/sendMessage" method="post">
+                                <div class="row">
+                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                                        <h6>Send To: </h6>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-lg-10 col-md-10 col-sm-10">
-                                            <textArea rows="6" class="form-control"></textArea>
-                                        </div>
-                                        <div class="col-lg-2 col-md-6 col-sm-6">
-                                            <button class="btn btn-success">Send</button>
-                                        </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                        <h6 id="usersSelected">Nobody Selected</h6>
+                                        <input type="hidden" name="userIdForMessage" id="userIdForMessage" value="">
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                        <textArea name="messageText" rows="6" class="form-control"></textArea>
+                                    </div>
+                                    <div class="col-lg-2 col-md-6 col-sm-6">
+                                        <button class="btn btn-success">Send</button>
+                                    </div>
+                                </div>        
+                            </form>
                         </div>
                     </div>
             </div>
-        
         </div>   
     </div>
 
@@ -351,6 +353,24 @@
         </div>
         <!-- End of Main Content -->
 
+        <?php if($data["userOwnsThisGroup"] == true):?>
+            <script>
+                document.getElementById("adminDisplaySection").addEventListener("click", function(e){
+                document.getElementById("Dashboard").style.display = "none";
+                document.getElementById("Admin").style.display = "block";
+
+                document.getElementById("dashboardDisplayInner").classList.remove("border-primary");
+                document.getElementById("adminDisplayInner").classList.add("border-primary");
+
+                document.getElementById("dashboardBtnText").classList.remove("text-primary");
+                document.getElementById("adminBtnText").classList.add("text-primary");
+
+            });
+
+            </script>
+
+        <?php endif; ?>
+
         <script>
             let messagingList = [];
 
@@ -365,17 +385,7 @@
                 document.getElementById("adminBtnText").classList.remove("text-primary");
                 
             });
-            document.getElementById("adminDisplaySection").addEventListener("click", function(e){
-                document.getElementById("Dashboard").style.display = "none";
-                document.getElementById("Admin").style.display = "block";
-
-                document.getElementById("dashboardDisplayInner").classList.remove("border-primary");
-                document.getElementById("adminDisplayInner").classList.add("border-primary");
-
-                document.getElementById("dashboardBtnText").classList.remove("text-primary");
-                document.getElementById("adminBtnText").classList.add("text-primary");
-
-            });
+            
 
             function removeUser(e){  
                 $.ajax({url: "<?php echo URLROOT; ?>/IndividualGroupController/removeUserFromGroup", async: false, data: {input: e.target.dataset.userid}, success: function(result){
@@ -383,111 +393,36 @@
                 }});
             }
 
-            function addUserToMsgList(e){
-               
-              
-                if(e.target.dataset.messagemode == "message"){
+            function userSelected(e){
 
-                    let userAlreadyInList = false;
+                messageButtons = document.getElementsByClassName("messageBtn");
+                console.log(messageButtons)
+                for(let i = 0; i < messageButtons.length; i++){
+                    messageButtons[i].classList.remove("btn-outline-primary");
+                    messageButtons[i].classList.add("btn-primary");
 
-                    for(let i = 0; i < messagingList.length; i++){
-                        if(messagingList[i].id == e.target.dataset.userid){
-                            userAlreadyInList = true;
-                            break;
-                        }
-                    }
-
-                    if(userAlreadyInList == false){
-                        let messageObj = {
-                            id: e.target.dataset.userid,
-                            name: e.target.parentElement.parentElement.childNodes[3].innerText
-                        }
-
-                        messagingList[messagingList.length] = messageObj;
-
-                        e.target.classList.remove("btn-primary")
-                        e.target.classList.add("btn-outline-primary")
-
-                        e.target.innerText = "Selected"
-
-                        e.target.dataset.messagemode = "selected"
-
-                        let stringDisplay = "";
-                        document.getElementById("usersSelected").innerText = "";
-
-                       
-
-                        for(let j = 0; j < messagingList.length; j++){
-                            if(j == 0 ){
-                                stringDisplay += messagingList[j].name
-                            }else if(j == messagingList.length - 1){
-                                stringDisplay += ", " + messagingList[j].name
-                            }else{
-                                stringDisplay += ", " + messagingList[j].name
-                            }
-                            
-                        }
-                        document.getElementById("usersSelected").innerText = stringDisplay;
-
-                    }
-                    
-                }else{
-               
-
-                    e.target.dataset.messagemode = "message" 
-
-                    e.target.classList.remove("btn-outline-primary")  
-                    e.target.classList.add("btn-primary")
-
-                    e.target.innerText = "Message"
-
-                   
-                    let counter = 0;
-                    let temp = []
-
-                    for(let i = 0; i < messagingList.length; i++){
-                        if(messagingList[i].id != e.target.dataset.userid){
-                            temp[counter] =  messagingList[i]
-                            counter++;
-                        }
-                    }
-
-                    
-                    messagingList = [];
-                    counter = 0;
-                    
-                    for(let j = 0; j < temp.length; j++){
-                        messagingList[counter] = temp[j];
-                        counter++;
-                    }
-
-                    console.log(messagingList)
-
-                    let stringDisplay = "";
-                    document.getElementById("usersSelected").innerText = "";
-
-                    for(let j = 0; j < messagingList.length; j++){
-                        if(j == 0 ){
-                            stringDisplay += messagingList[j].name
-                        }else if(j == messagingList.length - 1){
-                            stringDisplay += ", " + messagingList[j].name
-                        }else{
-                            stringDisplay += ", " + messagingList[j].name
-                        }
-         
-                    }
-
-                    if(messagingList.length == 0){
-                        document.getElementById("usersSelected").innerText = "Nobody Selected";
-                    }else{
-                        document.getElementById("usersSelected").innerText = stringDisplay;
-                    }
-                    
-
+                    messageButtons[i].innerText = "Message"
                 }
+
+                
+                e.target.innerText = "Selected";
+                e.target.classList.remove("btn-primary")
+                e.target.classList.add("btn-outline-primary")
+                console.log(e)
+
+
+                $.ajax({url: "<?php echo URLROOT; ?>/individualGroupController/getUsersName", async: false, data: {userId: e.target.attributes[3].nodeValue}, success: function(result){
+                    console.log(result)
+
+                    document.getElementById("usersSelected").innerText = result
+                    document.getElementById("userIdForMessage").value = e.target.attributes[3].nodeValue;
+
+                    
+                }})
+                
             }
 
-
+          
             let removeBtns = document.getElementsByClassName("removeButton");
             for(let i = 0; i < removeBtns.length; i++){
                 removeBtns[i].addEventListener("click", removeUser);
@@ -495,9 +430,15 @@
 
             let messageButtons = document.getElementsByClassName("messageBtn");
             for(let i = 0; i < messageButtons.length; i++){
-                messageButtons[i].addEventListener("click", addUserToMsgList);
+                messageButtons[i].addEventListener("click", userSelected);
             }
 
+            window.addEventListener('load', (event) => {
+                let messageButtons = document.getElementsByClassName("messageBtn");
+                for(let i = 0; i < messageButtons.length; i++){
+                    messageButtons[i].addEventListener("click", userSelected);
+                }
+            });
 
 
 
