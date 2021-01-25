@@ -38,23 +38,35 @@
   <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/groupsStyle.css">
 <?php endif;?>
 
-<?php if($_SESSION['current_page'] == 'TaskHistory' || $_SESSION['current_page'] == 'IndividualProject'):?>
+<?php if($_SESSION['current_page'] == 'IndividualProject'): ?>
+  <div id="projectConfirmationOverlay">
+    <div id="confirmationOverlayBlock">
+      <h5>Are you sure you want to delete this item?</h5>
+      <form action="<?php echo URLROOT;?>/TaskHistoryController/deleteTask" method="post"> 
+        <input type="hidden" id="deleteValueId" name="deleteId" >
+        <input type="submit" value="delete" class="btn btn-danger"> 
+        <button type="button" class="btn btn-primary" id="cancelDelete">Cancel</button>
+      </form>
+    </div>
+  </div>
+<?php endif;?>
+
+<?php if($_SESSION['current_page'] == 'TaskHistory'):?>
   
 
 <script src="<?php echo URLROOT; ?>/vendor/PaginationJS/paginationJS.js"></script>
 
-<div id="projectConfirmationOverlay">
-  <div id="confirmationOverlayBlock">
-    <h5>Are you sure you want to delete this item?</h5>
-    <form action="<?php echo URLROOT;?>/TaskHistoryController/deleteTask" method="post"> 
-      <input type="hidden" id="deleteValueId" name="deleteId" >
-      <input type="submit" value="delete" class="btn btn-danger"> 
-      <button type="button" class="btn btn-primary" id="cancelDelete">Cancel</button>
-    </form>
-    
-    
+<div id="confirmationOverlay">
+    <div id="confirmationOverlayBlock">
+      <h5>Are you sure you want to delete this item?</h5>
+      <form action="<?php echo URLROOT;?>/TaskHistoryController/deleteTask" method="post"> 
+        <input type="hidden" id="deleteValueId" name="deleteId" >
+        <input type="submit" value="delete" class="btn btn-danger"> 
+        <button type="button" class="btn btn-primary" id="cancelDelete">Cancel</button>
+      </form>
+    </div>
   </div>
-</div>
+
 
 <div id="editTaskNameOverlay">
   <div id="editTaskOverlayBlock">

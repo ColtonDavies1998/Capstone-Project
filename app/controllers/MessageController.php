@@ -52,7 +52,6 @@ class MessageController extends Controller {
                 
             }else{
                 $data['defaultConvo'] = $this->messageModel->getMessages($data["messagesFrom"][0]->User_Id);
-                echo "hello";
             }
         }else{
             $data['defaultConvo'] = null;
