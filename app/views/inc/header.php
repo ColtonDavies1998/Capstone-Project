@@ -32,6 +32,7 @@
 
 <?php if($_SESSION['current_page'] == 'IndividualProject'):?> 
   <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/individualProjectStyle.css">
+  <script src="<?php echo URLROOT; ?>/vendor/PaginationJS/paginationJS.js"></script>
 <?php endif;?>
 
 <?php if($_SESSION['current_page'] == 'Groups'):?>
@@ -39,16 +40,72 @@
 <?php endif;?>
 
 <?php if($_SESSION['current_page'] == 'IndividualProject'): ?>
-  <div id="projectConfirmationOverlay">
-    <div id="confirmationOverlayBlock">
+
+  <div id="taskConfirmationOverlay">
+    <div id="taskconfirmationOverlayBlock">
       <h5>Are you sure you want to delete this item?</h5>
-      <form action="<?php echo URLROOT;?>/TaskHistoryController/deleteTask" method="post"> 
+      <form action="<?php echo URLROOT;?>/IndividualProjectController/deleteTask" method="post"> 
         <input type="hidden" id="deleteValueId" name="deleteId" >
         <input type="submit" value="delete" class="btn btn-danger"> 
         <button type="button" class="btn btn-primary" id="cancelDelete">Cancel</button>
       </form>
     </div>
   </div>
+
+
+
+<div id="editTaskNameOverlay">
+  <div id="editTaskOverlayBlock">
+    <h5>Edit Task Name</h5>
+    <div class="form-group">
+      <form action="<?php echo URLROOT;?>/IndividualProjectController/editTask" method="post">
+        <input name="taskId" id="taskId" type="hidden">
+
+        <label for="taskNameInput">Task Name</label>
+        <input type="text" class="form-control" style="margin-bottom: 5px;" name="taskNameEdit" id="taskNameEdit" >
+
+        <label for="startTimeInput">Start Time</label>
+        <input class="form-control" type="time" name="startTimeEdit"  id="startTimeInput">
+
+        <label for="startTimeInput">End Time</label>
+        <input class="form-control" type="time" name="endTimeEdit"  id="endTimeInput">
+
+        <label for="taskTypeInput">Task Type</label>
+        <select class="form-control" id="taskTypeInput" name="taskTypeInput">
+          <option value="Work">Work</option>
+          <option value="Education">Education</option>
+          <option value="Home">Home</option>
+          <option value="Chores">Chores</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label for="taskDateInput">Start Date</label>
+        <input class="form-control" type="date" name="startDateInput" id="startDateInput">
+
+        <label for="taskDateInput">End Date</label>
+        <input class="form-control" type="date" name="endDateInput" id="endDateInput">
+
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio1" value="complete">
+            Completed
+          </label>
+        </div>
+
+        <div class="form-check bottomInput">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio2" value="incomplete">
+            incomplete 
+          </label>
+        </div>
+
+        <input type="submit" value="edit" class="btn btn-primary" id="editSubmitBtn"> 
+        <button type="button" class="btn btn-danger" id="cancelEdit">Cancel</button>
+      </form>
+
+    </div>
+  </div>
+</div>
 <?php endif;?>
 
 <?php if($_SESSION['current_page'] == 'TaskHistory'):?>

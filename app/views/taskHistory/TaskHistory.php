@@ -346,43 +346,7 @@
             }
           }
 
-          function frontEndValidation(TaskName, TaskStartTime, TaskType, TaskDate, TaskPriority){
-            var isValid = true;
-            if (TaskName.length == 0) {
-              isValid = false;
-              document.getElementById("taskNameEdit").classList.add("is-invalid");
-              //document.getElementById("TaskNameResponse").classList.add("invalid-feedback");
-            } else {
-              document.getElementById("taskNameEdit").classList.remove("is-invalid");
-            }
-            if (TaskStartTime.length == 0) {
-              isValid = false;
-              document.getElementById("startTimeInput").classList.add("is-invalid");
-
-            } else {
-              document.getElementById("startTimeInput").classList.remove("is-invalid");
-            }
-            if (TaskType.length == 0) {
-              isValid = false;
-              document.getElementById("taskTypeInput").classList.add("is-invalid");
-            } else {
-              document.getElementById("taskTypeInput").classList.remove("is-invalid");
-            }
-            if (TaskDate.length == 0) {
-              isValid = false;
-              document.getElementById("taskDateInput").classList.add("is-invalid");
-            } else {
-              document.getElementById("taskDateInput").classList.remove("is-invalid");
-            }
-            if (TaskPriority.length == 0) {
-              isValid = false;
-              document.getElementById("priorityInput").classList.add("is-invalid");
-            } else {
-              document.getElementById("priorityInput").classList.remove("is-invalid");
-            }
-
-            return isValid;
-          }
+       
 
 
           firstEditEvents();
