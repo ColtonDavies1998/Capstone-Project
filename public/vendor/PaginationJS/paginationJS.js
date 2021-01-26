@@ -609,13 +609,18 @@ class Table{
 
 
         //calls the displayTable() function to re display the table
-        var searchValueLength = document.getElementById("searchName").value;
-        if (searchValueLength.length > 0) {
-          this.displayTable(this.searchResults);
+        if(this.showSearchBar == true){
+          var searchValueLength = document.getElementById("searchName").value;
+          if (searchValueLength.length > 0) {
+            this.displayTable(this.searchResults);
 
-        } else {
+          } else {
+            this.displayTable(this.data);
+          }
+        }else {
           this.displayTable(this.data);
         }
+        
 
         this.disablingButtons(pageSelected);
 

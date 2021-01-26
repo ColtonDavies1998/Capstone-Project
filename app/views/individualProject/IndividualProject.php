@@ -199,6 +199,7 @@
                         <div class="card-body" style="overflow-y:scroll;height: 450px; ">
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        
                                     <table id="table" class="table"></table>
                                 </div>    
                             </div>

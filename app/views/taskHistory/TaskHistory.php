@@ -154,18 +154,7 @@
           document.getElementById("cancelDelete").addEventListener("click", cancelDeletion);
           document.getElementById("cancelEdit").addEventListener("click", cancelEditTask);
 
-          //eventListener with built in function to add eventlisteners to the edit and delete
-          //buttons for when the table re displays them when the user uses the searchbar and dropdown
-          document.getElementById("searchName").addEventListener("keyup", function(){
-            addPageItemListener();
-            firstEditEvents();
-            firstDeleteEvents();
-          });
-          document.getElementById("NumberDropdown").addEventListener("change", function(){
-            addPageItemListener();
-            firstEditEvents();
-            firstDeleteEvents();
-          });
+         
 
           /*This function gets all the page items in the UL except for the buttons that are disabled
           and every time one of them are clicked  they automatically add the addEventLsiteners for the
