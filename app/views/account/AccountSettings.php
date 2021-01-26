@@ -203,7 +203,7 @@
                    <h2 class=" font-weight-bold">No Groups have been created </h2>
                  <?php else: ?>
                    <?php foreach($data['groupsInfo'] as $group): ?>
-                      <h2 class=" font-weight-bold"><?php echo $group->Group_Name; ?></h2>
+                      <h2 class=" font-weight-bold"><a href="<?php echo URLROOT;?>/IndividualGroupController/individualGroup?groupId=<?php echo $group->Group_Id; ?>"><?php echo $group->Group_Name; ?></a></h2>
                    <?php endforeach;?>
                  <?php endif;?>
                </div>
