@@ -114,7 +114,7 @@
 
                 document.getElementById("ProjectNameEdit").value = data.Project_Name;
                 document.getElementById("ProjectTypeEdit").value = data.Project_Type;
-                document.getElementById("currentProjectImg").innerText = data.Project_Img;
+                //document.getElementById("currentProjectImg").innerText = data.Project_Img;
                 document.getElementById("ProjectDescriptionEdit").value = data.Project_Description;
                 
             }});

@@ -57,7 +57,14 @@ class IndividualProjectController extends Controller {
 
         //Update completion rate of project incomplete tasks/ completed tasks
         $totalCompleteTasks = $this->individualProjectModel->getCompletedProjectTasks($_SESSION['current_project']);
-        $completionPercent = (sizeof($totalCompleteTasks) / sizeof($this->individualProjectModel->getProjectsTasks($_SESSION['current_project']))) * 100;
+        $numOfTasks = sizeof($this->individualProjectModel->getProjectsTasks($_SESSION['current_project']));
+        if($numOfTasks == 0){
+          $completionPercent = 100;
+        }else{
+          $completionPercent = (sizeof($totalCompleteTasks) / $numOfTasks) * 100;
+        }
+
+        
         $this->individualProjectModel->changeProjectCompletion($projectId, $completionPercent);
         //go to view
         $this->view('individualProject/IndividualProject', $data);

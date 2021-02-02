@@ -334,10 +334,11 @@
           <label for="ProjectTypeInput">Project Type</label>
           <input type="text" class="form-control" name="ProjectTypeInput" id="ProjectTypeInput" >
         </div>
+        <!--  
         <div class="form-group">
           <label for="ProjectImageInput">Project Image</label>
           <input type="file" class="form-control-file" name="ProjectImageInput" id="ProjectImageInput">
-        </div>
+        </div> -->
         <div class="form-group">
           <label for="ProjectDescription">Description</label>
           <textarea class="form-control" name="ProjectDescription" id="ProjectDescription" rows="5"></textarea>
@@ -381,11 +382,12 @@
               <label for="ProjectTypeInput">Project Type</label>
               <input type="text" class="form-control" name="ProjectTypeEdit" id="ProjectTypeEdit" value="<?php echo $_SESSION["errorEditData"]["project_type"];?>">
             </div>
+            <!-- 
             <div class="form-group">
               <label for="ProjectImageInput">Project Image</label>
               <p>Current Project Image: <span id="currentProjectImg"></span></p>
               <input type="file" class="form-control-file" name="ProjectImageEdit" id="ProjectImageEdit">
-            </div>
+            </div> -->
             <div class="form-group">
               <label for="ProjectDescription">Description</label>
               <textarea class="form-control" name="ProjectDescriptionEdit" id="ProjectDescriptionEdit" rows="5"><?php echo $_SESSION["errorEditData"]["project_Description"]; ?></textarea>
@@ -405,11 +407,12 @@
               <label for="ProjectTypeInput">Project Type</label>
               <input type="text" class="form-control" name="ProjectTypeEdit" id="ProjectTypeEdit" >
             </div>
+            <!-- 
             <div class="form-group">
               <label for="ProjectImageInput">Project Image</label>
               <p>Current Project Image: <span id="currentProjectImg"></span></p>
               <input type="file" class="form-control-file" name="ProjectImageEdit" id="ProjectImageEdit">
-            </div>
+            </div> -->
             <div class="form-group">
               <label for="ProjectDescription">Description</label>
               <textarea class="form-control" name="ProjectDescriptionEdit" id="ProjectDescriptionEdit" rows="5"></textarea>
