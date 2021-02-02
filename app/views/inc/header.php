@@ -59,49 +59,120 @@
     <h5>Edit Task Name</h5>
     <div class="form-group">
       <form action="<?php echo URLROOT;?>/IndividualProjectController/editTask" method="post">
-        <input name="taskId" id="taskId" type="hidden">
+        
+        <?php if(isset($_SESSION["taskEditErrors"])):?>
+          <?php echo "hello"; ?>
+          <input name="taskId" id="taskId" type="hidden" value="<?php echo $_SESSION["taskEditErrors"]["edit_task_id"];?>">
 
-        <label for="taskNameInput">Task Name</label>
-        <input type="text" class="form-control" style="margin-bottom: 5px;" name="taskNameEdit" id="taskNameEdit" >
+          <label for="taskNameInput">Task Name</label>
+          <input type="text" class="form-control" style="margin-bottom: 5px;" name="taskNameEdit" id="taskNameEdit" value="<?php echo $_SESSION["taskEditErrors"]["edit_task_name"];?>">
 
-        <label for="startTimeInput">Start Time</label>
-        <input class="form-control" type="time" name="startTimeEdit"  id="startTimeInput">
+          <label for="startTimeInput">Start Time</label>
+          <input class="form-control" type="time" name="startTimeEdit"  id="startTimeInput" value="<?php echo $_SESSION["taskEditErrors"]["edit_task_start_time"];?>">
 
-        <label for="startTimeInput">End Time</label>
-        <input class="form-control" type="time" name="endTimeEdit"  id="endTimeInput">
+          <label for="startTimeInput">End Time</label>
+          <input class="form-control" type="time" name="endTimeEdit"  id="endTimeInput" value="<?php echo $_SESSION["taskEditErrors"]["edit_task_end_time"];?>">
 
-        <label for="taskTypeInput">Task Type</label>
-        <select class="form-control" id="taskTypeInput" name="taskTypeInput">
-          <option value="Work">Work</option>
-          <option value="Education">Education</option>
-          <option value="Home">Home</option>
-          <option value="Chores">Chores</option>
-          <option value="Other">Other</option>
-        </select>
+          <label for="taskTypeInput">Task Type</label>
+          <select class="form-control" id="taskTypeInput" name="taskTypeInput">
+            <option <?php echo ($_SESSION["taskEditErrors"]["edit_task_type"] == "Work")?  "selected":  " " ;?> value="Work">Work</option>
+            <option <?php echo ($_SESSION["taskEditErrors"]["edit_task_type"] == "Work")?  "selected":  " " ;?> value="Education">Education</option>
+            <option <?php echo ($_SESSION["taskEditErrors"]["edit_task_type"] == "Work")?  "selected":  " " ;?> value="Home">Home</option>
+            <option <?php echo ($_SESSION["taskEditErrors"]["edit_task_type"] == "Work")?  "selected":  " " ;?> value="Chores">Chores</option>
+            <option <?php echo ($_SESSION["taskEditErrors"]["edit_task_type"] == "Work")?  "selected":  " " ;?> value="Other">Other</option>
+          </select>
 
-        <label for="taskDateInput">Start Date</label>
-        <input class="form-control" type="date" name="startDateInput" id="startDateInput">
+          <label for="taskDateInput">Start Date</label>
+          <input class="form-control" type="date" name="startDateInput" id="startDateInput" value="<?php echo $_SESSION["taskEditErrors"]["edit_task_start_date"];?>">
 
-        <label for="taskDateInput">End Date</label>
-        <input class="form-control" type="date" name="endDateInput" id="endDateInput">
+          <label for="taskDateInput">End Date</label>
+          <input class="form-control" type="date" name="endDateInput" id="endDateInput" value="<?php echo $_SESSION["taskEditErrors"]["edit_task_end_date"];?>">
 
-        <div class="form-check">
-          <label class="form-check-label">
-            <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio1" value="complete">
-            Completed
-          </label>
-        </div>
+          <?php if($_SESSION["taskEditErrors"]["edit_isComplete"] == "complete"):?>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio1" value="complete" checked>
+                Completed
+              </label>
+            </div>
 
-        <div class="form-check bottomInput">
-          <label class="form-check-label">
-            <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio2" value="incomplete">
-            incomplete 
-          </label>
-        </div>
+            <div class="form-check bottomInput">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio2" value="incomplete">
+                incomplete 
+              </label>
+            </div>
 
-        <input type="submit" value="edit" class="btn btn-primary" id="editSubmitBtn"> 
-        <button type="button" class="btn btn-danger" id="cancelEdit">Cancel</button>
-      </form>
+          <?php else:?>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio1" value="complete" >
+                Completed
+              </label>
+            </div>
+
+            <div class="form-check bottomInput">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio2" value="incomplete" checked>
+                incomplete 
+              </label>
+            </div>
+
+          <?php endif;?>
+          
+
+          <input type="submit" value="edit" class="btn btn-primary" id="editSubmitBtn"> 
+          <button type="button" class="btn btn-danger" id="cancelEdit">Cancel</button>
+
+
+
+        <?php else:?>
+          <input name="taskId" id="taskId" type="hidden">
+
+          <label for="taskNameInput">Task Name</label>
+          <input type="text" class="form-control" style="margin-bottom: 5px;" name="taskNameEdit" id="taskNameEdit" >
+
+          <label for="startTimeInput">Start Time</label>
+          <input class="form-control" type="time" name="startTimeEdit"  id="startTimeInput">
+
+          <label for="startTimeInput">End Time</label>
+          <input class="form-control" type="time" name="endTimeEdit"  id="endTimeInput">
+
+          <label for="taskTypeInput">Task Type</label>
+          <select class="form-control" id="taskTypeInput" name="taskTypeInput">
+            <option value="Work">Work</option>
+            <option value="Education">Education</option>
+            <option value="Home">Home</option>
+            <option value="Chores">Chores</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <label for="taskDateInput">Start Date</label>
+          <input class="form-control" type="date" name="startDateInput" id="startDateInput">
+
+          <label for="taskDateInput">End Date</label>
+          <input class="form-control" type="date" name="endDateInput" id="endDateInput">
+
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio1" value="complete">
+              Completed
+            </label>
+          </div>
+
+          <div class="form-check bottomInput">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio2" value="incomplete">
+              incomplete 
+            </label>
+          </div>
+
+          <input type="submit" value="edit" class="btn btn-primary" id="editSubmitBtn"> 
+          <button type="button" class="btn btn-danger" id="cancelEdit">Cancel</button>
+
+        <?php endif;?>
+          
+        </form>
 
     </div>
   </div>
@@ -125,55 +196,124 @@
   </div>
 
 
-<div id="editTaskNameOverlay">
+  <div id="editTaskNameOverlay">
   <div id="editTaskOverlayBlock">
     <h5>Edit Task Name</h5>
     <div class="form-group">
       <form action="<?php echo URLROOT;?>/TaskHistoryController/editTask" method="post">
-        <input name="taskId" id="taskId" type="hidden">
+        
+        <?php if(isset($_SESSION["taskEditErrors"])):?>
+          <input name="taskId" id="taskId" type="hidden" value="<?php echo $_SESSION["taskEditErrors"]["edit_task_id"];?>">
 
-        <label for="taskNameInput">Task Name</label>
-        <input type="text" class="form-control" style="margin-bottom: 5px;" name="taskNameEdit" id="taskNameEdit" >
+          <label for="taskNameInput">Task Name</label>
+          <input type="text" class="form-control" style="margin-bottom: 5px;" name="taskNameEdit" id="taskNameEdit" value="<?php echo $_SESSION["taskEditErrors"]["edit_task_name"];?>">
 
-        <label for="startTimeInput">Start Time</label>
-        <input class="form-control" type="time" name="startTimeEdit"  id="startTimeInput">
+          <label for="startTimeInput">Start Time</label>
+          <input class="form-control" type="time" name="startTimeEdit"  id="startTimeInput" value="<?php echo $_SESSION["taskEditErrors"]["edit_task_start_time"];?>">
 
-        <label for="startTimeInput">End Time</label>
-        <input class="form-control" type="time" name="endTimeEdit"  id="endTimeInput">
+          <label for="startTimeInput">End Time</label>
+          <input class="form-control" type="time" name="endTimeEdit"  id="endTimeInput" value="<?php echo $_SESSION["taskEditErrors"]["edit_task_end_time"];?>">
 
-        <label for="taskTypeInput">Task Type</label>
-        <select class="form-control" id="taskTypeInput" name="taskTypeInput">
-          <option value="Work">Work</option>
-          <option value="Education">Education</option>
-          <option value="Home">Home</option>
-          <option value="Chores">Chores</option>
-          <option value="Other">Other</option>
-        </select>
+          <label for="taskTypeInput">Task Type</label>
+          <select class="form-control" id="taskTypeInput" name="taskTypeInput">
+            <option <?php echo ($_SESSION["taskEditErrors"]["edit_task_type"] == "Work")?  "selected":  " " ;?> value="Work">Work</option>
+            <option <?php echo ($_SESSION["taskEditErrors"]["edit_task_type"] == "Work")?  "selected":  " " ;?> value="Education">Education</option>
+            <option <?php echo ($_SESSION["taskEditErrors"]["edit_task_type"] == "Work")?  "selected":  " " ;?> value="Home">Home</option>
+            <option <?php echo ($_SESSION["taskEditErrors"]["edit_task_type"] == "Work")?  "selected":  " " ;?> value="Chores">Chores</option>
+            <option <?php echo ($_SESSION["taskEditErrors"]["edit_task_type"] == "Work")?  "selected":  " " ;?> value="Other">Other</option>
+          </select>
 
-        <label for="taskDateInput">Start Date</label>
-        <input class="form-control" type="date" name="startDateInput" id="startDateInput">
+          <label for="taskDateInput">Start Date</label>
+          <input class="form-control" type="date" name="startDateInput" id="startDateInput" value="<?php echo $_SESSION["taskEditErrors"]["edit_task_start_date"];?>">
 
-        <label for="taskDateInput">End Date</label>
-        <input class="form-control" type="date" name="endDateInput" id="endDateInput">
+          <label for="taskDateInput">End Date</label>
+          <input class="form-control" type="date" name="endDateInput" id="endDateInput" value="<?php echo $_SESSION["taskEditErrors"]["edit_task_end_date"];?>">
 
-        <div class="form-check">
-          <label class="form-check-label">
-            <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio1" value="complete">
-            Completed
-          </label>
-        </div>
+          <?php if($_SESSION["taskEditErrors"]["edit_isComplete"] == "complete"):?>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio1" value="complete" checked>
+                Completed
+              </label>
+            </div>
 
-        <div class="form-check bottomInput">
-          <label class="form-check-label">
-            <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio2" value="incomplete">
-            incomplete 
-          </label>
-        </div>
+            <div class="form-check bottomInput">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio2" value="incomplete">
+                incomplete 
+              </label>
+            </div>
 
-        <input type="submit" value="edit" class="btn btn-primary" id="editSubmitBtn"> 
-        <button type="button" class="btn btn-danger" id="cancelEdit">Cancel</button>
-      </form>
+          <?php else:?>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio1" value="complete" >
+                Completed
+              </label>
+            </div>
 
+            <div class="form-check bottomInput">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio2" value="incomplete" checked>
+                incomplete 
+              </label>
+            </div>
+
+          <?php endif;?>
+          
+
+          <input type="submit" value="edit" class="btn btn-primary" id="editSubmitBtn"> 
+          <button type="button" class="btn btn-danger" id="cancelEdit">Cancel</button>
+
+
+
+        <?php else:?>
+          <input name="taskId" id="taskId" type="hidden">
+
+          <label for="taskNameInput">Task Name</label>
+          <input type="text" class="form-control" style="margin-bottom: 5px;" name="taskNameEdit" id="taskNameEdit" >
+
+          <label for="startTimeInput">Start Time</label>
+          <input class="form-control" type="time" name="startTimeEdit"  id="startTimeInput">
+
+          <label for="startTimeInput">End Time</label>
+          <input class="form-control" type="time" name="endTimeEdit"  id="endTimeInput">
+
+          <label for="taskTypeInput">Task Type</label>
+          <select class="form-control" id="taskTypeInput" name="taskTypeInput">
+            <option value="Work">Work</option>
+            <option value="Education">Education</option>
+            <option value="Home">Home</option>
+            <option value="Chores">Chores</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <label for="taskDateInput">Start Date</label>
+          <input class="form-control" type="date" name="startDateInput" id="startDateInput">
+
+          <label for="taskDateInput">End Date</label>
+          <input class="form-control" type="date" name="endDateInput" id="endDateInput">
+
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio1" value="complete">
+              Completed
+            </label>
+          </div>
+
+          <div class="form-check bottomInput">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="isComplete" id="CompletedRadio2" value="incomplete">
+              incomplete 
+            </label>
+          </div>
+
+          <input type="submit" value="edit" class="btn btn-primary" id="editSubmitBtn"> 
+          <button type="button" class="btn btn-danger" id="cancelEdit">Cancel</button>
+
+        <?php endif;?>
+          
+        </form>
 
     </div>
   </div>
@@ -231,28 +371,58 @@
       <h5>Edit Project Name</h5>
       
         <form action="<?php echo URLROOT;?>/MultipleProjectsController/editProject" method="post">
-          <div class="form-group">
-            <input type="hidden" id="projectEditId" name="projectEditId">
-            <label for="ProjectNameInput">Project Name</label>
-            <input type="text" class="form-control" style="margin-bottom: 5px;" name="ProjectNameEdit" id="ProjectNameEdit" >
-          </div>
-          <div class="form-group">
-            <label for="ProjectTypeInput">Project Type</label>
-            <input type="text" class="form-control" name="ProjectTypeEdit" id="ProjectTypeEdit" >
-          </div>
-          <div class="form-group">
-            <label for="ProjectImageInput">Project Image</label>
-            <p>Current Project Image: <span id="currentProjectImg"></span></p>
-            <input type="file" class="form-control-file" name="ProjectImageEdit" id="ProjectImageEdit">
-          </div>
-          <div class="form-group">
-            <label for="ProjectDescription">Description</label>
-            <textarea class="form-control" name="ProjectDescriptionEdit" id="ProjectDescriptionEdit" rows="5"></textarea>
-          </div>
-          <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Submit">
-            <a class="btn btn-danger" style="color:white;" id="cancelEdit"> Cancel </a>
-          </div>
+          <?php if(isset($_SESSION['errorEditData'])):?>
+            <div class="form-group">
+              <input type="hidden" id="projectEditId" name="projectEditId" value="<?php echo $_SESSION["errorEditData"]["project_id"];?>">
+              <label for="ProjectNameInput">Project Name</label>
+              <input type="text" class="form-control" style="margin-bottom: 5px;" name="ProjectNameEdit" id="ProjectNameEdit" value="<?php echo $_SESSION["errorEditData"]["project_name"];?>">
+            </div>
+            <div class="form-group">
+              <label for="ProjectTypeInput">Project Type</label>
+              <input type="text" class="form-control" name="ProjectTypeEdit" id="ProjectTypeEdit" value="<?php echo $_SESSION["errorEditData"]["project_type"];?>">
+            </div>
+            <div class="form-group">
+              <label for="ProjectImageInput">Project Image</label>
+              <p>Current Project Image: <span id="currentProjectImg"></span></p>
+              <input type="file" class="form-control-file" name="ProjectImageEdit" id="ProjectImageEdit">
+            </div>
+            <div class="form-group">
+              <label for="ProjectDescription">Description</label>
+              <textarea class="form-control" name="ProjectDescriptionEdit" id="ProjectDescriptionEdit" rows="5"><?php echo $_SESSION["errorEditData"]["project_Description"]; ?></textarea>
+            </div>
+            <div class="form-group">
+              <input type="submit" class="btn btn-primary" value="Submit">
+              <a class="btn btn-danger" style="color:white;" id="cancelEdit"> Cancel </a>
+            </div>
+
+          <?php else: ?>
+            <div class="form-group">
+              <input type="hidden" id="projectEditId" name="projectEditId">
+              <label for="ProjectNameInput">Project Name</label>
+              <input type="text" class="form-control" style="margin-bottom: 5px;" name="ProjectNameEdit" id="ProjectNameEdit" >
+            </div>
+            <div class="form-group">
+              <label for="ProjectTypeInput">Project Type</label>
+              <input type="text" class="form-control" name="ProjectTypeEdit" id="ProjectTypeEdit" >
+            </div>
+            <div class="form-group">
+              <label for="ProjectImageInput">Project Image</label>
+              <p>Current Project Image: <span id="currentProjectImg"></span></p>
+              <input type="file" class="form-control-file" name="ProjectImageEdit" id="ProjectImageEdit">
+            </div>
+            <div class="form-group">
+              <label for="ProjectDescription">Description</label>
+              <textarea class="form-control" name="ProjectDescriptionEdit" id="ProjectDescriptionEdit" rows="5"></textarea>
+            </div>
+            <div class="form-group">
+              <input type="submit" class="btn btn-primary" value="Submit">
+              <a class="btn btn-danger" style="color:white;" id="cancelEdit"> Cancel </a>
+            </div>
+
+          <?php endif; ?>
+
+
+          
         </form>
     
       
@@ -270,6 +440,9 @@
         <div class="form-group">
           <label for="ProjectNameInput">Group Name</label>
           <input type="text" class="form-control" name="GroupNameInput" id="GroupNameInput" >
+          <?php if(isset($_SESSION['errorData']["group_name_error"])):?>
+            <span class="text-danger"><?php echo $_SESSION['errorData']["group_name_error"]; ?></span>
+          <?php endif;?>
         </div>
         <div class="form-group">
           <label for="ProjectDescription">Group Description</label>
@@ -304,9 +477,18 @@
       <h5>Edit Group Name</h5>
         <form action="<?php echo URLROOT;?>/GroupsController/editGroup" method="post">
           <div class="form-group">
-            <input type="hidden" id="groupEditId" name="groupEditId">
+            
+            <?php if(isset($_SESSION['errorEditData']["group_name_error"])):?>
+              <input type="hidden" id="groupEditId" name="groupEditId" value="<?php echo $_SESSION['errorEditData']["group_id"]; ?>">
+            <?php else: ?>
+              <input type="hidden" id="groupEditId" name="groupEditId">
+            <?php endif;?>
+
             <label for="GroupNameEdit">Group Name</label>
             <input type="text" class="form-control" style="margin-bottom: 5px;" name="GroupNameEdit" id="GroupNameEdit" >
+            <?php if(isset($_SESSION['errorEditData']["group_name_error"])):?>
+              <span class="text-danger"><?php echo $_SESSION['errorEditData']["group_name_error"];?></span>
+            <?php endif;?>
           </div>
           <div class="form-group">
             <label for="GroupDescriptionEdit">Group Description</label>
@@ -317,8 +499,6 @@
             <a class="btn btn-danger" style="color:white;" id="cancelEdit"> Cancel </a>
           </div>
         </form>
-    
-      
     </div>
   </div>
 

@@ -14,6 +14,22 @@
  <!-- Topbar -->
  <?php require APPROOT . '/views/inc/topNav.php'; ?>
 
+ <?php if(isset($_SESSION['errorData'])):?>
+    <style>
+        #overlay{
+            display: block!important;
+        }
+    </style>
+ <?php endif;?>
+
+ <?php if(isset($_SESSION['errorEditData'])): ?>
+    <style>
+        #editNameOverlay{
+            display: block!important;
+        }
+    </style>
+<?php endif;?>
+
  <!-- Begin Page Content -->
  <div class="container-fluid">
     
@@ -80,6 +96,13 @@
  <?php require APPROOT . '/views/inc/footer.php'; ?>
 </div>
 <!-- End of Main Content -->
+<?php 
+    unset($_SESSION['errorData']);
+    unset($_SESSION['errorEditData']);
+?>
+
+
+
 
 <script>
     

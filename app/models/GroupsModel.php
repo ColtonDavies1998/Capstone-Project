@@ -114,5 +114,14 @@ class GroupsModel{
         }
     }
 
-    public function getGroupIds(){}
+    public function validationCheck($groupId){
+        $this->db->query('SELECT * FROM groups WHERE Group_Id = :groupId && Group_Leader = :groupLeader' );
+
+        $this->db->bind(':groupId', $id);
+        $this->db->bind(':groupLeader', $_SESSION['user_id']);
+
+        $row = $this->db->single();
+
+        return $row;
+    }
 }

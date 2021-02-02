@@ -19,6 +19,14 @@
         <?php require APPROOT . '/views/inc/topNav.php'; ?>
         <!-- End of Topbar -->
 
+        <?php if(isset($_SESSION["taskEditErrors"])):?>
+          <style>
+            #editTaskNameOverlay{
+              display:block!important;
+            }
+          </style>
+        <?php endif;?>
+
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
@@ -53,6 +61,7 @@
 
       <?php require APPROOT . '/views/inc/footer.php'; ?>
 
+      <?php unset($_SESSION["taskEditErrors"]);?>
       <script>
 
 

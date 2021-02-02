@@ -221,20 +221,47 @@
                  <form action="<?php echo URLROOT;?>/AccountController/changePassword" method="post">
                    <div class="form-group">
                      <label for="oldPassword">Old Password</label>
-                     <input type="text" class="form-control" name="oldPassword" id="oldPassword" >
+                     
+                     <?php if(isset($_SESSION['passwordErrorData']['old_password'])):?>
+                      <input type="text" class="form-control" name="oldPassword" id="oldPassword" value="<?php echo $_SESSION['passwordErrorData']['old_password'];?>">
+                     <?php else:?>
+                      <input type="text" class="form-control" name="oldPassword" id="oldPassword" >
+                     <?php endif;?>
+                     <?php if(isset($_SESSION['passwordErrorData']['old_password_error'])):?>
+                        <span class="text-danger"> <?php echo $_SESSION['passwordErrorData']['old_password_error'] ?></span>
+                     <?php endif;?>
                    </div>
 
                    <div class="form-group">
                      <label for="newPassword">New Password</label>
-                     <input type="text" class="form-control" name="newPassword" id="newPassword"  >
+                     <?php if(isset($_SESSION['passwordErrorData']['new_password'])):?>
+                        <input type="text" class="form-control" name="newPassword" id="newPassword" value="<?php echo $_SESSION['passwordErrorData']['new_password'];?>">
+                     <?php else:?>
+                        <input type="text" class="form-control" name="newPassword" id="newPassword">
+                     <?php endif;?>
+                     <?php if(isset($_SESSION['passwordErrorData']['new_password_error'])):?>
+                        <span class="text-danger"> <?php echo $_SESSION['passwordErrorData']['new_password_error'] ?></span>
+                     <?php endif;?>
                    </div>
 
                    <div class="form-group">
                      <label for="confirmNewPassword">Confirm New Password</label>
-                     <input type="text" class="form-control" name="confirmNewPassword" id="confirmNewPassword" >
+                     <?php if(isset($_SESSION['passwordErrorData']['confirm_new_password'])):?>
+                        <input type="text" class="form-control" name="confirmNewPassword" id="confirmNewPassword" value="<?php echo $_SESSION['passwordErrorData']['confirm_new_password'];?>">
+                     <?php else:?>
+                        <input type="text" class="form-control" name="confirmNewPassword" id="confirmNewPassword" >
+                     <?php endif;?>
+                     <?php if(isset($_SESSION['passwordErrorData']['confirm_password_error'])):?>
+                        <span class="text-danger"> <?php echo $_SESSION['passwordErrorData']['confirm_password_error'] ?></span>
+                     <?php endif;?>
+                     <?php if(isset($_SESSION['passwordErrorData']['password_error'])):?>
+                        <br>
+                        <span class="text-danger"> <?php echo $_SESSION['passwordErrorData']['password_error'] ?></span>
+                      <?php endif;?>
                    </div>
-
+                  
                    <input id="formButton"  type="submit" value="Change" class="btn btn-info" >
+                   
 
                  </form>
 
@@ -252,6 +279,8 @@
      <!-- End of Main Content -->
 
      <?php require APPROOT . '/views/inc/footer.php'; ?>
+
+     <?php unset($_SESSION['passwordErrorData']);?>
 
      <script>
       var dashboardCalendar = document.getElementById("dashboardCalendar");

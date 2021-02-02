@@ -50,17 +50,6 @@
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                     <div class="row">
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                            <form action="<?php echo URLROOT;?>/FriendsListController/messageFriend" method="post">
-                                                <?php if($friends->PersonOneId != $_SESSION['user_id']): ?>
-                                                    <input type="hidden" value="<?php echo $friends->PersonOneId; ?>" name="friendsId">
-                                                <?php else: ?>
-                                                    <input type="hidden" value="<?php echo $friends->PersonTwoId; ?>" name="friendsId">
-                                                <?php endif;?>
-                                                
-                                                <input type="submit" value="message" class="btn btn-outline-primary">
-                                            </form>
-                                        </div>
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                             <form action="<?php echo URLROOT;?>/FriendsListController/removeFriend" method="post">
                                                 <input type="hidden" value="<?php echo $friends->FriendConnectionId; ?>" name="friendConnectionId">
                                                 <input type="submit" value="remove" class="btn btn-outline-danger">

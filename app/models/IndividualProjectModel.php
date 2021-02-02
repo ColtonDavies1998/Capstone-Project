@@ -1,11 +1,36 @@
 <?php 
+  /* 
+  "StAuth10065: I Colton Davies, 000746723 certify that this material is my original work.
+  No other person's work has been used without due acknowledgement. I have not made my 
+  work available to anyone else."
+  */
+
+   /**
+   * IndividualGroupModel
+   *
+   * @author     Colton Davies
+   */
 class IndividualProjectModel{
+    //Creates a private DB variable
     private $db;
 
+    /**
+     * This constructor initializes the database and sets it to the private variable we created above. 
+     * This is so it can be accessed throughout the class
+     */
     public function __construct(){
         $this->db = new Database;
     }
 
+    /**
+       * 
+       * This method gets all the tasks related to the current project
+       *
+       * 
+       * @param string $projectId  The project id pased through
+       *  
+       * @return object
+       */
     public function getProjectsTasks($projectId){
         $this->db->query('SELECT * FROM tasks WHERE User_Id = :userId AND Project_Id = :projectId' );
 
@@ -17,6 +42,15 @@ class IndividualProjectModel{
         return $rows;
     }
 
+    /**
+       * 
+       * This method checks for if the project the user is trying to access is connected to them
+       *
+       * 
+       * @param string $projectId  The project id pased through
+       *  
+       * @return object
+       */
     public function checkForUserProjectMatch($projectId){
         $this->db->query('SELECT * FROM projects WHERE User_Id = :userId AND Project_Id = :projectId');
 
@@ -31,6 +65,15 @@ class IndividualProjectModel{
 
     }
 
+    /**
+       * 
+       * This method gets the project information
+       *
+       * 
+       * @param string $projectId  The project id pased through
+       *  
+       * @return object
+       */
     public function getProjectsInformation($projectId){
         $this->db->query('SELECT * FROM projects WHERE User_Id = :userId && Project_Id = :projectId');
 
@@ -42,6 +85,15 @@ class IndividualProjectModel{
         return $row;
     }
 
+    /**
+       * 
+       * This method gets all files related to the project
+       *
+       * 
+       * @param string $projectId  The project id pased through
+       *  
+       * @return object
+       */
     public function getProjectFiles($projectId){
         $this->db->query('SELECT * FROM files WHERE User_Id = :userId && Project_Id = :projectId' );
 
@@ -53,6 +105,15 @@ class IndividualProjectModel{
         return $rows;
     }
 
+    /**
+       * 
+       * This method creates a new task for the project
+       *
+       * 
+       * @param string $data  task data
+       *  
+       * @return boolean
+       */
     public function createNewTask($data){
         $this->db->query('INSERT INTO tasks (Task_Name, Task_Type, Task_Start_Time, Task_End_Time, Task_Start_Date, Task_End_Date, Task_Completed, Project_Id, User_Id) 
         VALUES(:taskName, :taskType, :TaskStartTime, :TaskEndTime, :TaskStartDate, :TaskEndDate, :TaskCompleted, :projectId ,:userId)');
@@ -75,6 +136,15 @@ class IndividualProjectModel{
         }
     }
 
+    /**
+       * 
+       * This method creates a new file record in the database
+       *
+       * 
+       * @param string $data  the data to create a file
+       *  
+       * @return boolean
+       */
     public function storeNewFile($data){
         $this->db->query('INSERT INTO files (File_Link, File_Type, File_Name, Project_Id, User_Id) 
         VALUES(:fileLink, :fileType, :fileName, :projectId, :userId)');
@@ -93,6 +163,15 @@ class IndividualProjectModel{
         }
     }
 
+    /**
+       * 
+       * This method gets the file information of a single record given the id
+       *
+       * 
+       * @param string $id  The file id
+       *  
+       * @return object
+       */
     public function getFileInformation($id){
         $this->db->query('SELECT * FROM files WHERE User_Id = :userId && File_Id = :fileId');
 
@@ -104,6 +183,15 @@ class IndividualProjectModel{
         return $row;
     }
 
+    /**
+       * 
+       * This method edits a files information given its id
+       *
+       * 
+       * @param string $data  The edited data of a file
+       *  
+       * @return boolean
+       */
     public function editFile ($data){
         $this->db->query('UPDATE files SET File_Name = :fileName, File_Type = :fileType, 
         File_Link = :fileLink
@@ -124,6 +212,15 @@ class IndividualProjectModel{
         }
     }
 
+    /**
+       * 
+       * This method deletes the file record given the id
+       *
+       * 
+       * @param string $fileId  the file id
+       *  
+       * @return boolean
+       */
     public function deleteFile($fileId){
         $this->db->query('DELETE FROM files WHERE User_Id = :userId && File_Id = :fileId');
 
@@ -137,6 +234,16 @@ class IndividualProjectModel{
         }
     }
 
+    /**
+       * 
+       * This method gets the information of an individual task
+       *
+       * 
+       * @param string $taskId  The id of an individual task
+       * @param string $project_Id  The project id
+       * 
+       * @return object
+       */
     public function getIndividualTaskInfo($taskId, $project_Id){
         $this->db->query('SELECT * FROM tasks WHERE User_Id = :userId AND Project_Id = :projectId AND Task_Id = :taskId' );
 
@@ -149,6 +256,16 @@ class IndividualProjectModel{
         return $row;
     }
 
+    /**
+       * 
+       * This method changes the task completion of an individual task
+       *
+       * 
+       * @param string $taskId  The id of an individual task
+       * @param string $changeToComplete  boolean if true change task to complete else false
+       * 
+       * @return boolean
+       */
     public function changeTaskCompletion($taskId, $changeToComplete){
         $this->db->query('UPDATE tasks SET Task_Completed = :completionValue WHERE Task_Id = :taskid && User_Id = :userId');
 
@@ -170,6 +287,15 @@ class IndividualProjectModel{
 
     }
 
+    /**
+       * 
+       * This method gets completed tasks for the project
+       *
+       * 
+       * @param string $projectId  The id of an individual project
+       * 
+       * @return object
+       */
     public function getCompletedProjectTasks($projectId){
         $this->db->query('SELECT * FROM tasks WHERE User_Id = :userId AND Project_Id = :projectId AND Task_Completed = :completionValue' );
 
@@ -182,6 +308,16 @@ class IndividualProjectModel{
         return $rows;
     }
 
+    /**
+       * 
+       * This method updates the project completion percent of a project
+       *
+       * 
+       * @param string $projectId  The id of an individual project
+       * @param string $completionPercent  percent of completion for project
+       * 
+       * @return object
+       */
     public function changeProjectCompletion($projectId, $completionPercent){
         $this->db->query('UPDATE projects SET Project_Completion = :completionPercent WHERE Project_Id = :projectId ');
 
@@ -196,6 +332,15 @@ class IndividualProjectModel{
         }
     }
 
+    /**
+       * 
+       * This method deletes an individual task given the id
+       *
+       * 
+       * @param string $taskId  The id of an individual task
+       * 
+       * @return boolean
+       */
     public function deleteTask($taskId){
         $this->db->query('DELETE FROM tasks WHERE User_Id = :userId && Task_Id = :taskId');
 
@@ -209,6 +354,15 @@ class IndividualProjectModel{
         }
     }
 
+    /**
+       * 
+       * This method edits the task information of a task given the id
+       *
+       * 
+       * @param string $data  The data to edit the information of a task
+       * 
+       * @return boolean
+       */
     public function editTask($data){
         $this->db->query('UPDATE tasks SET Task_Name = :taskName, Task_Type = :taskType, Task_Start_Time = :startTime,
                           Task_End_Time = :endTime, Task_Start_Date = :startDate, Task_End_Date = :endDate, Task_Completed = :isComplete

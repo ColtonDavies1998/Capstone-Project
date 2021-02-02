@@ -1,13 +1,35 @@
 <?php 
+  /* 
+  "StAuth10065: I Colton Davies, 000746723 certify that this material is my original work.
+  No other person's work has been used without due acknowledgement. I have not made my 
+  work available to anyone else."
+  */
 
+ /**
+   * UserModel
+   *
+   * @author     Colton Davies
+   */
 class UserModel{
+    //creates private db variable
     private $db;
 
+    /**
+     * This constructor initializes the database and sets it to the private variable we created above. 
+     * This is so it can be accessed throughout the class
+     */
     public function __construct(){
         $this->db = new Database;
     }
 
-    //Register User
+
+    /**
+       *
+       *This method creates a new user in the user table
+       * 
+       * @param string $data  the register data
+       * @return boolean
+       */
     public function register($data){
         if($data['buisness_User'] == "Yes"){
             //if the buisness user was checked then the user has a different account type
@@ -37,7 +59,16 @@ class UserModel{
         }
     }
 
-    //login user
+    /**
+       *
+       * This method checks the database for a user with the matching login credentials
+       * 
+       * @param string $email  the users email
+       * @param string $password  the users password
+       * @return boolean
+       * OR
+       * @return object
+       */
     public function login($email, $password){
         $this->db->query('SELECT * FROM users WHERE email = :email');
         $this->db->bind(':email', $email);
@@ -52,7 +83,14 @@ class UserModel{
         }
     }
 
-    //find user by email
+
+    /**
+       *
+       * This method finds the user by a given email address and returns a row count
+       * 
+       * @param string $email  the users email
+       * @return boolean
+       */
     public function findUserByEmail($email){
         $this->db->query('SELECT * FROM users WHERE email = :email');
         //bind values

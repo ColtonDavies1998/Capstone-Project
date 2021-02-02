@@ -1,23 +1,50 @@
 <?php 
+  /* 
+  "StAuth10065: I Colton Davies, 000746723 certify that this material is my original work.
+  No other person's work has been used without due acknowledgement. I have not made my 
+  work available to anyone else."
+  */
 
+ /**
+   * DashboardModel
+   *
+   * @author     Colton Davies
+   */
 class DashboardModel{
+    //create a private db variable
     private $db;
 
+    /**
+     * This constructor initializes the database and sets it to the private variable we created above. 
+     * This is so it can be accessed throughout the class
+     */
     public function __construct(){
         $this->db = new Database;
     }
 
+     /**
+       * this method gets all the tasks that have a start date of today
+       *
+       * @return object
+       */
     public function getDailyTasks(){
 
         $this->db->query('SELECT * FROM tasks WHERE Task_Start_Date = CURDATE() && User_Id = :userId');
-
+        //bind
         $this->db->bind(':userId', $_SESSION['user_id']);
-
+        //query
         $rows = $this->db->resultSet();
 
         return $rows;
     }
 
+    /**
+       *
+       *This method creates a new task with the data provided as a parameter.
+       * 
+       * @param string $data  The task information data
+       * @return boolean
+       */
     public function createNewTask($data){
         
 
@@ -41,6 +68,12 @@ class DashboardModel{
         }
     }
 
+    /**
+       *
+       *This returns the total number of daily tasks
+       * 
+       * @return object
+       */
     public function totalDailyTasks(){
         $this->db->query('SELECT * FROM tasks WHERE Task_Start_Date = CURDATE() && User_Id = :userId');
 
@@ -54,6 +87,12 @@ class DashboardModel{
     }
 
 
+    /**
+       *
+       *This method returns the total number of tasks that have been completed
+       * 
+       * @return boolean
+       */
     public function totalDailyTasksCompleted(){
         $this->db->query('SELECT * FROM tasks WHERE Task_Completed = 1 && Task_Start_Date = CURDATE() &&  User_Id = :userId');
 
@@ -66,6 +105,12 @@ class DashboardModel{
         return $row;
     }
 
+    /**
+       *
+       * This method returns the users calendar dashboard display setting
+       * 
+       * @return object
+       */
     public function Dashboard_Calendar_Display(){
         $this->db->query('SELECT Dashboard_Calendar_Display  FROM users WHERE User_Id = :userId');
 
@@ -74,6 +119,12 @@ class DashboardModel{
         return $this->db->single();
     }
 
+       /**
+       *
+       * This method returns the users project dashboard display setting
+       * 
+       * @return object
+       */
     public function Dashboard_Projects_Display(){
         $this->db->query('SELECT Dashboard_Projects_Display  FROM users WHERE User_Id = :userId');
 
@@ -82,6 +133,13 @@ class DashboardModel{
         return $this->db->single();
     }
 
+     /**
+       *
+       *This method creates a new project with the data provided as a parameter.
+       * 
+       * @param string $data  The project information data
+       * @return boolean
+       */
     public function createNewProject($data){
 
         $this->db->query('INSERT INTO projects (Project_Name, User_Id, Group_Id, Project_Type, Project_Description, Project_Completion) 
@@ -103,6 +161,12 @@ class DashboardModel{
 
     }
 
+    /**
+       *
+       *This method creturns all the users projects
+       * 
+       * @return object
+       */
     public function getProjects(){
 
         $this->db->query('SELECT * FROM projects WHERE User_Id = :userId');
@@ -115,9 +179,16 @@ class DashboardModel{
     }
 
 
+     /**
+       *
+       *When this method is called it changes the completion of the task of the id passed as a parameter to true
+       * 
+       * @param string $id  The task id
+       * @return boolean
+       */
     public function changeIncompleteTask($id){
         $this->db->query('UPDATE tasks SET Task_Completed = 1 WHERE Task_Id = :taskid && User_Id = :userId');
-
+        //bind
         $this->db->bind(':taskid', $id);
         $this->db->bind(':userId', $_SESSION['user_id']);
 

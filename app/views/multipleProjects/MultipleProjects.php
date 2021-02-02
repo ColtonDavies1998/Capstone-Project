@@ -20,6 +20,14 @@
      <!-- Topbar -->
      <?php require APPROOT . '/views/inc/topNav.php'; ?>
 
+     <?php if(isset($_SESSION['errorEditData'])):?>
+        <style>
+            #editNameOverlay{
+                display:block!important;
+            }
+        </style>
+     <?php endif;?>
+
      <!-- Begin Page Content -->
      <div class="container-fluid">
         
@@ -80,7 +88,9 @@
      <!-- /.container-fluid -->
      <?php require APPROOT . '/views/inc/footer.php'; ?>
    </div>
-   
+   <?php 
+    unset($_SESSION['errorEditData']);
+   ?>
    <!-- End of Main Content -->
    
 
