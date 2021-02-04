@@ -212,4 +212,16 @@
             redirect('GroupsController/groupsDisplay');
         }
     }
+
+    /**
+     * This function is used when a user wants to leave a group. This only works for groups the user is apart of that they did 
+     * not create. This deletes the connection record between the user and the group
+     */
+    public function leaveGroup(){
+        $groupId = $_GET["groupId"];
+
+        $this->groupsModel->deleteGroupUserConnection($groupId);
+
+        redirect('GroupsController/groupsDisplay');
+    }
   }

@@ -60,6 +60,11 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item groupEditOption" id="group-<?php echo $group->Group_Id; ?>-edit">Edit Name</a>
                                         <a class="dropdown-item groupDeleteOption" id="group-<?php echo $group->Group_Id; ?>-delete">Delete</a>
+                                    
+                                    <?php else: ?>
+                                        <div class="dropdown-header">Options</div>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="<?php echo URLROOT;?>/GroupsController/leaveGroup?groupId=<?php echo $group->Group_Id;?>" class="dropdown-item">Leave Group</a>
                                     <?php endif;?>
                                 </div>
                             </div>
