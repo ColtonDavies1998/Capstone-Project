@@ -101,7 +101,7 @@ class IndividualGroupController extends Controller {
               $data['task_type_error'] = 'Please select a task type';
             }
             //Checks if the start time field was empty
-            if(empty($data['startTimeInput'])){
+            if(empty($data['task_start_date'])){
               $data['task_start_time_error'] = 'Please enter in a start time for the task';
             }else{
               //makes sure the minutes are in 5 minute intervals
@@ -119,7 +119,7 @@ class IndividualGroupController extends Controller {
               }
             }
             //Checks if the end time field was empty
-            if(empty($data['endTimeInput'])){
+            if(empty($data['task_end_time'])){
               $data['task_end_time_error'] = 'Please enter in a end time for the task';
             }else{
               //makes sure the minutes for end time are in 5 minute intervals
@@ -137,10 +137,10 @@ class IndividualGroupController extends Controller {
                 $data['task_end_time'] = $tempEndTime[0] . ":" . $roundedEndMinutes;
               }
             }
-            if(empty($data['startDateInput'])){
+            if(empty($data['task_start_date'])){
               $data['task_start_date_error'] = 'Please enter in a start date for the task';
             }
-            if(empty($data['endDateInput'])){
+            if(empty($data['task_end_date'])){
               $data['task_end_date_error'] = 'Please enter in a end date for the task';
             }
     
@@ -331,6 +331,54 @@ class IndividualGroupController extends Controller {
         $path = '/IndividualGroupController/individualGroup?groupId=' . $_SESSION['current_group'];          
         redirect($path);
       }
+    }
+
+    /**
+     * Gets a list of the tasks in this group
+     */
+    public function getGroupsTasks(){
+      $tasks = $this->individualGroupModel->getGroupTasks($_SESSION['current_group']);
+
+      echo json_encode($tasks);
+    }
+
+    /**
+     * The taskComplete functions changes a groups task from incomplete to complete
+     */
+    public function taskComplete(){
+      $taskId = $_POST["taskId"];
+
+      $this->individualGroupModel->changeTaskCompletion($taskId, true);
+
+      //redirect
+      $path = '/IndividualGroupController/individualGroup?groupId=' . $_SESSION['current_group'];          
+      redirect($path);
+    }
+
+    /**
+     * The taskComplete functions changes a groups task from complete to incomplete
+     */
+    public function taskIncomplete(){
+      $taskId = $_POST["taskId"];
+
+      $this->individualGroupModel->changeTaskCompletion($taskId, false);
+
+      //redirect
+      $path = '/IndividualGroupController/individualGroup?groupId=' . $_SESSION['current_group'];          
+      redirect($path);
+    }
+
+    /**
+     * Deletes a task
+     */
+    public function deleteTask(){
+      $taskId = $_POST["taskId"];
+
+      $this->individualGroupModel->deleteGroupTask($taskId);
+
+      //redirect
+      $path = '/IndividualGroupController/individualGroup?groupId=' . $_SESSION['current_group'];          
+      redirect($path);
     }
 
 

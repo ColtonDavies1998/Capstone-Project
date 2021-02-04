@@ -143,18 +143,22 @@ class Table{
 
     //This function checks through the data header and makes sure they match the object fields inputed
     dataAndHeaderCheck(){
-
-        for(var i = 0; i < this.objectFields.length; i++){
+      if(this.data.length !=0){
+          for(var i = 0; i < this.objectFields.length; i++){
             for(var j = 0; j < 10; j++ ){
-                
                 if(this.data[j].hasOwnProperty(objectFields[i]) == false){
                   
-                    return false;
+                  return false;
                 }
             }
         }
 
         return true;
+
+      }else{
+        return true;
+      }
+        
     }
 
     //This function generates the skeleton of the table, it creates the t body and t head and inputs the headers

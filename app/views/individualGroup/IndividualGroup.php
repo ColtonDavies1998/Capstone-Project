@@ -94,8 +94,14 @@
                                                 <small><b>Start Time: </b><?php echo militaryToCivilianTime($tasks->Task_Start_Time); ?></small> 
                                                 <small><b>End Time: </b><?php echo militaryToCivilianTime($tasks->Task_End_Time); ?></small>
                                             </div>
-                                            <p class="mb-1">Add task description later</p>
-                                            <button class="mb-1 btn btn-danger singleTask taskId-<?php echo $tasks->Task_Id ?>">Incomplete</button>
+                                            <form action="<?php echo URLROOT;?>/IndividualGroupController/deleteTask" method="post">
+                                                <input type="hidden" name="taskId" value="<?php echo $tasks->Task_Id ?>">
+                                                <input type="submit" class="mb-1 btn btn-success singleTask" value="Delete" class="text-danger" style="color:#f00;border:0px #000 solid;background-color:#fff;">
+                                            </form>
+                                            <form action="<?php echo URLROOT;?>/IndividualGroupController/taskComplete" method="post">
+                                                <input type="hidden" name="taskId" value="<?php echo $tasks->Task_Id ?>">
+                                                <input type="submit" class="mb-1 btn btn-danger singleTask" value="Incomplete">
+                                            </form>
                                         </a>
                                     <?php endif;?>
                                 <?php endforeach;?>
@@ -176,7 +182,7 @@
             </div>
 
             <div class="row">
-                <div class="col-xl-7 col-lg-6">
+                <div class="col-xl-6 col-lg-6">
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -207,10 +213,6 @@
                                             <hr>
                                         <?php endif;?>
                                     <?php endforeach;?>
-
-
-                                    
-                                    
                                 <?php else: ?>
                                     <h1>There are no other users in this group</h1>
                                 <?php endif;?>
@@ -239,9 +241,45 @@
                             </form>
                         </div>
                     </div>
-            </div>
-        </div>   
-    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Completed Tasks</h6>
+                                <div class="dropdown no-arrow">                           
+                            </div>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body" style="overflow-y:scroll;height: 450px; ">
+                            <div class="list-group" >
+                                <?php foreach($data['groupTasks'] as $tasks):?>
+                                    <?php if($tasks->Task_Completed == 1):?>
+                                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start ">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h5 class="mb-1"><?php echo $tasks->Task_Name; ?></h5>
+                                                <small><b>Start Time: </b><?php echo militaryToCivilianTime($tasks->Task_Start_Time); ?></small> 
+                                                <small><b>End Time: </b><?php echo militaryToCivilianTime($tasks->Task_End_Time); ?></small>
+                                            </div>
+                               
+                                            <form action="<?php echo URLROOT;?>/IndividualGroupController/deleteTask" method="post">
+                                                <input type="hidden" name="taskId" value="<?php echo $tasks->Task_Id ?>">
+                                                <input type="submit" class="mb-1 btn btn-success singleTask" value="Delete" class="text-danger" style="color:#f00;border:0px #000 solid;background-color:#fff;">
+                                            </form>
+                                            
+                                            <form action="<?php echo URLROOT;?>/IndividualGroupController/taskIncomplete" method="post">
+                                                <input type="hidden" name="taskId" value="<?php echo $tasks->Task_Id ?>">
+                                                <input type="submit" class="mb-1 btn btn-success singleTask" value="Complete">
+                                            </form>
+                                        </a>
+                                    <?php endif;?>
+                                <?php endforeach;?>
+                            </div>
+                        </div>
+                    </div>
+                
+            </div>   
+        </div>
 
     
     <div id="Admin">

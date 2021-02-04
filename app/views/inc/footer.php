@@ -48,15 +48,6 @@
   <!-- Custom scripts for all pages-->
   <script src="<?php echo URLROOT; ?>/js/sb-admin-2.js"></script>
 
-  <!-- Page level plugins -->
-  <script src="<?php echo URLROOT; ?>/vendor/chart.js/Chart.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="<?php echo URLROOT; ?>/js/demo/chart-area-demo.js"></script>
-  <script src="<?php echo URLROOT; ?>/js/demo/chart-pie-demo.js"></script>
-
-  
-
   <?php if($_SESSION['current_page'] == 'MultipleProjects'):?>
     <script src="<?php echo URLROOT; ?>/js/multipleProjectsScript.js"></script>
   <?php endif;?>

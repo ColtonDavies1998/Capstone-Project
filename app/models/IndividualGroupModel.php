@@ -167,7 +167,7 @@ class IndividualGroupModel{
         $this->db->bind(':TaskStartDate', $data['task_start_date']);
         $this->db->bind(':TaskEndDate', $data['task_end_date']);
         $this->db->bind(':TaskCompleted', 0);
-        $this->db->bind(':groupId', $data['project_id']);
+        $this->db->bind(':groupId', $data['group_id']);
         $this->db->bind(':userId', $_SESSION['user_id']);
 
         //call execute if you want to insert
@@ -218,6 +218,7 @@ class IndividualGroupModel{
 
         return $rows;
     }
+
 
     /**
        * 
@@ -395,6 +396,39 @@ class IndividualGroupModel{
         $this->db->bind(':groupName', $groupInfo->Group_Name);
 
         //call execute if you want to insert
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function changeTaskCompletion($taskId, $changeToComplete){
+        $this->db->query('UPDATE tasks SET Task_Completed = :completionValue WHERE Task_Id = :taskid AND Group_Id = :groupId');
+
+
+        if($changeToComplete == true){
+            $this->db->bind(':completionValue', 1);
+        }else{
+            $this->db->bind(':completionValue', 0);
+        }
+        $this->db->bind(':taskid', $taskId);
+        $this->db->bind(':groupId', $_SESSION['current_group']);
+
+        //call execute if you want to insert
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function deleteGroupTask($taskId){
+        $this->db->query('DELETE FROM tasks WHERE Task_Id = :taskId AND Group_Id = :groupId');
+
+        $this->db->bind(':taskId', $taskId);
+        $this->db->bind(':groupId', $_SESSION['current_group']);
+
         if($this->db->execute()){
             return true;
         }else{

@@ -179,7 +179,8 @@
 </div>
 <?php endif;?>
 
-<?php if($_SESSION['current_page'] == 'TaskHistory'):?>
+
+<?php if($_SESSION['current_page'] == 'TaskHistory' || $_SESSION['current_page'] == 'IndividualGroup'):?>
   
 
 <script src="<?php echo URLROOT; ?>/vendor/PaginationJS/paginationJS.js"></script>
