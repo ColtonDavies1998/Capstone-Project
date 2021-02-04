@@ -210,7 +210,7 @@ class IndividualGroupModel{
        * @return object
        */
     public function userSearch($firstName, $lastName){
-        $query = "SELECT User_Id, User_First_Name, User_Last_Name, Email FROM users WHERE User_Id !=" . $_SESSION['user_id'] . " AND User_First_Name LIKE '%" . $firstName ."%' OR '%" . $lastName . "%'   ";
+        $query = "SELECT User_Id, User_First_Name, User_Last_Name, Email FROM users WHERE User_Id !=" . $_SESSION['user_id'] . " AND Buisness_User = 1 AND User_First_Name LIKE '%" . $firstName ."%' OR '%" . $lastName . "%'   ";
         
         $this->db->query($query);
 
