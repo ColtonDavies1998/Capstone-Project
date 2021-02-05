@@ -82,13 +82,24 @@
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         //Grabs and trims the delete Id
         $taskId = trim($_POST['deleteId']);
-        //Gets the validation count
-        $validation = $this->taskHistoryModel->validateId($taskId);
-        //Checks if the size is greater than 0 meaning there is a record of the id and user
-        if(sizeof($validation) > 0){
           //Deletes the task
           if($this->taskHistoryModel->deleteTask($taskId)){
-            redirect('TaskHistoryController/taskHistory');
+
+            if($_SESSION['current_page'] == "TaskHistory"){
+              redirect('TaskHistoryController/taskHistory');
+
+            }elseif($_SESSION['current_page'] == "IndividualProject"){
+              $link = 'IndividualProjectController/individualProject?projectId='. $_SESSION['current_project'];
+
+              redirect($link);
+
+            }else{
+              $link = 'IndividualGroupController/individualGroup?groupId='. $_SESSION['current_group'];
+
+              redirect($link);
+            }
+
+            
   
           }else{
             //For testing
@@ -100,10 +111,7 @@
           redirect('TaskHistoryController/taskHistory');
         }
 
-      }else{
-        //redirects
-        redirect('TaskHistoryController/taskHistory');
-      }
+      
     }
 
     /**
@@ -170,7 +178,20 @@
           if(sizeof($validation) > 0){
             //Input New Task
             if($this->taskHistoryModel->editTask($data)){
-              redirect('TaskHistoryController/taskHistory');
+              if($_SESSION['current_page'] == "TaskHistory"){
+                redirect('TaskHistoryController/taskHistory');
+  
+              }elseif($_SESSION['current_page'] == "IndividualProject"){
+                $link = 'IndividualProjectController/individualProject?projectId='. $_SESSION['current_project'];
+  
+                redirect($link);
+  
+              }else{
+                $link = 'IndividualGroupController/individualGroup?groupId='. $_SESSION['current_group'];
+  
+                redirect($link);
+              }
+
             }else{
                 die('Something went Wrong');
             }

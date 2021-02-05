@@ -233,4 +233,74 @@ class GroupsModel{
             return false;
         }
     }
+
+
+    /**
+       * 
+       * This method updates the group name in the records of the grouprequestconnection, this changes the group name column in 
+       * the group that has been edited
+       *
+       * 
+       * @param string $groupId  The id of the group
+       * @param string $newGroupName  The new name of the group
+       *  
+       * @return boolean
+       */
+    public function updateGroupNameRequestConnectionRecords($groupId, $newGroupName){
+        $this->db->query('UPDATE grouprequestconnection SET Group_Name = :groupName WHERE Group_Id = :groupId');
+
+        $this->db->bind(':groupName', $newGroupName);
+        $this->db->bind(':groupId', $groupId);
+        
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+       * 
+       * This method updates the group name in the records of the groupmessageconnection, this changes the group name column in 
+       * the group that has been edited
+       *
+       * 
+       * @param string $groupId  The id of the group
+       * @param string $newGroupName  The new name of the group
+       *  
+       * @return boolean
+       */
+    public function updateGroupNameConnectionMessageRecords($groupId, $newGroupName){
+        $this->db->query('UPDATE groupmessageconnection SET Group_Name = :groupName WHERE Group_Id = :groupId');
+
+        $this->db->bind(':groupName', $newGroupName);
+        $this->db->bind(':groupId', $groupId);
+        
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+       * 
+       * This method deletes the group invitation requests for all the invitations that have the same group id as the group being deleted
+       *
+       * 
+       * @param string $groupId  The id of the group
+       *  
+       * @return boolean
+       */
+    public function deleteGroupRequestConnections($groupId){
+        $this->db->query('DELETE FROM grouprequestconnection WHERE Group_Id = :groupId' );
+
+        $this->db->bind(':groupId', $groupId);
+
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

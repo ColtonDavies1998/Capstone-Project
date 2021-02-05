@@ -222,6 +222,8 @@
 
             $this->accountModel->changeMessageNames($data["first_name"], $data["last_name"], true);
             $this->accountModel->changeMessageNames($data["first_name"], $data["last_name"], false);
+
+            $_SESSION['user_name'] = $data["first_name"] . ' ' . $data["last_name"];    
             
             redirect('accountController/accountSetting');
           }else{

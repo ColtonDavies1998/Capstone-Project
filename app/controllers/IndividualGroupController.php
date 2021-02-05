@@ -31,7 +31,10 @@ class IndividualGroupController extends Controller {
         //Sets the current page to individual group
         $_SESSION['current_page'] = 'IndividualGroup';
         //gets the specific group id that has to be passed through the url
-        $_SESSION['current_group'] = $_GET['groupId'];
+        if(isset($_SESSION['current_group']) == false){
+          $_SESSION['current_group'] = $_GET['groupId'];
+        }
+        
         //Sets session of the group id
         $groupId = $_SESSION['current_group'];
         //Checks if the users group actually belongs to the user
@@ -355,18 +358,6 @@ class IndividualGroupController extends Controller {
       redirect($path);
     }
 
-    /**
-     * The taskComplete functions changes a groups task from complete to incomplete
-     */
-    public function taskIncomplete(){
-      $taskId = $_POST["taskId"];
-
-      $this->individualGroupModel->changeTaskCompletion($taskId, false);
-
-      //redirect
-      $path = '/IndividualGroupController/individualGroup?groupId=' . $_SESSION['current_group'];          
-      redirect($path);
-    }
 
     /**
      * Deletes a task
@@ -379,6 +370,16 @@ class IndividualGroupController extends Controller {
       //redirect
       $path = '/IndividualGroupController/individualGroup?groupId=' . $_SESSION['current_group'];          
       redirect($path);
+    }
+
+    /**
+     * 
+     */
+    public function getGroupTasks(){
+      $data = $this->individualGroupModel->getGroupTasks($_SESSION['current_group']);
+
+      echo json_encode($data);
+
     }
 
 

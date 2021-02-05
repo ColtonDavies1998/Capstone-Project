@@ -311,7 +311,6 @@
                           <small><b>Start Time: </b><?php echo militaryToCivilianTime($tasks->Task_Start_Time); ?></small> 
                           <small><b>End Time: </b><?php echo militaryToCivilianTime($tasks->Task_End_Time); ?></small>
                         </div>
-                        <p class="mb-1">Add task description later</p>
                         <button class="mb-1 btn btn-danger singleTask taskId-<?php echo $tasks->Task_Id ?>">Incomplete</button>
                       </a>
                       <?php endif;?>

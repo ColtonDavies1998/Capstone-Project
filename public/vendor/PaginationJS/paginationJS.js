@@ -145,7 +145,7 @@ class Table{
     dataAndHeaderCheck(){
       if(this.data.length !=0){
           for(var i = 0; i < this.objectFields.length; i++){
-            for(var j = 0; j < 10; j++ ){
+            for(var j = 0; j < this.data[j].length; j++ ){
                 if(this.data[j].hasOwnProperty(objectFields[i]) == false){
                   
                   return false;

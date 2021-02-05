@@ -150,7 +150,14 @@
                     //Deletes all the connections to that group
                     if($this->groupsModel->deleteGroupConnections($groupId)){
                         //redirects to the group display
-                        redirect('GroupsController/groupsDisplay');
+                        if($this->groupsModel->deleteGroupRequestConnections($groupId)){
+                            redirect('GroupsController/groupsDisplay');
+                        }else{
+                            //for testing
+                            die('something went wrong');
+                        }
+
+                        
                     }else{
                         //for testing
                         die('something went wrong');
@@ -196,6 +203,9 @@
                 //Validated
                 if($this->groupsModel->updateGroupInfo($data)){
                     //redirects
+                    $this->groupsModel->updateGroupNameRequestConnectionRecords($data["group_id"], $data["group_name"]);
+                    $this->groupsModel->updateGroupNameConnectionMessageRecords($data["group_id"],$data["group_name"]);
+
                     redirect('GroupsController/groupsDisplay');
                 }else{
                     //for testing

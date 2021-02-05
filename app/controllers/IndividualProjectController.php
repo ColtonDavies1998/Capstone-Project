@@ -33,7 +33,10 @@ class IndividualProjectController extends Controller {
         $_SESSION['current_page'] = 'IndividualProject';
 
         //Sets current project id
-        $_SESSION['current_project'] = $_GET['projectId'];
+        if(isset($_SESSION['current_project']) == false){
+          $_SESSION['current_project'] = $_GET['projectId'];
+        }
+        
         
         //set project id
         $projectId = $_SESSION['current_project'];
